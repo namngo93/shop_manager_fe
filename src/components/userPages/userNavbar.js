@@ -28,8 +28,8 @@ export default function userNavbar(){
                                         <ul className="list-main">
                                             <li><i className="ti-location-pin"></i><Link style={{textDecoration:"none"}} to="https://www.google.com/maps/@20.9997628,105.8071965,16z?hl=vi-VN">Store location</Link> </li>
                                             <li><i className="ti-alarm-clock"></i> <Link  style={{textDecoration: 'none'}} to="#">History</Link></li>
-                                            <li><i className="ti-user"></i> <Link  style={{textDecoration: 'none'}} to="#" >Login</Link></li>
-                                            <li><i className="ti-user"></i> <Link  style={{textDecoration: 'none'}} to="#" >SS</Link></li>
+                                            <li><i className="ti-user"></i> <Link  style={{textDecoration: 'none'}} to="/login" >Login</Link></li>
+                                            <li><i className="ti-user"></i> <Link  style={{textDecoration: 'none'}} to="/register" >Register</Link></li>
                                         </ul>
                                     </div>
 
@@ -61,8 +61,9 @@ export default function userNavbar(){
                                         <div className="sinlge-bar">
                                             <Link  style={{textDecoration: 'none'}} to="#" className="single-icon"><i className="fa fa-heart-o" aria-hidden="true"></i></Link>
                                         </div>
-                                       
-                                        
+                                        <div className="sinlge-bar shopping">
+                                            <Link  style={{textDecoration: 'none'}} to={"/login"} className="single-icon"><i className="ti-bag"></i> </Link>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
