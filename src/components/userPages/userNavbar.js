@@ -28,7 +28,7 @@ export default function userNavbar(){
                                         <ul className="list-main">
                                             <li><i className="ti-location-pin"></i><Link style={{textDecoration:"none"}} to="https://www.google.com/maps/@20.9997628,105.8071965,16z?hl=vi-VN">Store location</Link> </li>
                                             <li><i className="ti-alarm-clock"></i> <Link  style={{textDecoration: 'none'}} to="#">History</Link></li>
-                                            <li><i className="ti-user"></i> <Link  style={{textDecoration: 'none'}} to="#" >Login</Link></li>
+                                            <li><i className="ti-user"></i> <Link  style={{textDecoration: 'none'}} to="/login" >Login</Link></li>
                                             <li><i className="ti-user"></i> <Link  style={{textDecoration: 'none'}} to="#" >SS</Link></li>
                                         </ul>
                                     </div>

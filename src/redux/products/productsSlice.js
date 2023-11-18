@@ -29,9 +29,11 @@ const productsSlice = createSlice({
             builder.addCase(findByName.fulfilled, (state, action) => {
                 state.products = action.payload
             });
+
             builder.addCase(findByNameProduct.fulfilled, (state, action) => {
                 state.products = action.payload
             });
+            
             builder.addCase(findByPrice.fulfilled, (state, action) => {
                 state.products = action.payload
             });
@@ -42,11 +44,14 @@ const productsSlice = createSlice({
             });
 
             builder.addCase(deleteProduct.fulfilled, (state, action) => {
-                state.products = action.payload
-
+                state.products = state.products.filter(item => item.productId !== action.payload);
             });
+            
             builder.addCase(editProduct.fulfilled, (state, action) => {
-                state.products = action.payload
+                const indexToModify = state.products.findIndex(item => item.productId === action.payload.productId);
+                if (indexToModify !== -1) {
+                    state.products[indexToModify] = action.payload;
+                }
             })
         }
     }

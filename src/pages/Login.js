@@ -23,8 +23,8 @@ export default function Login() {
                 })
                 navigate('/home')
             }else{
-                navigate('/')
-            }
+                navigate('')
+            } 
         })
     }
 
@@ -45,7 +45,7 @@ export default function Login() {
                                 </div>
 
                                 <Formik
-                                    initialValues={{username:'', password:''}}
+                                    initialValues={{userName:'', password:''}}
                                     onSubmit={(values)=>{
                                         handleLogin(values).then()
                                     }}>
@@ -54,7 +54,7 @@ export default function Login() {
 
                                             <div className="mb-3" style={{width:300, margin:"auto"}}>
                                                 <label htmlFor="exampleInput" className="form-label">Username</label>
-                                                <Field  type="text" className="form-control" id="exampleInput" name={'username'}/>
+                                                <Field  type="text" className="form-control" id="exampleInput" name={'userName'}/>
                                                 {
                                                     user === 'Username is not existed' &&
                                                     <>

@@ -1,34 +1,62 @@
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
-import {deleteProduct, findByName, getProducts} from "../../services/productsService";
-import {Link, useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {deleteProduct, findByName} from "../../services/productsService";
+import { useNavigate } from "react-router-dom";
 import swal from 'sweetalert';
-import button from "bootstrap/js/src/button";
 import {getCategory} from "../../services/categoruService";
-
-
-
 
 export default function ManagerProduct(){
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const categories = useSelector(state => { 
+        return  state.categories.category
+    });
     const products = useSelector(state => {
         return   state.products.products
-    })
+    });
+    const [productName, setProductName] = useState('');
+    const [categoryId, setCategoryId] = useState('');
+    const  handleDelete =  (productId) => {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this imaginary file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    dispatch(deleteProduct(productId))
+                    .then((e) => {
+                        if(e.type !== "products/deleteProduct/rejected"){
+                            swal(`Poof! Deleted!`, {
+                                icon: "success",
+                            })
+                        } else {
+                            swal(`Server error`, {
+                                icon: "warning",
+                            })
+                        }
+                    })
+                    
+                } else {
+                    swal("Your imaginary file is safe!");
+                }
+            });
+    }   
+    
     useEffect(()=>{
-        dispatch(getProducts()).then(()=>{
+        dispatch(getCategory())
+        .then((e) => { 
+            const data = {
+                productName : productName,
+                categoryId : e.payload.map( item => item.categoryId)
+            }
+            dispatch(findByName(data));
+            setCategoryId(e.payload.map( item => item.categoryId))
         })
     },[]);
-
-    const categories = useSelector(state => {
-        return   state.categories.category
-    })
-
-    useEffect(()=>{
-        dispatch(getCategory()).then(()=>{
-        })
-    },[]);
-
+    
     return(
         <>
 
@@ -44,18 +72,43 @@ export default function ManagerProduct(){
                     <div className="row">
                         <div className="col-12">
                             <div className="product-info">
-                                <div className="nav-main" style={{marginBottom:20}}>
-
+                                <div className="nav-main" style={{marginBottom:20} }>
                                     <ul className="nav nav-tabs" id="myTab" role="tablist">
-
-                                        <li className="nav-item"><button className="btn btn-outline-secondary my-2 my-sm-0" onClick={()=>{
-                                            dispatch(getProducts())
-                                        }} >All</button></li>
+                                        <li>
+                                                <input name="search" placeholder="Search Products Here....." type="search" 
+                                                onChange= {(e) => { 
+                                                    const data = {
+                                                        productName : e.target.value,
+                                                        categoryId : categoryId
+                                                    }
+                                                    dispatch(findByName(data))
+                                                    setProductName(e.target.value);
+                                                    } 
+                                                }/>
+                                        </li>
+                                        <li className="nav-item">
+                                            <button className="btn btn-outline-secondary my-2 my-sm-0" 
+                                                onClick={()=>{
+                                                    const data = {
+                                                        productName : productName,
+                                                        categoryId : categories.map( item => item.categoryId)
+                                                    }
+                                                    dispatch(findByName(data));
+                                                }} >All</button>
+                                        </li>
 
                                         {categories.map((category)=>(
-                                            <li  className="nav-item"><button style={{height:30,fontSize:10,width:80}} className=" ml-3  btn btn-outline-secondary my-2 my-sm-0" onClick={()=>{
-                                                dispatch(findByName(category.name))
-                                            }} >{category.name}</button></li>
+                                            <li key = {category.categoryId}  className="nav-item">
+                                                <button style={{height:30,fontSize:10,width:80}} className=" ml-3  btn btn-outline-secondary my-2 my-sm-0" 
+                                                    onClick={()=>{
+                                                        const data = {
+                                                            productName : productName,
+                                                            categoryId : category.categoryId
+                                                        }
+                                                        dispatch(findByName(data));
+                                                        setCategoryId(category.categoryId)
+                                                }} >{category.categoryName}</button>
+                                            </li>
                                         ))}
 
                                     </ul>
@@ -78,43 +131,34 @@ export default function ManagerProduct(){
                                                             <th scope="col" colSpan="2" style={{textAlign:"center"}}>Action</th>
                                                         </tr>
                                                         </thead>
+                                                        <tbody>
                                                         {
                                                             products.map((product,ind)=>(
-                                                                <tr>
+                                                                <tr key = {product.productId}>
                                                                     <th scope="col">{ind+1}</th>
-                                                                    <th scope="col">{product.name}</th>
+                                                                    <th scope="col">{product.productName}</th>
                                                                     <th scope="col">{product.description}</th>
-                                                                    <th scope={"col"}><img src={product.image} style={{width:50}} alt=""/></th>
+                                                                    <th scope={"col"}><img src={product.image} style={{width:50}} alt="#"/></th>
                                                                     <th scope="col">{product.price}</th>
-                                                                    <th scope="col">{product.nameCategory}</th>
-                                                                    <th scope="col">{product.totalQuantity}</th>
+                                                                    <th scope="col">{product.categoryName}</th>
+                                                                    <th scope="col">{product.inventory}</th>
                                                                     <th scope="col" >
-                                                                        <Link to={`/home/edit-product/${product.id}`}><button className="btn btn-outline-primary">Edit</button></Link>
-                                                                        <button  className="btn btn-outline-danger" onClick={()=>{
-                                                                            swal({
-                                                                                title: "Are you sure?",
-                                                                                text: "Once deleted, you will not be able to recover this imaginary file!",
-                                                                                icon: "warning",
-                                                                                buttons: true,
-                                                                                dangerMode: true,
-                                                                            })
-                                                                                .then((willDelete) => {
-                                                                                    if (willDelete) {
-                                                                                        dispatch(deleteProduct(product.id))
-                                                                                        swal(`Poof! Deleted ${product.name}!`, {
-                                                                                            icon: "success",
-                                                                                        })
-                                                                                        // navigate('/home/manager-product')
-                                                                                        ;
-                                                                                    } else {
-                                                                                        swal("Your imaginary file is safe!");
-                                                                                    }
-                                                                                });
-                                                                        }}>Delete</button>
+                                                                        <button 
+                                                                            onClick={() => navigate("/home/edit-product", {state: product})}
+                                                                            className="btn btn-outline-primary"
+                                                                            >
+                                                                            Edit
+                                                                        </button>   
+                                                                        <button  className="btn btn-outline-danger" 
+                                                                            onClick={() => {handleDelete(product.productId)}}
+                                                                            >
+                                                                            Delete
+                                                                        </button>
                                                                     </th>
                                                                 </tr>
                                                             ))
                                                         }
+                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </div>

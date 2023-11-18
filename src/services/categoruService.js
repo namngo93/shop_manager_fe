@@ -4,7 +4,7 @@ import customAxios from "./api";
 export const getCategory = createAsyncThunk(
     'category/getCategory',
     async ()=>{
-        const res = await customAxios.get('products/getCategories');
+        const res = await customAxios.get('categories');
         return res.data;
     }
 )

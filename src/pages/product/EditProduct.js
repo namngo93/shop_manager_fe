@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 import {Field, Form, Formik} from "formik";
-import {editProduct, findByIdProduct} from "../../services/productsService";
+import { editProduct } from "../../services/productsService";
 import {useEffect, useState} from "react";
 import {storage} from "../../services/firebase";
 import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
@@ -10,36 +10,30 @@ import swal from 'sweetalert';
 
 
 export default function EditProduct() {
-    const {id} = useParams();
+    const location = useLocation();
+    const product = location.state;
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const product = useSelector(state => {
-        return state.products.product
-    })
     useEffect(() => {
-        dispatch(findByIdProduct(id)).then((value) => {
-            setUrls([value.payload.image])
-        });
-    }, [])
-
+            setUrls([product.image])
+    }, []);
 
     const category = useSelector(state => {
         return state.categories.category
-    })
-
+    });
     useEffect(() => {
         dispatch(getCategory())
-    }, []);
-
+    }, [])
 
     const handleEdit = async (values) => {
         let newProduct = {...values};
-        newProduct.image = urls[urls.length-1]
-        await dispatch(editProduct(newProduct));
-        swal(`Edited ${newProduct.name} success!`, {
+        newProduct.image = urls[urls.length-1];
+        delete newProduct.categoryName;
+        dispatch(editProduct(newProduct));
+        swal(`Edited ${newProduct.productName} success!`, {
             icon: "success",
         });
-        await navigate('/home/manager-product')
+        navigate('/home/manager-product')
     }
 
 
@@ -98,7 +92,6 @@ export default function EditProduct() {
                         initialValues={
                             product
                         }
-
                         onSubmit={(values) => {
                             handleEdit(values)
                         }}
@@ -107,7 +100,7 @@ export default function EditProduct() {
                         <Form>
                             <div className="mb-3">
                                 <label htmlFor="exampleInput" className="form-label">Name product</label>
-                                <Field type="text" className="form-control" name={'name'}/>
+                                <Field type="text" className="form-control" name={'productName'}/>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="exampleInput" className="form-label">Description</label>
@@ -119,7 +112,7 @@ export default function EditProduct() {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="exampleInput" className="form-label">Quantity</label>
-                                <Field type="number" className="form-control" name={'totalQuantity'}/>
+                                <Field type="number" className="form-control" name={'inventory'}/>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="exampleInput" className="form-label">Image</label>
@@ -135,11 +128,10 @@ export default function EditProduct() {
                                 }
                             </div>
                             <div className="mb-3">
-                                <Field as='select' name={'idCategory'}>
+                                <Field as='select' name={'categoryId'} >
                                     {category !== undefined && category.map((item) => (
-                                        <option value={item.id}>{item.name}</option>
+                                        <option key = {item.categoryId} value={item.categoryId}>{item.categoryName}</option>
                                     ))
-
                                     }
                                 </Field>
                             </div>
