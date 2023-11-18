@@ -23,8 +23,8 @@ export default function Login() {
                 })
                 navigate('/home')
             }else{
-                navigate('')
-            } 
+                navigate('/login')
+            }
         })
     }
 

@@ -5,16 +5,16 @@ import {Route, Routes} from "react-router";
 import Register from "./pages/Register";
 import Home from "./pages/home/Home";
 import HomeProduct from "./pages/product/HomeProduct";
-import AddProduct from "./pages/product/AddProduct";
+import AddProduct from "./components/admin/AddProduct";
 import {useSelector} from "react-redux";
-import EditProduct from "./pages/product/EditProduct";
+import EditProduct from "./components/admin/EditProduct";
 import ProductList from "./pages/product/ProductList";
-import ManagerProduct from "./pages/product/ManagerProduct";
+import ManagerProduct from "./components/admin/ManagerProduct";
 import ShowCart from "./pages/product/ShowCart";
 import FocusProduct from "./pages/product/FocusProduct";
-import AddCategory from "./pages/product/AddCategory";
+import AddCategory from "./components/admin/AddCategory";
 import PurchaseOrder from "./pages/product/PurchaseOrder";
-import ManagerOrder from "./pages/product/ManagerOrder";
+import ManagerOrder from "./components/admin/ManagerOrder";
 import BuyNow from "./pages/product/BuyNow";
 import People from "./pages/product/People";
 import UserHome from './components/userPages/userHome/userHome';
@@ -31,6 +31,7 @@ function App() {
        
           <Routes>
             <Route path={''} element={<UserHome/>}/>
+                {/* <Route path={'userProduct'} element={<UserHomeProduct/>}/> */}
             <Route path={'login'} element={<Login/>}/>
             <Route path={'register'} element={<Register/>}/>
             {
@@ -49,7 +50,7 @@ function App() {
                       <Route path={'buy-now/:id'} element={<BuyNow/>}/>
                       <Route path={'people'} element={<People/>}/>
                   </Route>:
-                  <Route path={''} element={<Login/>}/>
+                  <Route path={'login'} element={<Login/>}/>
             }
 
           </Routes>
