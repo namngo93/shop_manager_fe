@@ -1,7 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {findByName, findByNameProduct, findByPrice, getProducts} from "../../services/productsService";
-import button from "bootstrap/js/src/button";
 import {getCategory} from "../../services/categoruService";
 import {Link} from "react-router-dom";
 import {Field, Form, Formik} from "formik";
@@ -176,7 +175,7 @@ export default function ProductList() {
                                                                 <div className="product-action-2">
                                                                     <Link  style={{textDecoration: 'none'}}  to="/home/addCart">Add to cart</Link>
                                                                     <span> or </span>
-                                                                    <Link  style={{textDecoration: 'none'}} to={`/home/buy-now/${product.id}`} style={{color: "red"}}>Buy now</Link>
+                                                                    <Link  style={{textDecoration: 'none', color: "red"}} to={`/home/buy-now/${product.id}`}>Buy now</Link>
                                                                 </div>
                                                             </div>
                                                         </div>

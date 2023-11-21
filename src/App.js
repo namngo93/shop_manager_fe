@@ -3,21 +3,18 @@ import './App.css';
 import Login from "./pages/Login";
 import {Route, Routes} from "react-router";
 import Register from "./pages/Register";
-import Home from "./pages/home/Home";
-import HomeProduct from "./pages/product/HomeProduct";
-import AddProduct from "./components/admin/AddProduct";
+import Admin from "./pages/home/Home";
+import Home from "./pages/product/HomeProduct";
 import {useSelector} from "react-redux";
-import EditProduct from "./components/admin/EditProduct";
 import ProductList from "./pages/product/ProductList";
 import ManagerProduct from "./components/admin/ManagerProduct";
 import ShowCart from "./pages/product/ShowCart";
 import FocusProduct from "./pages/product/FocusProduct";
-import AddCategory from "./components/admin/AddCategory";
-import PurchaseOrder from "./pages/product/PurchaseOrder";
+import HistoryOrder from "./pages/product/PurchaseOrder";
 import ManagerOrder from "./components/admin/ManagerOrder";
 import BuyNow from "./pages/product/BuyNow";
 import People from "./pages/product/People";
-import UserHome from './components/userPages/userHome/userHome';
+import TruocDangNhap from "./pages/product/TruocDangNhap";
 
 function App() {
   // service -> slice -> store -> selector -> useEffect
@@ -30,28 +27,33 @@ function App() {
         <div className="container-fluid">
        
           <Routes>
-            <Route path={''} element={<UserHome/>}/>
-                {/* <Route path={'userProduct'} element={<UserHomeProduct/>}/> */}
-            <Route path={'login'} element={<Login/>}/>
-            <Route path={'register'} element={<Register/>}/>
+            <Route path={''} element={<TruocDangNhap/>}>
+                <Route path={''} element={<Home/>}/>
+                <Route path={'list-product'} element={<ProductList/>}/>
+                <Route path={'focus-product'} element={<FocusProduct/>}/>
+                <Route path={'login'} element={<Login/>}/>
+                <Route path={'register'} element={<Register/>}/>
             {
-              user !== 'Username is not existed' && user !== 'Password is wrong'?
-                  <Route path={'home'} element={<Home/>}>
-                      <Route path={''} element={<HomeProduct/>}/>
-                      <Route path={'manager-product'} element={<ManagerProduct/>}/>
-                      <Route path={'manager-order'} element={<ManagerOrder/>}/>
-                      <Route path={'add-product'} element={<AddProduct/>}/>
-                      <Route path={'add-category'} element={<AddCategory/>}/>
-                      <Route path={'my-product'} element={<ProductList/>}/>
-                      <Route path={'edit-product/:id'} element={<EditProduct/>}/>
-                      <Route path={'focus-product/:id'} element={<FocusProduct/>}/>
-                      <Route path={'show-cart/:idOrder'} element={<ShowCart/>}/>
-                      <Route path={'purchase-order/:idUser'} element={<PurchaseOrder/>}/>
+              user !== 'Username is not existed' && user !== 'Password is wrong' ?
+                  <>
+                      <Route path={'show-cart'} element={<ShowCart/>}/>
+                      <Route path={'history-order/:idUser'} element={<HistoryOrder/>}/>
                       <Route path={'buy-now/:id'} element={<BuyNow/>}/>
                       <Route path={'people'} element={<People/>}/>
-                  </Route>:
+                  </>
+                  :
                   <Route path={'login'} element={<Login/>}/>
-            }
+                }
+                </Route>
+                {user.role === 1 &&
+                <Route path={'admin'} element={<Admin/>}>
+                   <Route path={'manager-product'} element={<ManagerProduct/>}/>
+                   <Route path={'manager-order'} element={<ManagerOrder/>}/>
+                   <Route path={'manager-category'} element={<ManagerOrder/>}/>
+                   <Route path={'manager-user'} element={<ManagerOrder/>}/>
+                  </Route>
+                
+              }
 
           </Routes>
         </div>
