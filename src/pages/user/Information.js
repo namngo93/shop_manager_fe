@@ -1,4 +1,4 @@
-export default function People(){
+export default function Information(){
     return(
         <>
             <div className="section-title">

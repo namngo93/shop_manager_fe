@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 import {Field, Form, Formik} from "formik";
 
 
-export default function ProductList() {
+export default function ListProduct() {
 
 
     const dispatch = useDispatch();

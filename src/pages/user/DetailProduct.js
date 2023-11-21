@@ -1,12 +1,11 @@
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {findByIdProduct, getProducts} from "../../services/productsService";
 import {addCart, findByStatus, showCart} from "../../services/orderService";
 import swal from "sweetalert";
-import Login from "../Login";
 
-export default function FocusProduct() {
+export default function DetailProduct() {
     const {id} = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();

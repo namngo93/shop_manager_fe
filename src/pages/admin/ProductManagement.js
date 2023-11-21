@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import swal from 'sweetalert';
 import {getCategory} from "../../services/categoruService";
 
-export default function ManagerProduct(){
+export default function ManageProduct(){
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const categories = useSelector(state => { 

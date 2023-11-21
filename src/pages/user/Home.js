@@ -3,12 +3,11 @@ import {useEffect} from "react";
 import {findByName, getProducts} from "../../services/productsService";
 import {Link} from "react-router-dom";
 import {getCategory} from "../../services/categoruService";
-import button from "bootstrap/js/src/button";
 import {findByStatus, showCart} from "../../services/orderService";
 
 
 
-export default function HomeProduct(){
+export default function Home(){
     const dispatch = useDispatch();
 
     const user = useSelector(state=>{

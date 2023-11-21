@@ -1,11 +1,11 @@
 import {Field, Form, Formik} from "formik";
 import {useDispatch, useSelector} from "react-redux";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {findByIdProduct} from "../../services/productsService";
-import {addCart, addOrder, deleteCart, editOrder, showCart} from "../../services/orderService";
+import {addCart, addOrder } from "../../services/orderService";
 
-export default function BuyNow() {
+export default function Payment() {
     const {id} = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();

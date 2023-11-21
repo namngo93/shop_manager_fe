@@ -1,11 +1,9 @@
 import {useDispatch, useSelector} from "react-redux";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {Field, Form, Formik} from "formik";
 import React, {useEffect, useState} from "react";
 import {addCategory, getCategory} from "../../services/categoruService";
 import swal from "sweetalert";
-import button from "bootstrap/js/src/button";
-import {deleteProduct} from "../../services/productsService";
 
 
 

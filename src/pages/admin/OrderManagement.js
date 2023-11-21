@@ -4,7 +4,7 @@ import {editOrder, getOrder, showCart} from "../../services/orderService";
 import {useNavigate} from "react-router-dom";
 
 
-export default function ManagerOrder() {
+export default function ManageOrder() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const orders = useSelector(state => {

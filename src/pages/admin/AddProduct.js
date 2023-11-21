@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {Field, Form, Formik} from "formik";
 import {addProduct} from "../../services/productsService";
 import {useEffect, useState} from "react";
