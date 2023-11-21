@@ -4,7 +4,7 @@ import UserFooter from "../userFooter";
 import { Link } from "react-router-dom";
 
 // import userNavbar from "../userNavbar";
-export default function userHome(){
+export default function TruocDangNhap(){
     return(
         <>
           <UserNavbar/>
