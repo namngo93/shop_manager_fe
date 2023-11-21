@@ -14,6 +14,8 @@ import Payment from "./pages/user/Payment";
 import Information from "./pages/user/Information";
 import ProductManagement from "./pages/admin/ProductManagement";
 import OrderManagement from "./pages/admin/OrderManagement";
+import CategoryManagement from "./pages/admin/CategoryManagement";
+import UserManagement from "./pages/admin/UserManagement";
 
 function App() {
   // service -> slice -> store -> selector -> useEffect
@@ -24,7 +26,6 @@ function App() {
   return (
       <>
         <div className="container-fluid">
-       
           <Routes>
             {/* Trang cua nguoi dung */}
             <Route path={''} element={<User/>}>  
@@ -48,16 +49,16 @@ function App() {
                 <Route path={'login'} element={<Login/>}/>
               }
             </Route>
+
+            {/* Trang cua admin */}
             { user.role === 1 &&
               <Route path={'admin'} element={<Admin/>}>
-                <Route path={'product-management'} element={<ProductManagement/>}/>
-                <Route path={'order-management'} element={<OrderManagement/>}/>
-                <Route path={'category-management'} element={<OrderManagement/>}/>
-                <Route path={'user-management'} element={<OrderManagement/>}/>
+                <Route path={'product-management'} element={<ProductManagement/>}/> {/* Trang quan ly san pham*/}
+                <Route path={'order-management'} element={<OrderManagement/>}/> {/* Trang quan ly don hang*/}
+                <Route path={'category-management'} element={<CategoryManagement/>}/> {/* Trang quan ly danh muc/ loai san pham*/}
+                <Route path={'user-management'} element={<UserManagement/>}/> {/* Trang quan ly nguoi dung*/}
               </Route>
-                
             }
-
           </Routes>
         </div>
       </>
