@@ -30,8 +30,11 @@ function App() {
         <div className="container-fluid">
        
           <Routes>
+          <Route path={''} element={<Truoc dn/>}>
+
+          </Route>
+          <Route> Sau dang nhap</Route>
             <Route path={''} element={<UserHome/>}/>
-                {/* <Route path={'userProduct'} element={<UserHomeProduct/>}/> */}
             <Route path={'login'} element={<Login/>}/>
             <Route path={'register'} element={<Register/>}/>
             {
