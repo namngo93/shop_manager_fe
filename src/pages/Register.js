@@ -5,13 +5,12 @@ import {register} from "../services/userService";
 import {useState} from "react";
 import swal from 'sweetalert';
 import * as Yup from "yup";
-import {addOrder} from "../services/orderService";
 
 
 export default function Register() {
 
     const validateSchema = Yup.object().shape({
-        username: Yup.string()
+        userName: Yup.string()
             .min(6, "Too Short! Username must be longer than 6 characters")
             .max(50, "Too Long!")
             .required("Required"),
@@ -34,17 +33,6 @@ export default function Register() {
                 swal("Register Success!", {
                     icon: "success",
                 });
-                let order = {
-                    idUser: e.payload.id,
-                    receiver: e.payload.username,
-                    address: 'hd',
-                    phone: 0,
-                    time: '2023-02-24 00:29:52',
-                    totalPoint: 0,
-                    status: 'buying'
-                }
-                dispatch(addOrder(order))
-
                 navigate('/')
             }else {
                 setCheck(1)
@@ -66,7 +54,7 @@ export default function Register() {
 
                             <Formik
                                 initialValues={{
-                                    username: '',
+                                    userName: '',
                                     password: ''
                                 }}
                                 validationSchema={validateSchema}
@@ -76,8 +64,8 @@ export default function Register() {
 
                                         <div className="mb-3" style={{width:300, margin:"auto"}}>
                                             <label htmlFor="exampleInput" className="form-label">Username</label>
-                                            <Field type="text" className="form-control" id="exampleInput" name={'username'}/>
-                                            <h6 style={{color: "red"}}><ErrorMessage name={'username'} ></ErrorMessage></h6>
+                                            <Field type="text" className="form-control" id="exampleInput" name={'userName'}/>
+                                            <h6 style={{color: "red"}}><ErrorMessage name={'userName'} ></ErrorMessage></h6>
                                             { check === 1 &&
                                                 <>
                                                     <h6 style={{color: "red"}}>Username registered!</h6></>}

@@ -18,7 +18,7 @@ export default function Login() {
     const handleLogin = async (values) =>{
         await dispatch(login(values)).then((e)=>{
             if(e.payload !== 'Username is not existed' && e.payload !== 'Password is wrong'){
-                swal(`Well come, "${e.payload.username}"`, {
+                swal(`Well come, "${e.payload.userName}"`, {
                     icon: "success",
                 })
                 navigate('/home')
