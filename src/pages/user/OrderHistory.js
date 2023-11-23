@@ -1,6 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
-import './tableOrder.css';
 import {useParams} from "react-router-dom";
 import {findByIdUser, showCart} from "../../services/orderService";
 
