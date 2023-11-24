@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import {findByName, findByNameProduct, findByPrice, getProducts} from "../../services/productsService";
-import {getCategory} from "../../services/categoruService";
+import {findByConditions, findByNameProduct, findByPrice, getProducts} from "../../services/productService";
+import {getCategory} from "../../services/categoryService";
 import {Link} from "react-router-dom";
 import {Field, Form, Formik} from "formik";
 
@@ -40,8 +40,8 @@ export default function ListProduct() {
                         <div className="col-12">
                             <div className="bread-inner">
                                 <ul className="bread-list">
-                                    <li><Link style={{textDecoration:"none"}} to="/home">Home<i className="ti-arrow-right"></i></Link></li>
-                                    <li className="active">Products</li>
+                                    <li><Link style={{textDecoration:"none"}} to="/">Home<i className="ti-arrow-right"></i></Link></li>
+                                    <li className="active">List product</li>
                                 </ul>
                             </div>
                         </div>
@@ -58,8 +58,8 @@ export default function ListProduct() {
                                     <h3 className="title">Categories</h3>
                                     <ul className="categor-list" style={{}}>
                                         {categories.map((category)=>(
-                                            <li  className="nav-item"><p style={{height:30,fontSize:10,width:200}} className="  btn btn-outline-secondary my-2 my-sm-0 " onClick={()=>{
-                                                dispatch(findByName(category.name))
+                                            <li key={category.categoryId}  className="nav-item"><p style={{height:30,fontSize:10,width:200}} className="  btn btn-outline-secondary my-2 my-sm-0 " onClick={()=>{
+                                                dispatch(findByConditions(category.name))
                                             }} >{category.name}</p></li>
                                         ))}
 
@@ -98,8 +98,8 @@ export default function ListProduct() {
                                 </div>
                                 <div className="single-widget recent-post">
                                     <h3 className="title">Hot Products</h3>
-                                    {productss.map((product, ind)=>(
-                                    <div className="single-post first">
+                                    {productss.map((product)=>(
+                                    <div key={product.productId} className="single-post first">
                                         <div className="image">
                                             <img className="default-img"
                                                  src={product.image} alt="#" style={{width:75, height:75}}/>
@@ -154,8 +154,8 @@ export default function ListProduct() {
                                 <div className="tab-pane fade show active" role="tabpanel">
                                     <div className="tab-single">
                                         <div className="row">
-                                            {products.map((product, ind)=>(
-                                                <div className="col-xl-4 col-lg-4 col-md-4 col-12">
+                                            {products.map((product)=>(
+                                                <div key={product.productId} className="col-xl-4 col-lg-4 col-md-4 col-12">
                                                     <div className="single-product">
                                                         <div className="product-img">
                                                             <Link  style={{textDecoration: 'none'}} to={`/home/focus-product/${product.id}`}>

@@ -1,40 +1,33 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import {findByName, getProducts} from "../../services/productsService";
+import {findByConditions, getProducts} from "../../services/productService";
 import {Link} from "react-router-dom";
-import {getCategory} from "../../services/categoruService";
-import {findByStatus, showCart} from "../../services/orderService";
-
-
+import {getCategory} from "../../services/categoryService";
 
 export default function Home(){
     const dispatch = useDispatch();
 
-    const user = useSelector(state=>{
-        return state.user.currentUser
-    })
+    // const user = useSelector(state=>{
+    //     return state.user.currentUser
+    // });
+
     const products = useSelector(state => {
         return   state.products.products
-    })
+    });
 
     useEffect(()=>{
-        dispatch(getProducts()).then(()=>{
-            dispatch(findByStatus(user.idUser)).then((e)=> {
-                dispatch(showCart(e.payload.id))
-            });
-        })
+        dispatch(getProducts())
     },[]);
 
     const categories = useSelector(state => {
         return   state.categories.category
-    })
+    });
 
     useEffect(()=>{
-        dispatch(getCategory()).then(()=>{
-        })
+        dispatch(getCategory())
     },[]);
 
-    const productss = products.slice(0,4)
+    const productss = products.slice(0,4);
 
     return(
         <>
@@ -109,9 +102,9 @@ export default function Home(){
 
                                     <ul className="nav nav-tabs" id="myTab" role="tablist">
                                         {categories.map((category)=>(
-                                            <li  className="nav-item"><button style={{height:30,fontSize:10, width:100}} className=" ml-3  btn btn-outline-secondary my-2 my-sm-0" onClick={()=>{
-                                                dispatch(findByName(category.name))
-                                            }} >{category.name}</button></li>
+                                            <li key={category.categoryId}  className="nav-item"><button style={{height:30,fontSize:10, width:100}} className=" ml-3  btn btn-outline-secondary my-2 my-sm-0" onClick={()=>{
+                                                dispatch(findByConditions({productName:'', categoryId: category.categoryId}))
+                                            }} >{category.categoryName}</button></li>
                                         ))}
                                     </ul>
                                 </div>
@@ -119,11 +112,11 @@ export default function Home(){
                                     <div className="tab-pane fade show active" id="man" role="tabpanel">
                                         <div className="tab-single">
                                             <div className="row">
-                                                {productss.map((product, ind)=>(
-                                                    <div className="col-xl-3 col-lg-4 col-md-4 col-12">
+                                                {productss.map((product)=>(
+                                                    <div key={product.productId} className="col-xl-3 col-lg-4 col-md-4 col-12">
                                                         <div className="single-product">
                                                             <div className="product-img">
-                                                                <a  style={{textDecoration: 'none'}} href={`/home/focus-product/${product.id}`}>
+                                                                <a  style={{textDecoration: 'none'}} href={`/home/focus-product/${product.productId}`}>
                                                                     <img className="default-img"
                                                                          src={product.image} alt="#" style={{width:320, height:450}}/>
                                                                     <span className="out-of-stock">Hot</span>
@@ -139,14 +132,14 @@ export default function Home(){
                                                                             className="ti-bar-chart-alt"></i><span>Add to Compare</span></Link>
                                                                     </div>
                                                                     <div className="product-action-2">
-                                                                        <a  style={{textDecoration: 'none'}}  href={`/home/focus-product/${product.id}`}>Add to cart</a>
+                                                                        <a  style={{textDecoration: 'none'}}  href={`/home/focus-product/${product.productId}`}>Add to cart</a>
                                                                         <span> or </span>
-                                                                        <Link  style={{textDecoration: 'none',color:'red'}}  to={`/home/buy-now/${product.id}`}>Buy now</Link>
+                                                                        <Link  style={{textDecoration: 'none',color:'red'}}  to={`/home/buy-now/${product.productId}`}>Buy now</Link>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div style={{textAlign:"center"}} className="product-content">
-                                                                <h5>{product.name}</h5>
+                                                                <h5>{product.productName}</h5>
                                                                 <div className="product-price">
                                                                     <span style={{color:"red"}}>{product.price} $</span>
                                                                 </div>

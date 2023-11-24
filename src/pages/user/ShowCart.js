@@ -1,29 +1,27 @@
 import {Field, Form, Formik} from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import {addOrder, deleteCart, editOrder,showCart} from "../../services/orderService";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {addOrder} from "../../services/orderService";
+import { showCart, deleteCart } from "../../services/cartService";
+import {Link, useNavigate} from "react-router-dom";
 
 export default function ShowCart() {
-    const {idOrder} = useParams();
 
-    const navigate = useNavigate()
-
+    const navigate = useNavigate();
     const user = useSelector(state => {
         return state.user.currentUser
-    })
-
-
+    });
     const dispatch = useDispatch();
 
     const carts = useSelector(state => {
-        return state.orders.cart
-    })
-
+        return state.carts.carts
+    });
 
     useEffect(() => {
-        dispatch(showCart(idOrder))
-    }, [])
+        if (user.userId) {
+            dispatch(showCart(user.userId));
+        }
+    }, [user.userId, dispatch]);
 
     let totalPoint = 0;
     return (
@@ -39,8 +37,8 @@ export default function ShowCart() {
                                 <div className="col-12">
                                     <div className="bread-inner">
                                         <ul className="bread-list">
-                                            <li><a href={"/home"}>Home<i className="ti-arrow-right"></i></a></li>
-                                            <li className="active"><a href="#">Cart</a></li>
+                                            <li><a href={"/"}>Home<i className="ti-arrow-right"></i></a></li>
+                                            <Link style={{ textDecoration: 'none' }}>Cart</Link>
                                         </ul>
                                     </div>
                                 </div>
@@ -64,9 +62,9 @@ export default function ShowCart() {
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {carts !== 'Saved cart' && carts.map(item => (
-                                            totalPoint += item.total,
-
+                                        {carts !== 'Saved cart' && carts.map(item => {
+                                            totalPoint += item.total;
+                                            return (
                                                 <tr>
                                                     <td className="image" data-title="No"><img src={item.image} alt="" style={{width: 50}}/>
                                                     </td>
@@ -80,13 +78,15 @@ export default function ShowCart() {
                                                     <td className="total-amount" data-title="Total">
                                                         <span>{item.total} $</span></td>
                                                     <td className="action" data-title="Remove"><Link style={{textDecoration:"none"}} to="#"><i
-                                                        className="ti-trash remove-icon" onClick={()=>{
-                                                            dispatch(deleteCart(item.id)).then(()=>{
-                                                                dispatch(showCart(idOrder))
-                                                            })
-                                                    }}></i></Link></td>
+                                                        className="ti-trash remove-icon" 
+                                                        onClick={()=>{
+                                                            dispatch(deleteCart(item.cartId))
+                                                            }}></i></Link></td>
                                                 </tr>
-                                        ))}
+                                            )
+                                        }
+
+                                        )}
                                         </tbody>
                                     </table>
                                 </div>
@@ -119,7 +119,6 @@ export default function ShowCart() {
                                                     <div  style={{marginLeft:300}}>
                                                         <Formik
                                                             initialValues={{
-                                                                id: idOrder,
                                                                 receiver: '',
                                                                 address: '',
                                                                 phone: '',
@@ -129,23 +128,8 @@ export default function ShowCart() {
                                                             onSubmit={(values) => {
                                                                 values.status = 'loading';
                                                                 values.totalPoint = totalPoint;
-                                                                dispatch(editOrder(values)).then(() => {
-                                                                    let order = {
-                                                                        idUser: user.idUser,
-                                                                        receiver: user.username,
-                                                                        address: 'hd',
-                                                                        phone: 0,
-                                                                        time: '2023-02-24 00:29:52',
-                                                                        totalPoint: 0,
-                                                                        status: 'buying'
-                                                                    }
-                                                                    dispatch(addOrder(order)).then((e)=>{
-                                                                        dispatch(showCart(e.payload.id))
-                                                                    });
-
-                                                                    navigate('/home');
-
-                                                                })
+                                                                    dispatch(addOrder(values))
+                                                                    navigate('/list-product');
                                                             }}
                                                         >
 

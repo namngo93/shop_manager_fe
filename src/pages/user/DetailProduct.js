@@ -1,8 +1,9 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {findByIdProduct, getProducts} from "../../services/productsService";
-import {addCart, findByStatus, showCart} from "../../services/orderService";
+import {findByIdProduct, getProducts} from "../../services/productService";
+import { findByStatus} from "../../services/orderService";
+import { showCart, addCart } from "../../services/cartService";
 import swal from "sweetalert";
 
 export default function DetailProduct() {

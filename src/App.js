@@ -39,12 +39,12 @@ function App() {
 
               {/* Trang phai dang nhap */}
               { user !== 'Username is not existed' && user !== 'Password is wrong' &&
-                <>
-                  <Route path={'show-cart'} element={<ShowCart/>}/>  {/* Trang gio hang */}
-                  <Route path={'order-history/:idUser'} element={<OrderHistory/>}/>  {/* Trang lich su don hang */}
-                  <Route path={'payment'} element={<Payment/>}/>    {/* Trang mua hang/ thanh toan*/}
-                  <Route path={'information'} element={<Information/>}/> {/* Trang thong tin nguoi dung*/}
-                </>
+              <>
+                <Route path={'show-cart'} element={<ShowCart/>}/>  {/* Trang gio hang */}
+                <Route path={'order-history'} element={<OrderHistory/>}/>  {/* Trang lich su don hang */}
+                <Route path={'payment'} element={<Payment/>}/>    {/* Trang mua hang/ thanh toan*/}
+                <Route path={'information'} element={<Information/>}/> {/* Trang thong tin nguoi dung*/}
+              </>
               }
             </Route>
 

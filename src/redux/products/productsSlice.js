@@ -3,9 +3,9 @@ import {
     addProduct,
     deleteProduct,
     editProduct,
-    findByIdProduct, findByName, findByNameProduct, findByPrice,
+    findByIdProduct, findByConditions, findByNameProduct, findByPrice,
     getProducts
-} from "../../services/productsService";
+} from "../../services/productService";
 
 
 const initialState = {
@@ -26,7 +26,7 @@ const productsSlice = createSlice({
                 state.product = action.payload
             });
 
-            builder.addCase(findByName.fulfilled, (state, action) => {
+            builder.addCase(findByConditions.fulfilled, (state, action) => {
                 state.products = action.payload
             });
 

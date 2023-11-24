@@ -1,6 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
-import {editOrder, getOrder, showCart} from "../../services/orderService";
+import {editOrder, getOrder} from "../../services/orderService";
+import { showCart } from "../../services/cartService";
 import {useNavigate} from "react-router-dom";
 
 
@@ -11,7 +12,7 @@ export default function ManageOrder() {
         return state.orders.orders
     })
     const carts = useSelector(state => {
-        return state.orders.cart
+        return state.carts.carts
     })
 
 

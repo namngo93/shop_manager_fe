@@ -1,9 +1,9 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {deleteProduct, findByName} from "../../services/productsService";
+import {deleteProduct, findByConditions} from "../../services/productService";
 import { useNavigate } from "react-router-dom";
 import swal from 'sweetalert';
-import {getCategory} from "../../services/categoruService";
+import {getCategory} from "../../services/categoryService";
 
 export default function ManageProduct(){
     const dispatch = useDispatch();
@@ -52,7 +52,7 @@ export default function ManageProduct(){
                 productName : productName,
                 categoryId : e.payload.map( item => item.categoryId)
             }
-            dispatch(findByName(data));
+            dispatch(findByConditions(data));
             setCategoryId(e.payload.map( item => item.categoryId))
         })
     },[]);
@@ -81,7 +81,7 @@ export default function ManageProduct(){
                                                         productName : e.target.value,
                                                         categoryId : categoryId
                                                     }
-                                                    dispatch(findByName(data))
+                                                    dispatch(findByConditions(data))
                                                     setProductName(e.target.value);
                                                     } 
                                                 }/>
@@ -93,7 +93,7 @@ export default function ManageProduct(){
                                                         productName : productName,
                                                         categoryId : categories.map( item => item.categoryId)
                                                     }
-                                                    dispatch(findByName(data));
+                                                    dispatch(findByConditions(data));
                                                 }} >All</button>
                                         </li>
 
@@ -105,7 +105,7 @@ export default function ManageProduct(){
                                                             productName : productName,
                                                             categoryId : category.categoryId
                                                         }
-                                                        dispatch(findByName(data));
+                                                        dispatch(findByConditions(data));
                                                         setCategoryId(category.categoryId)
                                                 }} >{category.categoryName}</button>
                                             </li>

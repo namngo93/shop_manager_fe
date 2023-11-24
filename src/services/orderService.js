@@ -8,6 +8,7 @@ export const getOrder = createAsyncThunk(
         return res.data;
     }
 )
+
 export const countCart = createAsyncThunk(
     'order/countCart',
     async (data)=>{
@@ -23,6 +24,7 @@ export const addOrder = createAsyncThunk(
         return res.data;
     }
 )
+
 export const editOrder = createAsyncThunk(
     'order/editOrder',
     async (data)=>{
@@ -44,30 +46,6 @@ export const findByIdUser = createAsyncThunk(
     'order/findById',
     async (data)=>{
         const res = await customAxios.get(`orders/find-by-idUser/${data}`);
-        return res.data;
-    }
-)
-
-export const addCart = createAsyncThunk(
-    'order/addCart',
-    async (data)=>{
-        const res = await customAxios.post(`orders/addCart`,data);
-        return res.data;
-    }
-)
-
-export const showCart = createAsyncThunk(
-    'order/showCart',
-    async (data)=>{
-        const res = await customAxios.get(`orders/show-cart/${data}`);
-        return res.data;
-    }
-)
-
-export const deleteCart = createAsyncThunk(
-    'order/deleteCart',
-    async (data)=>{
-        const res = await customAxios.delete(`orders/delete-cart/${data}`);
         return res.data;
     }
 )

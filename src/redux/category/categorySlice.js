@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-import {addCategory, getCategory} from "../../services/categoruService";
+import {addCategory, getCategory} from "../../services/categoryService";
 
 
 

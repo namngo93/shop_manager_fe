@@ -19,8 +19,8 @@ export const findByIdProduct = createAsyncThunk(
     }
 )
 
-export const findByName = createAsyncThunk(
-    'products/findByNameCategory',
+export const findByConditions = createAsyncThunk(
+    'products/findByConditions',
     async (data)=>{
         const res = await customAxios.get(`products/findByConditions/search?productName=${data.productName}&categoryId=${data.categoryId}`);
         return res.data;

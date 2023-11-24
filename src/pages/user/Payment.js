@@ -2,8 +2,8 @@ import {Field, Form, Formik} from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {findByIdProduct} from "../../services/productsService";
-import {addCart, addOrder } from "../../services/orderService";
+import {findByIdProduct} from "../../services/productService";
+import {addOrder } from "../../services/orderService";
 
 export default function Payment() {
     const {id} = useParams();
@@ -20,7 +20,7 @@ export default function Payment() {
     useEffect(() => {
         dispatch(findByIdProduct(id)).then((value) => {
         });
-    }, []);
+    }, [id,dispatch]);
 
     const handleBuy = (values)=>{
         let order = {
@@ -34,15 +34,7 @@ export default function Payment() {
         };
 
         dispatch(addOrder(order)).then((e)=>{
-            let cart = {
-                quantity: quantity,
-                idProduct: id,
-                total: quantity * product.price,
-                idOrder: e.payload.id
-            };
-            dispatch(addCart(cart));
             navigate('/home')
-
         })
     }
 

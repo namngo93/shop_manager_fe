@@ -1,23 +1,22 @@
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
-import {findByIdUser, showCart} from "../../services/orderService";
+import {findByIdUser} from "../../services/orderService";
+import { showCart } from "../../services/cartService";
 
 export default function OrderHistory() {
-    const {idUser} = useParams();
     const dispatch = useDispatch();
     const orders = useSelector(state => {
         return state.orders.orders
-    })
-
-    const carts = useSelector(state => {
-        return state.orders.cart
-    })
-
+    });
+    const user = useSelector(state =>{
+        return state.user.user
+    });
 
     useEffect(() => {
-        dispatch(findByIdUser(idUser))
-    }, [])
+        if(user.userId){
+            dispatch(findByIdUser(user.userId))
+        }
+    }, []);
 
     const [i , setI] = useState(-1)
 
@@ -60,7 +59,7 @@ export default function OrderHistory() {
                         </div>
                     </div>
 
-                            {index === i && carts !== 'Saved cart' &&
+                            {/* {index === i && carts !== 'Saved cart' &&
                                 <>
                                     <div className="row" id="table1">
                                         <div className="col-12">
@@ -100,7 +99,7 @@ export default function OrderHistory() {
                                         </div>
                                     </div>
                                 </>
-                                }
+                                } */}
 
                     <hr/>
                 </>
