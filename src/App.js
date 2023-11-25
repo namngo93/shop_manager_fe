@@ -1,5 +1,5 @@
 import './App.css';
-import {Route, Routes} from "react-router";
+import {Route, Routes } from 'react-router';
 import {useSelector} from "react-redux";
 import User from "./pages/user/User";
 import Admin from "./pages/admin/Admin";
@@ -33,7 +33,7 @@ function App() {
               {/*  trang khong can dang nhap */}
               <Route path={''} element={<Home/>}/>  {/* Trang chu */}
               <Route path={'list-product'} element={<ListProduct/>}/>  {/* Trang danh sach san pham */}
-              <Route path={'detail-product'} element={<DetailProduct/>}/>  {/* Trang chi tiet san pham */}
+              <Route path={'detail-product/:id'} element={<DetailProduct/>}/>  {/* Trang chi tiet san pham */}
               <Route path={'login'} element={<Login/>}/> 
               <Route path={'register'} element={<Register/>}/>
 

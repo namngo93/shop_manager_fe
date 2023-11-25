@@ -2,25 +2,22 @@ import {Field, Form, Formik} from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {findByIdProduct} from "../../services/productService";
+import {findByProductId} from "../../services/productService";
 import {addOrder } from "../../services/orderService";
 
 export default function Payment() {
     const {id} = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [quantity,setQuantity] = useState()
+    const [quantity,setQuantity] = useState();
 
     const user = useSelector(state=>{
         return state.user.currentUser
     })
+
     const product = useSelector(state => {
         return state.products.product
     });
-    useEffect(() => {
-        dispatch(findByIdProduct(id)).then((value) => {
-        });
-    }, [id,dispatch]);
 
     const handleBuy = (values)=>{
         let order = {

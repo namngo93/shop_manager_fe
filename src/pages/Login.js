@@ -21,7 +21,7 @@ export default function Login() {
                 swal(`Well come, "${e.payload.userName}"`, {
                     icon: "success",
                 })
-                navigate('/home')
+                navigate('/')
             }else{
                 navigate('/login')
             }
@@ -79,7 +79,7 @@ export default function Login() {
                                         </div>
                                         <div className="row">
                                                 <div style={{textAlign:"center"}}>
-                                                    <button type="submit" className="btn btn-primary"  >Login</button>
+                                                    <button type="submit" className="btn btn-primary">Login</button>
                                                     <Link to={'/register'} ><button style={{marginLeft:10}} type="submit" className="btn btn-secondary">register</button></Link>
 
                                                 </div>

@@ -45,7 +45,7 @@ export default function Navbar(){
                                         <ul className="list-main">
                                             <li><i className="ti-location-pin"></i><Link style={{textDecoration:"none"}} to="https://www.google.com/maps/@20.9997628,105.8071965,16z?hl=vi-VN">Store location</Link> </li>
                                             <li><Link  style={{textDecoration: 'none', pointerEvents:`${pointerEvents}`}} to={`/order-history`}><i className="ti-alarm-clock"></i> History</Link></li>
-                                            <li><Link  style={{textDecoration: 'none', pointerEvents:`${pointerEvents}`}} to="/information" ><i className="ti-user">{user.userName}</i></Link></li>
+                                            <li><Link  style={{textDecoration: 'none', pointerEvents:`${pointerEvents}`}} to="/information" ><i className="ti-user"></i> {user.userName}</Link></li>
                                             {user.userId ? 
                                             <li><a style={{textDecoration: 'none'}} href="/" type={'summit'} onClick={()=>{
                                                 localStorage.clear();
@@ -86,7 +86,7 @@ export default function Navbar(){
                                             <Link  style={{textDecoration: 'none'}} to={`/purchase-order`} className="single-icon"><i className="fa fa-user-circle-o" aria-hidden="true"></i></Link>
                                         </div> */}
                                         <div className="sinlge-bar shopping">
-                                            <Link  style={{textDecoration: 'none'}} to={`/show-cart`} className="single-icon"><i className="ti-bag"></i> <span className="total-count">{carts.length}</span></Link>
+                                            <Link  style={{pointerEvents: `${pointerEvents}`}} to={`/show-cart`} className="single-icon"><i className="ti-bag"></i> <span className="total-count">{carts.length}</span></Link>
                                         </div>
                                     </div>
                                 </div>

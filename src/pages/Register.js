@@ -28,12 +28,16 @@ export default function Register() {
     const [check,setCheck] = useState([])
 
     const handleRegister = (values)=>{
+        values.birthDay = new Date();
+        values.email = 'user@gmail.com';
+        values.phone = '0987654321';
+        values.address = 'Viet Nam';
         dispatch(register(values)).then((e)=>{
             if(e.payload !== 'Username registered'){
                 swal("Register Success!", {
                     icon: "success",
                 });
-                navigate('/')
+                navigate('/login')
             }else {
                 setCheck(1)
             }
@@ -83,7 +87,7 @@ export default function Register() {
                                     <div className="row">
                                         <div style={{textAlign:"center"}}>
                                             <button type="submit" className="btn btn-warning"  >Register</button>
-                                            <Link to={'/'} ><button style={{marginLeft:10}} type="submit" className="btn btn-secondary"> Back to Login</button></Link>
+                                            <Link to={'/login'} ><button style={{marginLeft:10}} type="submit" className="btn btn-secondary"> Back to Login</button></Link>
 
                                         </div>
                                     </div>

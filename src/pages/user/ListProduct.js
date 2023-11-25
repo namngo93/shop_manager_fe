@@ -1,13 +1,12 @@
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
-import {findByConditions, findByNameProduct, findByPrice, getProducts} from "../../services/productService";
+import {useEffect, useState} from "react";
+import {findByConditions, findByPrice} from "../../services/productService";
 import {getCategory} from "../../services/categoryService";
 import {Link} from "react-router-dom";
 import {Field, Form, Formik} from "formik";
 
 
 export default function ListProduct() {
-
 
     const dispatch = useDispatch();
 
@@ -16,18 +15,18 @@ export default function ListProduct() {
     })
 
     useEffect(()=>{
-        dispatch(getCategory()).then(()=>{
-        })
+        dispatch(getCategory())
     },[]);
 
     const products = useSelector(state => {
         return   state.products.products
     })
 
+    const [condition, setCondition] = useState({productName:'', categoryId:''});
 
     useEffect(() => {
-        dispatch(getProducts())
-    }, []);
+        dispatch(findByConditions(condition))
+    }, [condition, dispatch]);
 
     const productss = products.slice(0,3)
 
@@ -56,11 +55,23 @@ export default function ListProduct() {
                             <div className="shop-sidebar">
                                 <div className="single-widget category">
                                     <h3 className="title">Categories</h3>
-                                    <ul className="categor-list" style={{}}>
+                                    <ul className="categor-list">
+                                        <li className="nav-item"><p style={{height:30,fontSize:10,width:200}} className="  btn btn-outline-secondary my-2 my-sm-0 " 
+                                                onClick={()=>{
+                                                    setCondition(prevState => ({
+                                                        ...prevState, 
+                                                        categoryId: '', 
+                                                        }));
+                                                    dispatch(findByConditions(condition))
+                                                }} >All</p></li>
                                         {categories.map((category)=>(
-                                            <li key={category.categoryId}  className="nav-item"><p style={{height:30,fontSize:10,width:200}} className="  btn btn-outline-secondary my-2 my-sm-0 " onClick={()=>{
-                                                dispatch(findByConditions(category.name))
-                                            }} >{category.name}</p></li>
+                                        <li key={category.categoryId}  className="nav-item"><p style={{height:30,fontSize:10,width:200}} className="  btn btn-outline-secondary my-2 my-sm-0 " 
+                                        onClick={()=>{
+                                            setCondition(prevState => ({
+                                                ...prevState, 
+                                                categoryId: category.categoryId, 
+                                                }))
+                                        }} >{category.categoryName}</p></li>
                                         ))}
 
                                     </ul>
@@ -105,7 +116,7 @@ export default function ListProduct() {
                                                  src={product.image} alt="#" style={{width:75, height:75}}/>
                                         </div>
                                         <div className="content">
-                                            <h5><a style={{textDecoration:"none"}} href={`/home/focus-product/${product.id}`}>{product.name}</a></h5>
+                                            <h5><a style={{textDecoration:"none"}} href={`/focus-product`}>{product.productName}</a></h5>
                                             <p className="price">{product.price}$</p>
 
                                         </div>
@@ -136,8 +147,12 @@ export default function ListProduct() {
                                                 <label>Sort By </label>
                                                 <form className="form-inline my-2 my-lg-0">
                                                     <input  style={{marginLeft:550, border:10}} className="form-control mr-sm-2" type="search"
-                                                           placeholder="Search" aria-label="Search" onChange={(e)=>{
-                                                                dispatch(findByNameProduct(e.target.value))
+                                                           placeholder="Search" aria-label="Search" 
+                                                           onChange={(e)=>{
+                                                            setCondition(prevState => ({
+                                                                ...prevState,
+                                                                productName: e.target.value
+                                                            }))
                                                     }}/>
                                                         <button className="  btn btn-outline-secondary my-2 my-sm-0 "
                                                                 type="submit">Search

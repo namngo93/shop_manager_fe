@@ -3,7 +3,7 @@ import {
     addProduct,
     deleteProduct,
     editProduct,
-    findByIdProduct, findByConditions, findByNameProduct, findByPrice,
+    findByProductId, findByConditions, findByNameProduct, findByPrice,
     getProducts
 } from "../../services/productService";
 
@@ -22,7 +22,7 @@ const productsSlice = createSlice({
             });
 
 
-            builder.addCase(findByIdProduct.fulfilled, (state, action) => {
+            builder.addCase(findByProductId.fulfilled, (state, action) => {
                 state.product = action.payload
             });
 
