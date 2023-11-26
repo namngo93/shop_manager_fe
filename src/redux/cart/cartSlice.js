@@ -21,7 +21,7 @@ const cartSlice = createSlice({
 
             });
             builder.addCase(deleteCart.fulfilled, (state, action) => {
-                state.carts = state.carts.filter(item => item.cartId !== action.payload);
+                state.carts = state.carts.filter(item => !action.payload.split(',').map(Number).includes(item.cartId));
             });
 
         }

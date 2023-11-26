@@ -20,7 +20,8 @@ export const countCart = createAsyncThunk(
 export const addOrder = createAsyncThunk(
     'order/addOrder',
     async (data)=>{
-        const res = await customAxios.post('orders/addOrder',data);
+        const res = await customAxios.post('orders',data);
+        console.log(res.data);
         return res.data;
     }
 )

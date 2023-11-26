@@ -20,7 +20,10 @@ export const showCart = createAsyncThunk(
 export const deleteCart = createAsyncThunk(
     'cart/deleteCart',
     async (data)=>{
-        const res = await customAxios.delete(`carts/${data}`);
-        return res.data;
+        const res = await customAxios.delete(`carts?cartId=${data}`);
+        if(res.data === 'Sản phẩm đã được xóa thành công.') {
+            return data
+        }
+        return 'Server error';
     }
 )

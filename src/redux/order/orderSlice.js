@@ -1,13 +1,10 @@
 import {
-    addOrder,
     editOrder,
     findByIdUser,
     findByStatus,
     getOrder,
 } from "../../services/orderService";
 import {createSlice} from "@reduxjs/toolkit";
-
-
 
 const initialState = {
     order:[],
@@ -17,10 +14,6 @@ const orderSlice = createSlice({
         name:'order',
         initialState,
         extraReducers: builder => {
-            builder.addCase(addOrder.fulfilled, (state, action) => {
-                state.order = action.payload
-
-            });
             builder.addCase(getOrder.fulfilled, (state, action) => {
                 state.orders = action.payload
 
