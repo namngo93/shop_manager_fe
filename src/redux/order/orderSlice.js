@@ -1,13 +1,13 @@
 import {
-    editOrder,
-    findByIdUser,
     findByStatus,
     getOrder,
+    getAllOrder,
+    editOrder
 } from "../../services/orderService";
 import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
-    order:[],
+    order:{},
     orders:[],
 }
 const orderSlice = createSlice({
@@ -18,15 +18,19 @@ const orderSlice = createSlice({
                 state.orders = action.payload
 
             });
-            builder.addCase(editOrder.fulfilled, (state, action) => {
+            builder.addCase(findByStatus.fulfilled, (state, action) => {
                 state.orders = action.payload
 
             });
-            builder.addCase(findByStatus.fulfilled, (state, action) => {
-                state.order = action.payload
+            builder.addCase(getAllOrder.fulfilled, (state, action) => {
+                state.orders = action.payload
 
             });
-            builder.addCase(findByIdUser.fulfilled, (state, action) => {
+            // builder.addCase(getAllOrder.fulfilled, (state, action) => {
+            //     state.orders = action.payload
+
+            // });
+            builder.addCase(editOrder.fulfilled, (state, action) => {
                 state.orders = action.payload
 
             });

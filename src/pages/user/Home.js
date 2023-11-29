@@ -21,7 +21,7 @@ export default function Home(){
     },[]);
 
     const categories = useSelector(state => {
-        return   state.categories.category
+        return   state.categories.categories
     });
 
     useEffect(()=>{
@@ -43,7 +43,7 @@ export default function Home(){
                                             <div className="hero-text">
                                                 <h1>Perfume</h1>
                                                 <div className="mb-5 button">
-                                                    <Link  style={{textDecoration: 'none'}} to="my-product" className="btn">Shop Now!</Link>
+                                                    <Link  style={{textDecoration: 'none'}} to="list-product" className="btn">Shop Now!</Link>
                                                 </div>
                                             </div>
                                         </div>
@@ -137,12 +137,11 @@ export default function Home(){
                                                                             className="ti-bar-chart-alt"></i><span>Add to Compare</span></Link>
                                                                     </div>
                                                                     <div className="product-action-2">
-                                                                        <Link  style={{textDecoration: 'none',color:'red'}}  to={`/detail-product`}>Add to cart</Link>
+                                                                        <Link  style={{textDecoration: 'none',color:'red'}}  to={`/detail-product/${product.productId}`}>Add to cart</Link>
                                                                         <span> or </span>
-                                                                        {
-                                                                            user.userId ? 
-                                                                            <Link  style={{textDecoration: 'none',color:'red'}}  to={`/payment`}>Buy now</Link>:
-                                                                            <Link  style={{textDecoration: 'none',color:'red'}}  to={`/login`}>Buy now</Link>
+                                                                        { user.userId ? 
+                                                                        <Link  style={{textDecoration: 'none',color:'red'}}  to={`/payment/${product.productId}`}>Buy now</Link>:
+                                                                        <Link  style={{textDecoration: 'none',color:'red'}}  to={`/login`}>Buy now</Link>
                                                                         }
                                                                     </div>
                                                                 </div>

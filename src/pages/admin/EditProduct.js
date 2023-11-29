@@ -1,28 +1,36 @@
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate, useLocation} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {Field, Form, Formik} from "formik";
-import { editProduct } from "../../services/productsService";
+import { editProduct, findByProductId } from "../../services/productService";
 import {useEffect, useState} from "react";
 import {storage} from "../../services/firebase";
 import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
-import {getCategory} from "../../services/categoruService";
+import {getCategory} from "../../services/categoryService";
 import swal from 'sweetalert';
 
 
 export default function EditProduct() {
-    const location = useLocation();
-    const product = location.state;
+    const {id} = useParams();
+    const product = useSelector(state => {
+        return state.products.product
+    });
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    
+    const category = useSelector(state => {
+        return state.categories.categories
+    });
+
     useEffect(() => {
             setUrls([product.image])
     }, []);
 
-    const category = useSelector(state => {
-        return state.categories.category
-    });
     useEffect(() => {
         dispatch(getCategory())
+    }, []);
+
+    useEffect(() => {
+        dispatch(findByProductId(id))
     }, [])
 
     const handleEdit = async (values) => {
@@ -33,13 +41,14 @@ export default function EditProduct() {
         swal(`Edited ${newProduct.productName} success!`, {
             icon: "success",
         });
-        navigate('/home/manager-product')
+        navigate('/admin/product-management')
     }
 
 
     const [images, setImages] = useState([]);
     const [urls, setUrls] = useState([]);
     const [progress, setProgress] = useState(0);
+
     const handleChange = (e) => {
         for (let i = 0; i < e.target.files.length; i++) {
             const newImage = e.target.files[i];

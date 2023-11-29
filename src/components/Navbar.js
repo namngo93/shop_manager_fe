@@ -1,12 +1,11 @@
-import {Link, useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import { showCart } from "../services/cartService";
 
 
 export default function Navbar(){
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const user = useSelector(state=>{
         return state.user.currentUser
     });
@@ -105,29 +104,32 @@ export default function Navbar(){
                                                     <div className="nav-inner">
                                                         <ul className="nav main-menu menu navbar-nav">
                                                             <li className="active"><a  style={{textDecoration: 'none'}} href="/" >Home</a></li>
-                                                            {user.role === 1 &&
-                                                                <>
-                                                                    <li><Link  style={{textDecoration: 'none'}} to="#">Manager <i className="ti-angle-down"></i></Link>
-                                                                        <ul className="dropdown">
-                                                                            <li><a  style={{textDecoration: 'none'}} href="/admin/product-management">Manager Product</a></li>
-                                                                            <li><a  style={{textDecoration: 'none'}} href="/admin/order-management">Manager Order</a></li>
-                                                                        </ul>
-                                                                    </li>
-                                                                    <li><Link  style={{textDecoration: 'none'}} to="#">Add  <i className="ti-angle-down"></i></Link>
-                                                                    <ul className="dropdown">
-                                                                        <li>Add Category</li>
-                                                                        <li>Add Product</li>
-                                                                    </ul>
-                                                                    </li>
-                                                                </>
-                                                            }
-                                                            <li><Link  style={{textDecoration: 'none'}} to="/list-product">List product</Link></li>
-                                                            <li><Link  style={{textDecoration: 'none'}} to="#">About us</Link></li>
-                                                            {user.userId &&
+                                                            {user.role === 1 ?
                                                             <>
-                                                            <li><Link  style={{textDecoration: 'none'}} to="/order-history">Order history</Link></li>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="/admin/product-management" >Product <i className="ti-angle-down"></i> </Link>
+                                                                    <ul className="dropdown">
+                                                                            <li><Link  style={{textDecoration: 'none'}} to="/admin/product-add">Add new product </Link></li>
+                                                                    </ul>
+                                                                </li>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="/admin/category-management">Category <i className="ti-angle-down"></i></Link>
+                                                                    <ul className="dropdown">
+                                                                            <li><Link  style={{textDecoration: 'none'}} to="/admin/category-add">Add new category </Link></li>
+                                                                    </ul>
+                                                                </li>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="/admin/order-management">Order</Link></li>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="/admin/user-management">User</Link></li>
+                                                            </>:
+                                                            <>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="/list-product">List product</Link></li>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="#">About us</Link></li>
+                                                                {user.userId && 
+                                                                <>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="/order-history">Order history</Link></li>
 
-                                                            <li><Link  style={{textDecoration: 'none'}} to="/information">Information</Link></li>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="/information">Information</Link></li>
+                                                                </>
+                                                                }
+                                                            
                                                             </>
                                                             }
                                                         </ul>

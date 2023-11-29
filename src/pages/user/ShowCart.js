@@ -18,10 +18,9 @@ export default function ShowCart() {
     });
 
     useEffect(() => {
-        if (user.userId) {
-            dispatch(showCart(user.userId));
-        }
-    }, [user.userId, dispatch]);
+        dispatch(showCart(user.userId))
+    }
+    , [user.userId, dispatch]);
 
     let totalAmount = 0;
     return (

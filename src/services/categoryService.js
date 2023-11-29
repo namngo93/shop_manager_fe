@@ -12,8 +12,25 @@ export const getCategory = createAsyncThunk(
 export const addCategory = createAsyncThunk(
     'category/addCategory',
     async (data)=>{
-        await customAxios.post('products/addCategories',data);
-        const res = await customAxios.get('products/getCategories');
+        const res = await customAxios.post('categories',data);
+        return res.data;
+    }
+)
+
+export const editCategory = createAsyncThunk(
+    'category/editCategory',
+    async (data)=>{
+        const res = await customAxios.put('categories/' + data.categoryId,data);
+        if(res.status === 200){
+            return data
+        } 
+    }
+)
+
+export const findByCategorytId = createAsyncThunk(
+    'category/findByCategorytId',
+    async (data)=>{
+        const res = await customAxios.get('categories/'+data);
         return res.data;
     }
 )

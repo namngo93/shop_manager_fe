@@ -16,6 +16,10 @@ import ProductManagement from "./pages/admin/ProductManagement";
 import OrderManagement from "./pages/admin/OrderManagement";
 import CategoryManagement from "./pages/admin/CategoryManagement";
 import UserManagement from "./pages/admin/UserManagement";
+import ProductEdit from "./pages/admin/EditProduct";
+import CategoryEdit from "./pages/admin/EditCategory";
+import ProductAdd from "./pages/admin/AddProduct";
+import CategoryAdd from "./pages/admin/AddCategory";
 
 function App() {
   // service -> slice -> store -> selector -> useEffect
@@ -42,7 +46,7 @@ function App() {
               <>
                 <Route path={'show-cart'} element={<ShowCart/>}/>  {/* Trang gio hang */}
                 <Route path={'order-history'} element={<OrderHistory/>}/>  {/* Trang lich su don hang */}
-                <Route path={'payment'} element={<Payment/>}/>    {/* Trang mua hang/ thanh toan*/}
+                <Route path={'payment/:id'} element={<Payment/>}/> {/* Trang mua hang/ thanh toan*/}
                 <Route path={'information'} element={<Information/>}/> {/* Trang thong tin nguoi dung*/}
               </>
               }
@@ -52,8 +56,12 @@ function App() {
             { user.role === 1 &&
               <Route path={'admin'} element={<Admin/>}>
                 <Route path={'product-management'} element={<ProductManagement/>}/> {/* Trang quan ly san pham*/}
+                <Route path={'product-edit/:id'} element={<ProductEdit/>}/>
+                <Route path={'product-add'} element={<ProductAdd/>}/>
                 <Route path={'order-management'} element={<OrderManagement/>}/> {/* Trang quan ly don hang*/}
                 <Route path={'category-management'} element={<CategoryManagement/>}/> {/* Trang quan ly danh muc/ loai san pham*/}
+                <Route path={'category-edit/:id'} element={<CategoryEdit/>}/>
+                <Route path={'category-add'} element={<CategoryAdd/>}/>
                 <Route path={'user-management'} element={<UserManagement/>}/> {/* Trang quan ly nguoi dung*/}
               </Route>
             }

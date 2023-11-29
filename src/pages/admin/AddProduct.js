@@ -1,11 +1,11 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {Field, Form, Formik} from "formik";
-import {addProduct} from "../../services/productsService";
+import {addProduct} from "../../services/productService";
 import {useEffect, useState} from "react";
 import {storage} from "../../services/firebase";
 import {ref, uploadBytesResumable, getDownloadURL} from "firebase/storage";
-import {getCategory} from "../../services/categoruService";
+import {getCategory} from "../../services/categoryService";
 import swal from "sweetalert";
 
 
@@ -20,8 +20,8 @@ export default function AddProduct() {
     const user = useSelector(state => {
         return state.user.currentUser
     })
-    const category = useSelector(state =>{
-    return state.categories.category
+    const categories = useSelector(state =>{
+    return state.categories.categories
     })
 
 
@@ -32,11 +32,14 @@ export default function AddProduct() {
 
     const handleAdd = async (values) => {
         let data = {...values};
-        await dispatch(addProduct(data));
-        swal("Added new product success!", {
-            icon: "success",
+        dispatch(addProduct(data)).then(()=>{
+
+            swal("Added new product success!", {
+                icon: "success",
+            })
+            navigate('/admin/product-management')
+
         });
-        await navigate('/home/manager-product')
     }
 
     const [images, setImages] = useState([]);
@@ -98,11 +101,11 @@ export default function AddProduct() {
                     </div>
                     <Formik
                         initialValues={{
-                            name: '',
+                            productName: '',
                             price: '',
                             description: '',
-                            totalQuantity:'',
-                            idCategory: ''
+                            inventory:'',
+                            catgoryId: ''
                         }}
                         onSubmit={(values) => {
                             values.image = urls[0]
@@ -110,30 +113,29 @@ export default function AddProduct() {
                         }}>
                         <Form>
                             <div className="mb-3">
-                                <label htmlFor="exampleInput" className="form-label">Name product</label>
-                                <Field type="text" className="form-control" id="exampleInput" name={'name'}/>
+                                <label htmlFor="productName" className="form-label">Name product</label>
+                                <Field id = "productName" type="text" className="form-control" name={'productName'}/>
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="exampleInput" className="form-label">Price</label>
-                                <Field type="number" className="form-control" id="exampleInput" name={'price'}/>
+                                <label htmlFor="price" className="form-label">Price</label>
+                                <Field id = "price" type="number" className="form-control" name={'price'}/>
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="exampleInput" className="form-label">Description</label>
-                                <Field type="text" className="form-control" id="exampleInput" name={'description'}/>
+                                <label htmlFor="description" className="form-label">Description</label>
+                                <Field id = "description" type="text" className="form-control"  name={'description'}/>
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="exampleInput" className="form-label">Quantity</label>
-                                <Field type="number" className="form-control" id="exampleInput" name={'totalQuantity'}/>
+                                <label htmlFor="inventory" className="form-label">Quantity</label>
+                                <Field type="number" className="form-control" id="inventory" name={'inventory'}/>
                             </div>
                             <div className="ml-3 form-group">
-                                <label htmlFor="exampleInputPassword">Image</label>
+                                <label htmlFor="file">Image</label>
                                 <br/>
-                                {urls.map(item => (
-                                    <>
-                                        <img src={item} alt="" style={{width: 50}}/></>
+                                {urls.map((item,ind) => (
+                                        <img key={ind} src={item} alt="" style={{width: 50}}/>
                                 ))}
                                 <br/>
-                                <input type='file' onChange={handleChange}>
+                                <input id="file" type='file' onChange={handleChange}>
                                 </input>
                                 <button className="btn btn-outline-success" style={{marginRight: 10}} type='button'
                                         onClick={handleUpload}>Up
@@ -141,9 +143,9 @@ export default function AddProduct() {
 
                             </div>
                             <div className="mb-3">
-                                <Field as='select' name={'idCategory'} >
-                                    {category !== undefined && category.map((item)=>(
-                                        <option value={item.id}>{item.name}</option>
+                                <Field as='select' name={'categoryId'} >
+                                    {categories !== undefined && categories.map((item)=>(
+                                        <option key={item.categoryId} value={item.categoryId}>{item.categoryName}</option>
                                     ))
 
                                     }

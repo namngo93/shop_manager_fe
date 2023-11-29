@@ -9,13 +9,16 @@ export default function ManageProduct(){
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const categories = useSelector(state => { 
-        return  state.categories.category
+        return  state.categories.categories
     });
+
     const products = useSelector(state => {
         return   state.products.products
     });
-    const [productName, setProductName] = useState('');
-    const [categoryId, setCategoryId] = useState('');
+
+    const [condition, setCondition] = useState({productName:'', categoryId:''});
+    
+
     const  handleDelete =  (productId) => {
         swal({
             title: "Are you sure?",
@@ -47,15 +50,11 @@ export default function ManageProduct(){
     
     useEffect(()=>{
         dispatch(getCategory())
-        .then((e) => { 
-            const data = {
-                productName : productName,
-                categoryId : e.payload.map( item => item.categoryId)
-            }
-            dispatch(findByConditions(data));
-            setCategoryId(e.payload.map( item => item.categoryId))
-        })
-    },[]);
+    },[categories, dispatch]);
+
+    useEffect(() => {
+        dispatch(findByConditions(condition))
+    }, [condition, dispatch]);
     
     return(
         <>
@@ -65,7 +64,7 @@ export default function ManageProduct(){
                     <div className="row">
                         <div className="col-12">
                             <div className="section-title">
-                                <h2>List Products</h2>
+                                <h2>List product</h2>
                             </div>
                         </div>
                     </div>
@@ -76,24 +75,21 @@ export default function ManageProduct(){
                                     <ul className="nav nav-tabs" id="myTab" role="tablist">
                                         <li>
                                                 <input name="search" placeholder="Search Products Here....." type="search" 
-                                                onChange= {(e) => { 
-                                                    const data = {
-                                                        productName : e.target.value,
-                                                        categoryId : categoryId
-                                                    }
-                                                    dispatch(findByConditions(data))
-                                                    setProductName(e.target.value);
-                                                    } 
-                                                }/>
+                                                onChange={(e)=>{
+                                                    setCondition(prevState => ({
+                                                        ...prevState,
+                                                        productName: e.target.value
+                                                    }))
+                                            }}/>
                                         </li>
-                                        <li className="nav-item">
+                                        <li className="nav-item ">
                                             <button className="btn btn-outline-secondary my-2 my-sm-0" 
                                                 onClick={()=>{
-                                                    const data = {
-                                                        productName : productName,
-                                                        categoryId : categories.map( item => item.categoryId)
-                                                    }
-                                                    dispatch(findByConditions(data));
+                                                    setCondition(prevState => ({
+                                                        ...prevState, 
+                                                        categoryId: '', 
+                                                        }));
+                                                    dispatch(findByConditions(condition))
                                                 }} >All</button>
                                         </li>
 
@@ -101,13 +97,11 @@ export default function ManageProduct(){
                                             <li key = {category.categoryId}  className="nav-item">
                                                 <button style={{height:30,fontSize:10,width:80}} className=" ml-3  btn btn-outline-secondary my-2 my-sm-0" 
                                                     onClick={()=>{
-                                                        const data = {
-                                                            productName : productName,
-                                                            categoryId : category.categoryId
-                                                        }
-                                                        dispatch(findByConditions(data));
-                                                        setCategoryId(category.categoryId)
-                                                }} >{category.categoryName}</button>
+                                                        setCondition(prevState => ({
+                                                            ...prevState, 
+                                                            categoryId: category.categoryId, 
+                                                            }))
+                                                    }}>{category.categoryName}</button>
                                             </li>
                                         ))}
 
@@ -122,9 +116,10 @@ export default function ManageProduct(){
                                                         <thead>
                                                         <tr>
                                                             <th scope="col">STT</th>
-                                                            <th scope="col">Name product</th>
+                                                            <th scope="col">Product Id</th>
+                                                            <th scope="col">Product name</th>
                                                             <th scope="col">Description</th>
-                                                            <th scope={"col"}>Image</th>
+                                                            <th scope="col">Image</th>
                                                             <th scope="col">Price</th>
                                                             <th scope="col">Category</th>
                                                             <th scope="col">Quantity</th>
@@ -136,15 +131,16 @@ export default function ManageProduct(){
                                                             products.map((product,ind)=>(
                                                                 <tr key = {product.productId}>
                                                                     <th scope="col">{ind+1}</th>
+                                                                    <th scope="col">{product.productId}</th>
                                                                     <th scope="col">{product.productName}</th>
                                                                     <th scope="col">{product.description}</th>
-                                                                    <th scope={"col"}><img src={product.image} style={{width:50}} alt="#"/></th>
+                                                                    <th scope="col"><img src={product.image} style={{width:50}} alt="#"/></th>
                                                                     <th scope="col">{product.price}</th>
                                                                     <th scope="col">{product.categoryName}</th>
                                                                     <th scope="col">{product.inventory}</th>
                                                                     <th scope="col" >
                                                                         <button 
-                                                                            onClick={() => navigate("/home/edit-product", {state: product})}
+                                                                            onClick={() => navigate(`/admin/product-edit/${product.productId}`)}
                                                                             className="btn btn-outline-primary"
                                                                             >
                                                                             Edit

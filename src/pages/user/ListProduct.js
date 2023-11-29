@@ -2,16 +2,19 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {findByConditions, findByPrice} from "../../services/productService";
 import {getCategory} from "../../services/categoryService";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Field, Form, Formik} from "formik";
 
 
 export default function ListProduct() {
 
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
+    const user = useSelector(state => {
+        return   state.user.currentUser
+    })
     const categories = useSelector(state => {
-        return   state.categories.category
+        return   state.categories.categories
     })
 
     useEffect(()=>{
@@ -173,12 +176,10 @@ export default function ListProduct() {
                                                 <div key={product.productId} className="col-xl-4 col-lg-4 col-md-4 col-12">
                                                     <div className="single-product">
                                                         <div className="product-img">
-                                                            <Link  style={{textDecoration: 'none'}} to={`/home/focus-product/${product.id}`}>
                                                                 <img className="default-img"
-                                                                     src={product.image} alt="#" style={{width:320, height:450}}/>
+                                                                     src={product.image} alt="#" style={{width:320, height:450}}
+                                                                     onClick={() => navigate(`/detail-product/${product.productId}`)}/>
                                                                 <span className="out-of-stock">{product.price} $</span>
-
-                                                            </Link>
                                                             <div className="button-head">
                                                                 <div className="product-action">
                                                                     <Link  style={{textDecoration: 'none'}} ><i className=" ti-eye"></i><span>Detail 142</span></Link>
@@ -188,9 +189,12 @@ export default function ListProduct() {
                                                                         className="ti-bar-chart-alt"></i><span>Add to Compare</span></Link>
                                                                 </div>
                                                                 <div className="product-action-2">
-                                                                    <Link  style={{textDecoration: 'none'}}  to="/home/addCart">Add to cart</Link>
-                                                                    <span> or </span>
-                                                                    <Link  style={{textDecoration: 'none', color: "red"}} to={`/home/buy-now/${product.id}`}>Buy now</Link>
+                                                                    <Link  style={{textDecoration: 'none',color:'red'}}  to={`/detail-product/${product.productId}`}>Add to cart</Link>
+                                                                            <span> or </span>
+                                                                    { user.userId ? 
+                                                                    <Link  style={{textDecoration: 'none',color:'red'}}  to={`/payment/${product.productId}`}>Buy now</Link>:
+                                                                    <Link  style={{textDecoration: 'none',color:'red'}}  to={`/login`}>Buy now</Link>
+                                                                    }
                                                                 </div>
                                                             </div>
                                                         </div>

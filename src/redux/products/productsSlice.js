@@ -21,7 +21,6 @@ const productsSlice = createSlice({
                 state.products = action.payload
             });
 
-
             builder.addCase(findByProductId.fulfilled, (state, action) => {
                 state.product = action.payload
             });
@@ -39,7 +38,7 @@ const productsSlice = createSlice({
             });
 
             builder.addCase(addProduct.fulfilled, (state, action) => {
-                state.products = action.payload
+                state.products.push(action.payload) 
 
             });
 
