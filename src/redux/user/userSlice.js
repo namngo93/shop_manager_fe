@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {login, register} from "../../services/userService";
+import {login, register, getUsers} from "../../services/userService";
 
 
 
@@ -18,6 +18,9 @@ const userSlice = createSlice({
             builder.addCase(register.fulfilled, (state, action) => {
                 state.users.push(action.payload)
 
+            });
+            builder.addCase(getUsers.fulfilled, (state, action) => {
+                state.users = action.payload;
             });
         }
 

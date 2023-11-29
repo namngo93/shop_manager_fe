@@ -20,6 +20,7 @@ import ProductEdit from "./pages/admin/EditProduct";
 import CategoryEdit from "./pages/admin/EditCategory";
 import ProductAdd from "./pages/admin/AddProduct";
 import CategoryAdd from "./pages/admin/AddCategory";
+import OrderDetail from './pages/user/OrderDetail';
 
 function App() {
   // service -> slice -> store -> selector -> useEffect
@@ -48,6 +49,7 @@ function App() {
                 <Route path={'order-history'} element={<OrderHistory/>}/>  {/* Trang lich su don hang */}
                 <Route path={'payment/:id'} element={<Payment/>}/> {/* Trang mua hang/ thanh toan*/}
                 <Route path={'information'} element={<Information/>}/> {/* Trang thong tin nguoi dung*/}
+                <Route path={'order-detail/:id'} element={<OrderDetail/>}/> {/* Trang chi ty don hang*/}
               </>
               }
             </Route>

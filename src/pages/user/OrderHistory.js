@@ -1,9 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
-import  {getOrder } from "../../services/orderService";
+import   { getOrder } from "../../services/orderService";
+import { useNavigate } from "react-router";
 
 export default function OrderHistory() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const orders = useSelector(state => {
         return state.orders.orders
     });
@@ -49,7 +51,7 @@ export default function OrderHistory() {
                                 <td>{order.orderDate}</td>
                                 <td>{order.status}</td>
                                 <td>
-                                    <button className="btn btn-outline-secondary">Detail</button>
+                                    <button className="btn btn-outline-secondary" onClick={() => navigate(`/order-detail/${order.orderId}`)}>Detail</button>
                                 </td>    
                             </tr>
                             ))
