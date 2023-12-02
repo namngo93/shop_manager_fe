@@ -130,7 +130,7 @@ export default function ShowCart() {
                                                                         phone: values.phone,
                                                                         totalAmount: totalAmount
                                                                     },
-                                                                    orderDetail : carts.map(({ productId, quantity, price }) => ({ productId, quantity, price }))
+                                                                    orderDetail : carts.map(({ productId, productName, price, description, inventory, categoryId, image, quantity }) => ({ productId, productName, price, description, inventory, categoryId, image, quantity }))
                                                                 };
                                                                 dispatch(addOrder(data))
                                                                 navigate('/list-product');

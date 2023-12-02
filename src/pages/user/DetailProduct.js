@@ -12,7 +12,6 @@ export default function DetailProduct() {
     const product = useSelector(state => {
         return state.products.product
     });
-    
     const user = useSelector(state => {
         return state.user.currentUser
     });
@@ -22,6 +21,12 @@ export default function DetailProduct() {
         const data = {
             userId: user.userId,
             productId: product.productId,
+            productName: product.productName,
+            price: product.price,
+            description: product.description,
+            inventory: product.inventory,
+            categoryId: product.categoryId,
+            image: product.image,
             quantity: quantity
         };
         dispatch(addCart(data));
@@ -105,7 +110,7 @@ export default function DetailProduct() {
                                     <h3 className="title">{product.name}</h3>
                                     <ul className="categor-list">
                                         <li><p>Total Quantity: {product.inventory}.</p></li>
-                                        <li><p>Brand:  {product.nameCategory}</p></li>
+                                        <li><p>Brand:  {product.categoryName}</p></li>
                                         <li><p>Price: {product.price}</p></li>
                                         <li><p>Quantity: 
                                             <span> 
