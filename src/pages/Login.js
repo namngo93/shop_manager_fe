@@ -21,7 +21,12 @@ export default function Login() {
                 swal(`Well come, "${e.payload.username}"`, {
                     icon: "success",
                 })
-                navigate('/home')
+                if (user.role === 1){
+                    navigate('/admin')
+                } else {
+                    navigate('/home')
+                }
+                
             }else{
                 navigate('/login')
             }
