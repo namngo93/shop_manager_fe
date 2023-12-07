@@ -14,25 +14,14 @@ export default function EditProduct() {
     const product = useSelector(state => {
         return state.products.product
     });
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
     
     const category = useSelector(state => {
         return state.categories.categories
     });
-
-    useEffect(() => {
-            setUrls([product.image])
-    }, []);
-
-    useEffect(() => {
-        dispatch(getCategory())
-    }, []);
-
-    useEffect(() => {
-        dispatch(findByProductId(id))
-    }, [])
-
+    
     const handleEdit = async (values) => {
         let newProduct = {...values};
         newProduct.image = urls[urls.length-1];
@@ -43,54 +32,73 @@ export default function EditProduct() {
         });
         navigate('/admin/product-management')
     }
-
-
+    
+    
     const [images, setImages] = useState([]);
     const [urls, setUrls] = useState([]);
+
+    useEffect(() => {
+        dispatch(getCategory())
+    }, []);
+
+    useEffect(() => {
+        dispatch(findByProductId(id));
+    }, [])
+
+    useEffect(() => {
+        setUrls([product.image])
+    }, []);
+    
     const [progress, setProgress] = useState(0);
 
     const handleChange = (e) => {
-        for (let i = 0; i < e.target.files.length; i++) {
-            const newImage = e.target.files[i];
-            newImage["id"] = Math.random();
-            setImages((prevState) => [...prevState, newImage]);
-        }
-    };
-    const handleUpload = () => {
+        const files = Array.from(e.target.files);
         const promises = [];
-        if (images.length > 0) {
-            images.map((image) => {
-                const storageRef = ref(storage, `images/${image.name}`);
-                const uploadTask = uploadBytesResumable(storageRef, image);
-                promises.push(uploadTask);
-                uploadTask.on(
-                    "state_changed",
-                    (snapshot) => {
-                        const progress = Math.round(
-                            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                        );
-                        setProgress(progress);
-                    },
-                    (error) => {
-                        console.log(error);
-                    },
-                    async () => {
-                      return   await getDownloadURL(uploadTask.snapshot.ref).then((downloadURLs) => {
-                            setUrls(prevState => [...prevState, downloadURLs])
-                        });
-
-                    }
+      
+        files.forEach((file) => {
+          const uniqueId = Math.random();
+          const storageRef = ref(storage, `images/${uniqueId}_${file.name}`);
+          const uploadTask = uploadBytesResumable(storageRef, file);
+      
+          const promise = new Promise((resolve, reject) => {
+            uploadTask.on(
+              "state_changed",
+              (snapshot) => {
+                const progress = Math.round(
+                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100
                 );
-            });
-        }
+                setProgress(progress);
+              },
+              (error) => {
+                reject(error);
+              },
+              async () => {
+                try {
+                  const url = await getDownloadURL(uploadTask.snapshot.ref);
+                  resolve(url);
+                } catch (error) {
+                  reject(error);
+                }
+              }
+            );
+          });
+      
+          promises.push(promise);
+        });
+      
         Promise.all(promises)
-            .then(() => swal(`Success!`, {
-                icon: "success",
-            }))
-            .catch((err) => console.log(err));
-
-    }
-
+          .then((urls) => {
+            // Xử lý các URL sau khi upload hoàn tất
+            // Cập nhật state hoặc thực hiện các công việc khác ở đây
+            setUrls(prev => [...prev, urls]);
+            alert("All images uploaded:");
+          })
+          .catch((error) => {
+            // Xử lý lỗi nếu có
+            alert("Error uploading images:", error);
+            // Hiển thị thông báo lỗi hoặc thực hiện xử lý khác
+          });
+    };
 
     return (
         <>
@@ -127,13 +135,14 @@ export default function EditProduct() {
                                 <label htmlFor="exampleInput" className="form-label">Image</label>
                                 <br/>
 
-                                <input type='file' onChange={handleChange}>
+                                <input type='file' id="fileInput" hidden  onChange={handleChange}>
                                 </input>
                                 <button className="btn btn-outline-primary" style={{marginRight: 10}} type='button'
-                                        onClick={handleUpload}>Up
+                                        onClick={() => document.getElementById('fileInput').click()}>Upload
                                 </button>
-                                {urls &&
-                                    <><img src={urls[urls.length - 1]} alt="" style={{width: 50}}/></>
+                                {urls.length > 1 ?
+                                <img src={urls[urls.length-1]} alt={urls[urls.length-1]} style={{width: 50}}/>:
+                                <img src={product.image} alt={product.image} style={{width: 50}}/>
                                 }
                             </div>
                             <div className="mb-3">
