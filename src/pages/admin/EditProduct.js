@@ -33,8 +33,6 @@ export default function EditProduct() {
         navigate('/admin/product-management')
     }
     
-    
-    const [images, setImages] = useState([]);
     const [urls, setUrls] = useState([]);
 
     useEffect(() => {
@@ -52,15 +50,15 @@ export default function EditProduct() {
     const [progress, setProgress] = useState(0);
 
     const handleChange = (e) => {
-        const files = Array.from(e.target.files);
-        const promises = [];
+        const files = Array.from(e.target.files);  // danh sách các ảnh đuợc chọn
+        const promises = [];                        // danh sách các task upload ảnh
       
         files.forEach((file) => {
           const uniqueId = Math.random();
-          const storageRef = ref(storage, `images/${uniqueId}_${file.name}`);
-          const uploadTask = uploadBytesResumable(storageRef, file);
+          const storageRef = ref(storage, `images/${uniqueId}_${file.name}`);  // tạo 1 file và lấy đường dẫn trên firebase
+          const uploadTask = uploadBytesResumable(storageRef, file); // upload file/ảnh lên firebase
       
-          const promise = new Promise((resolve, reject) => {
+          const promise = new Promise((resolve, reject) => { // lấy url và push  vào mảng promises 
             uploadTask.on(
               "state_changed",
               (snapshot) => {
@@ -86,11 +84,11 @@ export default function EditProduct() {
           promises.push(promise);
         });
       
-        Promise.all(promises)
+        Promise.all(promises) // xử lý đồng các promise và lấy ra danh sách url
           .then((urls) => {
             // Xử lý các URL sau khi upload hoàn tất
             // Cập nhật state hoặc thực hiện các công việc khác ở đây
-            setUrls(prev => [...prev, urls]);
+            setUrls(prev => [...prev, urls]); 
             alert("All images uploaded:");
           })
           .catch((error) => {
