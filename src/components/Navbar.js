@@ -126,7 +126,10 @@ export default function Navbar(){
                                                                 <>
                                                                 <li><Link  style={{textDecoration: 'none'}} to="/order-history">Order history</Link></li>
 
-                                                                <li><Link  style={{textDecoration: 'none'}} to="/information">Information</Link></li>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="/information">Information <i className="ti-angle-down"></i></Link>
+                                                                <ul className="dropdown">
+                                                                            <li><Link  style={{textDecoration: 'none'}} to="/changePw">Change password </Link></li>
+                                                                    </ul></li>
                                                                 </>
                                                                 }
                                                             

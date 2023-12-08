@@ -1,4 +1,4 @@
-import { useNavigate,useParams} from "react-router-dom";
+import { Link, useNavigate,useParams} from "react-router-dom";
 import { useDispatch, useSelector} from "react-redux";
 import { useEffect, useState} from "react";
 import { findByProductId, getProducts} from "../../services/productService";
@@ -73,8 +73,8 @@ export default function DetailProduct() {
                         <div className="col-12">
                             <div className="bread-inner">
                                 <ul className="bread-list">
-                                    <li><a href="index1.html">Home<i className="ti-arrow-right"></i></a></li>
-                                    <li className="active"><a href="blog-single.html">Blog Single Sidebar</a></li>
+                                    <li><Link to="/">Home<i className="ti-arrow-right"></i></Link></li>
+                                    <li className="active"><Link to="">Detail product</Link></li>
                                 </ul>
                             </div>
                         </div>

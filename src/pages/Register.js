@@ -28,7 +28,7 @@ export default function Register() {
     const [check,setCheck] = useState([])
 
     const handleRegister = (values)=>{
-        values.birthDay = new Date();
+        values.birthDay = '1970-01-01';
         values.email = 'user@gmail.com';
         values.phone = '0987654321';
         values.address = 'Viet Nam';

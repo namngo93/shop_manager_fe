@@ -12,6 +12,7 @@ import ShowCart from "./pages/user/ShowCart";
 import OrderHistory from "./pages/user/OrderHistory";
 import Payment from "./pages/user/Payment";
 import Information from "./pages/user/Information";
+import ChangePw from "./pages/user/ChangePassword";
 import ProductManagement from "./pages/admin/ProductManagement";
 import OrderManagement from "./pages/admin/OrderManagement";
 import CategoryManagement from "./pages/admin/CategoryManagement";
@@ -50,6 +51,7 @@ function App() {
                 <Route path={'payment/:id'} element={<Payment/>}/> {/* Trang mua hang/ thanh toan*/}
                 <Route path={'information'} element={<Information/>}/> {/* Trang thong tin nguoi dung*/}
                 <Route path={'order-detail/:id'} element={<OrderDetail/>}/> {/* Trang chi ty don hang*/}
+                <Route path={'changePw'} element={<ChangePw/>}/> {/* Trang doi pw*/}
               </>
               }
             </Route>
