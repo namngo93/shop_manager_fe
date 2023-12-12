@@ -1,40 +1,27 @@
-import {Link, useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
-import {findByStatus, showCart} from "../services/orderService";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { showCart } from "../services/cartService";
 
 
 export default function Navbar(){
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const user = useSelector(state=>{
         return state.user.currentUser
-    })
-
-    const order = useSelector(state=>{
-        return state.orders.order
-    })
-
+    });
 
     const carts = useSelector(state => {
-        return state.orders.cart
-    })
+        return state.carts.carts
+    });
 
+    const pointerEvents = user.userId ? 'auto': 'none'; //khóa chuyển trang khi chưa đăng nhập
 
+    useEffect(() => {
+        if (user.userId) {
+            dispatch(showCart(user.userId));
+        }
+    }, [user.userId, dispatch]);
 
-    useEffect(()=>{
-        dispatch(findByStatus(user.idUser)).then(()=> {
-            if(order) {
-                dispatch(showCart(order.id)).then(()=>{
-                }).then(()=>{
-                })
-            }
-
-        });
-    },[])
-
-
-    let totalPoint = 0;
     return(
         <>
                 <header className="header shop">
@@ -56,12 +43,13 @@ export default function Navbar(){
                                     <div className="right-content">
                                         <ul className="list-main">
                                             <li><i className="ti-location-pin"></i><Link style={{textDecoration:"none"}} to="https://www.google.com/maps/@20.9997628,105.8071965,16z?hl=vi-VN">Store location</Link> </li>
-                                            <li><i className="ti-alarm-clock"></i> <Link  style={{textDecoration: 'none'}} to={`/home/purchase-order/${user.idUser}`}>History</Link></li>
-                                            <li><i className="ti-user"></i> <Link  style={{textDecoration: 'none'}} to="#" >{user.username}</Link></li>
-                                            <li><i className="ti-power-off"></i><a type={'summit'} onClick={()=>{
-                                                localStorage.clear()
-                                                navigate('/')
-                                            }}>Logout</a></li>
+                                            <li><Link  style={{textDecoration: 'none', pointerEvents:`${pointerEvents}`}} to={`/order-history`}><i className="ti-alarm-clock"></i> History</Link></li>
+                                            <li><Link  style={{textDecoration: 'none', pointerEvents:`${pointerEvents}`}} to="/information" ><i className="ti-user"></i> {user.userName}</Link></li>
+                                            {user.userId ? 
+                                            <li><a style={{textDecoration: 'none'}} href="/" type={'summit'} onClick={()=>{
+                                                localStorage.clear();
+                                            }}><i className="ti-power-off"></i> Logout</a></li>: 
+                                            <li><a style={{textDecoration: 'none'}} href="/login" type={'summit'}><i className="ti-power-off"></i> Login</a></li>}
                                         </ul>
                                     </div>
 
@@ -93,40 +81,11 @@ export default function Navbar(){
                                         <div className="sinlge-bar">
                                             <Link  style={{textDecoration: 'none'}} to="#" className="single-icon"><i className="fa fa-heart-o" aria-hidden="true"></i></Link>
                                         </div>
-                                        <div className="sinlge-bar">
-                                            <Link  style={{textDecoration: 'none'}} to={`/home/purchase-order/${user.idUser}`} className="single-icon"><i className="fa fa-user-circle-o" aria-hidden="true"></i></Link>
-                                        </div>
+                                        {/* <div className="sinlge-bar">
+                                            <Link  style={{textDecoration: 'none'}} to={`/purchase-order`} className="single-icon"><i className="fa fa-user-circle-o" aria-hidden="true"></i></Link>
+                                        </div> */}
                                         <div className="sinlge-bar shopping">
-                                            <Link  style={{textDecoration: 'none'}} to={`/home/show-cart/${order.id}`} className="single-icon"><i className="ti-bag"></i> <span className="total-count">{carts.length}</span></Link>
-
-                                            <div className="shopping-item" >
-                                                <div className="dropdown-cart-header">
-                                                    <span>{carts.length} Items</span>
-                                                    <Link  style={{textDecoration: 'none'}} to="#">View Cart</Link>
-                                                </div>
-                                                <ul className="shopping-list">
-                                                    {carts.length !== 0 && carts !== 'Saved cart'&&
-                                                        <>
-                                                            {carts.map((item)=>(
-                                                                totalPoint += item.total,
-                                                                <li>
-                                                                    <img src={item.image} alt="#" style={{width:50}}/>
-                                                                    <h4>{item.name}</h4>
-                                                                    <p>{item.quantity} x - <span className="amount">$ {item.price}</span></p>
-                                                                </li>
-                                                            ))
-                                                            }
-                                                            </>}
-                                                </ul>
-                                                <div className="bottom">
-                                                    <div className="total">
-                                                        <span>Total</span>
-                                                        <span className="total-amount">{totalPoint}</span>
-                                                    </div>
-                                                    <Link  style={{textDecoration: 'none'}} to={`/home/show-cart/${order.id}`} className="btn animate">Checkout</Link>
-                                                </div>
-                                            </div>
-
+                                            <Link  style={{pointerEvents: `${pointerEvents}`}} to={`/show-cart`} className="single-icon"><i className="ti-bag"></i> <span className="total-count">{carts.length}</span></Link>
                                         </div>
                                     </div>
                                 </div>
@@ -144,28 +103,35 @@ export default function Navbar(){
                                                 <div className="navbar-collapse">
                                                     <div className="nav-inner">
                                                         <ul className="nav main-menu menu navbar-nav">
-                                                            <li className="active"><a  style={{textDecoration: 'none'}} href="/home" >Home</a></li>
-                                                            {user.role === 'admin' &&
-                                                                <>
-                                                                    <li><Link  style={{textDecoration: 'none'}} to="#">Manager <i className="ti-angle-down"></i></Link>
-                                                                        <ul className="dropdown">
-                                                                            <li><a  style={{textDecoration: 'none'}} href="/home/manager-product">Manager Product</a></li>
-                                                                            <li><a  style={{textDecoration: 'none'}} href="/home/manager-order">Manager Order</a></li>
-                                                                        </ul>
-                                                                    </li>
-                                                                    <li><Link  style={{textDecoration: 'none'}} to="#">Add  <i className="ti-angle-down"></i></Link>
+                                                            <li className="active"><a  style={{textDecoration: 'none'}} href="/" >Home</a></li>
+                                                            {user.role === 1 ?
+                                                            <>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="/admin/product-management" >Product <i className="ti-angle-down"></i> </Link>
                                                                     <ul className="dropdown">
-                                                                        <li><Link  style={{textDecoration: 'none'}} to="/home/add-category">Add Category</Link></li>
-                                                                        <li><Link  style={{textDecoration: 'none'}} to="/home/add-product">Add Product </Link></li>
+                                                                            <li><Link  style={{textDecoration: 'none'}} to="/admin/product-add">Add new product </Link></li>
                                                                     </ul>
-                                                                    </li>
+                                                                </li>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="/admin/category-management">Category <i className="ti-angle-down"></i></Link>
+                                                                    <ul className="dropdown">
+                                                                            <li><Link  style={{textDecoration: 'none'}} to="/admin/category-add">Add new category </Link></li>
+                                                                    </ul>
+                                                                </li>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="/admin/order-management">Order</Link></li>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="/admin/user-management">User</Link></li>
+                                                            </>:
+                                                            <>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="/list-product">List product</Link></li>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="#">About us</Link></li>
+                                                                {user.userId && 
+                                                                <>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="/order-history">Order history</Link></li>
+
+                                                                <li><Link  style={{textDecoration: 'none'}} to="/information">Information</Link></li>
                                                                 </>
+                                                                }
+                                                            
+                                                            </>
                                                             }
-                                                            <li><Link  style={{textDecoration: 'none'}} to="my-product">Products</Link></li>
-
-                                                            <li><Link  style={{textDecoration: 'none'}} to="#">About</Link></li>
-
-                                                            <li><Link  style={{textDecoration: 'none'}} to="/home/people">People</Link></li>
                                                         </ul>
                                                     </div>
                                                 </div>

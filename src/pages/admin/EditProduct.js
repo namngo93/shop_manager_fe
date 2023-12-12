@@ -1,48 +1,52 @@
 import {useDispatch, useSelector} from "react-redux";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {Field, Form, Formik} from "formik";
-import {addProduct} from "../../services/productsService";
+import { editProduct, findByProductId } from "../../services/productService";
 import {useEffect, useState} from "react";
 import {storage} from "../../services/firebase";
-import {ref, uploadBytesResumable, getDownloadURL} from "firebase/storage";
-import {getCategory} from "../../services/categoruService";
-import swal from "sweetalert";
+import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
+import {getCategory} from "../../services/categoryService";
+import swal from 'sweetalert';
 
 
-
-
-export default function AddProduct() {
-
+export default function EditProduct() {
+    const {id} = useParams();
+    const product = useSelector(state => {
+        return state.products.product
+    });
     const dispatch = useDispatch();
-
     const navigate = useNavigate();
+    
+    const category = useSelector(state => {
+        return state.categories.categories
+    });
 
-    const user = useSelector(state => {
-        return state.user.currentUser
-    })
-    const category = useSelector(state =>{
-    return state.categories.category
-    })
+    useEffect(() => {
+            setUrls([product.image])
+    }, []);
 
-
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(getCategory())
-    },[]);
+    }, []);
 
+    useEffect(() => {
+        dispatch(findByProductId(id))
+    }, [])
 
-    const handleAdd = async (values) => {
-        let data = {...values};
-        await dispatch(addProduct(data));
-        swal("Added new product success!", {
+    const handleEdit = async (values) => {
+        let newProduct = {...values};
+        newProduct.image = urls[urls.length-1];
+        delete newProduct.categoryName;
+        dispatch(editProduct(newProduct));
+        swal(`Edited ${newProduct.productName} success!`, {
             icon: "success",
         });
-        await navigate('/home/manager-product')
+        navigate('/admin/product-management')
     }
 
+
     const [images, setImages] = useState([]);
-
     const [urls, setUrls] = useState([]);
-
     const [progress, setProgress] = useState(0);
 
     const handleChange = (e) => {
@@ -52,9 +56,6 @@ export default function AddProduct() {
             setImages((prevState) => [...prevState, newImage]);
         }
     };
-
-
-
     const handleUpload = () => {
         const promises = [];
         if (images.length > 0) {
@@ -74,16 +75,18 @@ export default function AddProduct() {
                         console.log(error);
                     },
                     async () => {
-                        await getDownloadURL(uploadTask.snapshot.ref).then((downloadURLs) => {
+                      return   await getDownloadURL(uploadTask.snapshot.ref).then((downloadURLs) => {
                             setUrls(prevState => [...prevState, downloadURLs])
-                            console.log("File available at", downloadURLs);
                         });
+
                     }
                 );
             });
         }
         Promise.all(promises)
-            .then(() => alert("All images uploaded"))
+            .then(() => swal(`Success!`, {
+                icon: "success",
+            }))
             .catch((err) => console.log(err));
 
     }
@@ -93,68 +96,60 @@ export default function AddProduct() {
         <>
             <div className="row">
                 <div className="offset-3 col-6 mt-5">
-                    <div className="section-title">
-                        <h2>Add Products</h2>
-                    </div>
+                    <h1 style={{textAlign: 'center'}}>Edit product</h1>
                     <Formik
-                        initialValues={{
-                            name: '',
-                            price: '',
-                            description: '',
-                            totalQuantity:'',
-                            idCategory: ''
-                        }}
+                        initialValues={
+                            product
+                        }
                         onSubmit={(values) => {
-                            values.image = urls[0]
-                            handleAdd(values)
-                        }}>
+                            handleEdit(values)
+                        }}
+                        enableReinitialize={true}
+                    >
                         <Form>
                             <div className="mb-3">
                                 <label htmlFor="exampleInput" className="form-label">Name product</label>
-                                <Field type="text" className="form-control" id="exampleInput" name={'name'}/>
-                            </div>
-                            <div className="mb-3">
-                                <label htmlFor="exampleInput" className="form-label">Price</label>
-                                <Field type="number" className="form-control" id="exampleInput" name={'price'}/>
+                                <Field type="text" className="form-control" name={'productName'}/>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="exampleInput" className="form-label">Description</label>
-                                <Field type="text" className="form-control" id="exampleInput" name={'description'}/>
+                                <Field type="text" className="form-control" name={'description'}/>
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="exampleInput" className="form-label">Price</label>
+                                <Field type="number" className="form-control" name={'price'}/>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="exampleInput" className="form-label">Quantity</label>
-                                <Field type="number" className="form-control" id="exampleInput" name={'totalQuantity'}/>
-                            </div>
-                            <div className="ml-3 form-group">
-                                <label htmlFor="exampleInputPassword">Image</label>
-                                <br/>
-                                {urls.map(item => (
-                                    <>
-                                        <img src={item} alt="" style={{width: 50}}/></>
-                                ))}
-                                <br/>
-                                <input type='file' onChange={handleChange}>
-                                </input>
-                                <button className="btn btn-outline-success" style={{marginRight: 10}} type='button'
-                                        onClick={handleUpload}>Up
-                                </button>
-
+                                <Field type="number" className="form-control" name={'inventory'}/>
                             </div>
                             <div className="mb-3">
-                                <Field as='select' name={'idCategory'} >
-                                    {category !== undefined && category.map((item)=>(
-                                        <option value={item.id}>{item.name}</option>
-                                    ))
+                                <label htmlFor="exampleInput" className="form-label">Image</label>
+                                <br/>
 
+                                <input type='file' onChange={handleChange}>
+                                </input>
+                                <button className="btn btn-outline-primary" style={{marginRight: 10}} type='button'
+                                        onClick={handleUpload}>Up
+                                </button>
+                                {urls &&
+                                    <><img src={urls[urls.length - 1]} alt="" style={{width: 50}}/></>
+                                }
+                            </div>
+                            <div className="mb-3">
+                                <Field as='select' name={'categoryId'} >
+                                    {category !== undefined && category.map((item) => (
+                                        <option key = {item.categoryId} value={item.categoryId}>{item.categoryName}</option>
+                                    ))
                                     }
                                 </Field>
                             </div>
-                            <button style={{marginBottom:50}} type="submit" className="btn btn-outline-primary">Add</button>
+                            <button type="submit" className="btn btn-outline-primary primary">Save</button>
                         </Form>
                     </Formik>
                 </div>
             </div>
-
+            <br/>
         </>
     )
 }

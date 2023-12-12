@@ -3,9 +3,9 @@ import {
     addProduct,
     deleteProduct,
     editProduct,
-    findByIdProduct, findByName, findByNameProduct, findByPrice,
+    findByProductId, findByConditions, findByNameProduct, findByPrice,
     getProducts
-} from "../../services/productsService";
+} from "../../services/productService";
 
 
 const initialState = {
@@ -21,32 +21,36 @@ const productsSlice = createSlice({
                 state.products = action.payload
             });
 
-
-            builder.addCase(findByIdProduct.fulfilled, (state, action) => {
+            builder.addCase(findByProductId.fulfilled, (state, action) => {
                 state.product = action.payload
             });
 
-            builder.addCase(findByName.fulfilled, (state, action) => {
+            builder.addCase(findByConditions.fulfilled, (state, action) => {
                 state.products = action.payload
             });
+
             builder.addCase(findByNameProduct.fulfilled, (state, action) => {
                 state.products = action.payload
             });
+            
             builder.addCase(findByPrice.fulfilled, (state, action) => {
                 state.products = action.payload
             });
 
             builder.addCase(addProduct.fulfilled, (state, action) => {
-                state.products = action.payload
+                state.products.push(action.payload) 
 
             });
 
             builder.addCase(deleteProduct.fulfilled, (state, action) => {
-                state.products = action.payload
-
+                state.products = state.products.filter(item => item.productId !== action.payload);
             });
+            
             builder.addCase(editProduct.fulfilled, (state, action) => {
-                state.products = action.payload
+                const indexToModify = state.products.findIndex(item => item.productId === action.payload.productId);
+                if (indexToModify !== -1) {
+                    state.products[indexToModify] = action.payload;
+                }
             })
         }
     }

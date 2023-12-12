@@ -1,50 +1,49 @@
 import {Field, Form, Formik} from "formik";
 import {useDispatch, useSelector} from "react-redux";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {findByIdProduct} from "../../services/productsService";
-import {addCart, addOrder, deleteCart, editOrder, showCart} from "../../services/orderService";
+import {findByProductId} from "../../services/productService";
+import {addOrder } from "../../services/orderService";
 
-export default function BuyNow() {
+export default function Payment() {
     const {id} = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [quantity,setQuantity] = useState()
-
+    
     const user = useSelector(state=>{
         return state.user.currentUser
     })
+    
     const product = useSelector(state => {
         return state.products.product
     });
-    useEffect(() => {
-        dispatch(findByIdProduct(id)).then((value) => {
-        });
-    }, []);
+    
+    const [total,setTotal] = useState(1);
 
     const handleBuy = (values)=>{
-        let order = {
-            idUser: user.idUser,
-            time: values.time,
-            totalPoint: quantity * product.price,
-            status: 'loading',
-            receiver: values.receiver,
-            address: values.address,
-            phone: values.phone
+        const data = {
+            order:{
+                userId: user.userId,
+                totalAmount: total,
+                receiver: values.receiver,
+                address: values.address,
+                phone: values.phone
+            },
+            orderDetail:[{
+                productId: product.productId,
+                quantity: values.quantity,
+                price: product.price
+            }]
         };
-
-        dispatch(addOrder(order)).then((e)=>{
-            let cart = {
-                quantity: quantity,
-                idProduct: id,
-                total: quantity * product.price,
-                idOrder: e.payload.id
-            };
-            dispatch(addCart(cart));
-            navigate('/home')
-
+        dispatch(addOrder(data)).then((e)=>{
+            navigate('/list-product')
         })
     }
+
+    useEffect(() => {
+        dispatch(findByProductId(id))
+    }
+    , [id, dispatch]);
 
 return(
     <>
@@ -56,13 +55,10 @@ return(
         <Formik
             initialValues={{
                 receiver:'',
-                time:'',
                 address:'',
                 phone:''
             }}
-            onSubmit={(values)=>{
-                handleBuy(values);
-            }}>
+            onSubmit={(values)=>handleBuy(values)}>
             <Form>
 
                 <div className="shopping-cart section">
@@ -88,22 +84,17 @@ return(
                                                                                            style={{width: 100}}/>
                                                 </td>
                                                 <td className="product-des" data-title="name">
-                                                    {product.name}
+                                                    {product.productName}
                                                 </td>
                                                 <td className="price" data-title="Price"> {product.price} $</td>
                                                 <td className="product-des">
                                                     <div className="row">
-                                                        <input  style={{margin:"auto", width:100}} type="number" min={1} onClick={(e)=>{
-                                                            setQuantity(e.target.value)
-                                                        }}/>
+                                                        <Field name={'quantity'}  style={{margin:"auto", width:100}} type="number" defaultValue={1} min={1} max={product.inventory} 
+                                                        onChange={(e)=> setTotal(e.target.value * product.price)}/>
                                                     </div>
 
                                                 </td>
-                                                {quantity?
-                                                    <td className="total-amount" data-title="Total">{quantity * product.price} $</td>:
-                                                    <td className="total-amount" data-title="Total">{product.price} $</td>}
-
-
+                                                <td className="total-amount" data-title="Total">{total} $</td>
                                             </tr>
                                     </tbody>
                                 </table>
@@ -126,12 +117,8 @@ return(
                                     <label htmlFor="exampleInput" className="form-label">Address</label>
                                     <Field type="text" className="form-control" id="exampleInput" name={'address'}/>
                                 </div>
-                                <div className="mb-3" style={{width:350,margin:"auto"}}>
-                                    <label htmlFor="exampleInput" className="form-label">Time</label>
-                                    <Field type="date" className="form-control" id="exampleInput" name={'time'}/>
-                                </div>
                                 <div style={{marginBottom:3, textAlign:"center"}}>
-                                    <button style={{width: 200}}
+                                    <button type="submit" style={{width: 200}}
                                             className="mt-3 btn btn-outline-danger">Buy now
                                     </button>
                                 </div>

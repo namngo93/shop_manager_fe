@@ -1,51 +1,52 @@
-import {Link, useNavigate, useParams} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
-import {findByIdProduct, getProducts} from "../../services/productsService";
-import {addCart, findByStatus, showCart} from "../../services/orderService";
+import { useNavigate,useParams} from "react-router-dom";
+import { useDispatch, useSelector} from "react-redux";
+import { useEffect, useState} from "react";
+import { findByProductId, getProducts} from "../../services/productService";
+import { addCart } from "../../services/cartService";
 import swal from "sweetalert";
-import Login from "../Login";
 
-export default function FocusProduct() {
-    const {id} = useParams();
+export default function DetailProduct() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const {id} = useParams();
     const product = useSelector(state => {
         return state.products.product
-    })
+    });
     const user = useSelector(state => {
         return state.user.currentUser
-    })
-    useEffect(() => {
-        dispatch(findByIdProduct(id)).then((value) => {
-        });
-    }, []);
-    const [total, setTotal] = useState();
-    const [cart, setCart] = useState({
-        idProduct: id,
     });
-
+    const [quantity, setQuantity] = useState(1)
 
     const handleAddCart = () => {
-        if(cart.idProduct) {
-            dispatch(addCart(cart)).then(()=>{
-                dispatch(showCart(cart.idOrder))
-            });
-            swal("Added to cart!", {
-                icon: "success",
-            })
-            navigate('/home')
-        }
+        const data = {
+            userId: user.userId,
+            productId: product.productId,
+            productName: product.productName,
+            price: product.price,
+            description: product.description,
+            inventory: product.inventory,
+            categoryId: product.categoryId,
+            image: product.image,
+            quantity: quantity
+        };
+        dispatch(addCart(data));
+        swal("Added to cart!", {
+            icon: "success",
+        });
+        navigate('/list-product')  
     }
 
     const products = useSelector(state => {
         return state.products.products
-    })
+    });
 
     useEffect(()=>{
-        dispatch(getProducts()).then(()=>{
-        })
+        dispatch(getProducts())
     },[]);
+
+    useEffect(()=>{
+        dispatch(findByProductId(id))
+    },[id, dispatch]);
 
     const nimitProduct = products.slice(0,3)
 
@@ -108,36 +109,32 @@ export default function FocusProduct() {
                                 <div className="single-widget category">
                                     <h3 className="title">{product.name}</h3>
                                     <ul className="categor-list">
-                                        <li><p>Total Quantity: {product.totalQuantity}.</p></li>
-                                        <li><p>Brand:  {product.nameCategory}</p></li>
+                                        <li><p>Total Quantity: {product.inventory}.</p></li>
+                                        <li><p>Brand:  {product.categoryName}</p></li>
                                         <li><p>Price: {product.price}</p></li>
-                                        <li>  <p>Quantity: <span> <input type="number" name={'quantity'} min="1" placeholder={1}  onClick={(e) => {
-                                            let quantity = e.target.value;
-                                            let totall = quantity * product.price;
-                                            setTotal(totall);
-                                            dispatch(findByStatus(user.idUser)).then((data) => {
-                                                setCart({
-                                                    ...cart,
-                                                    total: totall,
-                                                    quantity: quantity,
-                                                    idOrder: data.payload.id
-                                                });
-                                            })
-                                        }}/></span></p>
-                                            {total ?
-                                                <p style={{color: "red"}}>{total}<span>$</span></p> :
-                                                <p style={{color: "red"}}>{product.price}<span>$</span></p>
-                                            }</li>
+                                        <li><p>Quantity: 
+                                            <span> 
+                                            <input type="number" name={'quantity'} defaultValue = {1} min={1} max={product.inventory} onClick={(e) => setQuantity( e.target.value )}/>
+                                            </span>
+                                            </p>
+                                            <p style={{color: "red"}}>{quantity * product.price}<span>$</span></p>
+                                        </li>
                                         <li>
                                             <div>
-                                                 <button style={{width:130}} className="btn btn-outline-secondary" onClick={() => {
-                                            handleAddCart()
-                                        }}>Add to cart
-                                                 </button>
-                                                <button style={{width:130}} className="ml-3 btn btn-outline-danger" onClick={() => {
-                                                    handleAddCart()
-                                                }}>Buy
-                                                </button>
+                                                {user.userId?
+                                                <>
+                                                <button style={{width:130}} className="btn btn-outline-secondary" onClick={ handleAddCart }> Add to cart </button>
+                                                <button style={{width:130}} className="ml-3 btn btn-outline-danger" onClick={() => navigate('/payment',{state:{product,quantity}}) }> Buy now </button>
+                                                </>
+                                                :
+                                                <>
+                                                <button style={{width:130}} className="btn btn-outline-secondary" onClick={()=> navigate('/login')}> Add to cart </button>
+                                                <button style={{width:130}} className="ml-3 btn btn-outline-danger" onClick={() => navigate('/login')}> Buy now </button>
+                                                </>
+                                                
+                                                }
+                                                
+                                                
                                             </div>
                                          </li>
                                     </ul>
@@ -145,12 +142,12 @@ export default function FocusProduct() {
                                 <div className="single-widget recent-post">
                                     <h3 className="title">Same Products</h3>
                                     {nimitProduct.map((products) => (
-                                        <div className="single-post">
+                                        <div  key={products.productId} className="single-post">
                                             <div className="image">
-                                                <a style={{textDecoration:"none"}} href={`/home/focus-product/${products.id}`}> <img src={products.image} alt="" style={{width: 100}}/>  </a>
+                                                <a style={{textDecoration:"none"}} href={`/deetail-product`}> <img src={products.image} alt="" style={{width: 100}}/>  </a>
                                             </div>
                                             <div className="content">
-                                                <a style={{textDecoration:"none"}} href={`/home/focus-product/${products.id}`}><h9 >{products.name}</h9>
+                                                <a style={{textDecoration:"none"}} href={`/detail-product`}><h6 >{products.productName}</h6>
 
                                                 </a>
                                             </div>

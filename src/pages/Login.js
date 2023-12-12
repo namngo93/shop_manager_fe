@@ -18,15 +18,10 @@ export default function Login() {
     const handleLogin = async (values) =>{
         await dispatch(login(values)).then((e)=>{
             if(e.payload !== 'Username is not existed' && e.payload !== 'Password is wrong'){
-                swal(`Well come, "${e.payload.username}"`, {
+                swal(`Well come, "${e.payload.userName}"`, {
                     icon: "success",
                 })
-                if (user.role === 1){
-                    navigate('/admin')
-                } else {
-                    navigate('/home')
-                }
-                
+                navigate('/')
             }else{
                 navigate('/login')
             }
@@ -50,7 +45,7 @@ export default function Login() {
                                 </div>
 
                                 <Formik
-                                    initialValues={{username:'', password:''}}
+                                    initialValues={{userName:'', password:''}}
                                     onSubmit={(values)=>{
                                         handleLogin(values).then()
                                     }}>
@@ -59,7 +54,7 @@ export default function Login() {
 
                                             <div className="mb-3" style={{width:300, margin:"auto"}}>
                                                 <label htmlFor="exampleInput" className="form-label">Username</label>
-                                                <Field  type="text" className="form-control" id="exampleInput" name={'username'}/>
+                                                <Field  type="text" className="form-control" id="exampleInput" name={'userName'}/>
                                                 {
                                                     user === 'Username is not existed' &&
                                                     <>
@@ -84,7 +79,7 @@ export default function Login() {
                                         </div>
                                         <div className="row">
                                                 <div style={{textAlign:"center"}}>
-                                                    <button type="submit" className="btn btn-primary"  >Login</button>
+                                                    <button type="submit" className="btn btn-primary">Login</button>
                                                     <Link to={'/register'} ><button style={{marginLeft:10}} type="submit" className="btn btn-secondary">register</button></Link>
 
                                                 </div>

@@ -1,41 +1,34 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import {findByName, getProducts} from "../../services/productsService";
-import {Link} from "react-router-dom";
-import {getCategory} from "../../services/categoruService";
-import button from "bootstrap/js/src/button";
-import {findByStatus, showCart} from "../../services/orderService";
+import {findByConditions, getProducts} from "../../services/productService";
+import {Link, useNavigate} from "react-router-dom";
+import {getCategory} from "../../services/categoryService";
 
-
-
-export default function HomeProduct(){
+export default function Home(){
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const user = useSelector(state=>{
         return state.user.currentUser
-    })
+    });
+
     const products = useSelector(state => {
         return   state.products.products
-    })
+    });
 
     useEffect(()=>{
-        dispatch(getProducts()).then(()=>{
-            dispatch(findByStatus(user.idUser)).then((e)=> {
-                dispatch(showCart(e.payload.id))
-            });
-        })
+        dispatch(getProducts())
     },[]);
 
     const categories = useSelector(state => {
-        return   state.categories.category
-    })
+        return   state.categories.categories
+    });
 
     useEffect(()=>{
-        dispatch(getCategory()).then(()=>{
-        })
+        dispatch(getCategory())
     },[]);
 
-    const productss = products.slice(0,4)
+    const productss = products.slice(0,4);
 
     return(
         <>
@@ -50,7 +43,7 @@ export default function HomeProduct(){
                                             <div className="hero-text">
                                                 <h1>Perfume</h1>
                                                 <div className="mb-5 button">
-                                                    <Link  style={{textDecoration: 'none'}} to="my-product" className="btn">Shop Now!</Link>
+                                                    <Link  style={{textDecoration: 'none'}} to="list-product" className="btn">Shop Now!</Link>
                                                 </div>
                                             </div>
                                         </div>
@@ -109,10 +102,17 @@ export default function HomeProduct(){
                                 <div className="nav-main">
 
                                     <ul className="nav nav-tabs" id="myTab" role="tablist">
+                                        <li className="nav-item"><button style={{height:30,fontSize:10, width:100}} className=" ml-3  btn btn-outline-secondary my-2 my-sm-0" 
+                                        onClick={()=>{
+                                                    dispatch(findByConditions({productName:'', categoryId: ''}))
+                                                }} >All</button>
+                                        </li>
                                         {categories.map((category)=>(
-                                            <li  className="nav-item"><button style={{height:30,fontSize:10, width:100}} className=" ml-3  btn btn-outline-secondary my-2 my-sm-0" onClick={()=>{
-                                                dispatch(findByName(category.name))
-                                            }} >{category.name}</button></li>
+                                        <li key={category.categoryId}  className="nav-item"><button style={{height:30,fontSize:10, width:100}} className=" ml-3  btn btn-outline-secondary my-2 my-sm-0" 
+                                        onClick={()=>{
+                                            dispatch(findByConditions({productName:'', categoryId: category.categoryId}))
+                                        }} >{category.categoryName}</button>
+                                        </li>
                                         ))}
                                     </ul>
                                 </div>
@@ -120,17 +120,14 @@ export default function HomeProduct(){
                                     <div className="tab-pane fade show active" id="man" role="tabpanel">
                                         <div className="tab-single">
                                             <div className="row">
-                                                {productss.map((product, ind)=>(
-                                                    <div className="col-xl-3 col-lg-4 col-md-4 col-12">
+                                                {productss.map((product)=>(
+                                                    <div key={product.productId} className="col-xl-3 col-lg-4 col-md-4 col-12">
                                                         <div className="single-product">
                                                             <div className="product-img">
-                                                                <a  style={{textDecoration: 'none'}} href={`/home/focus-product/${product.id}`}>
                                                                     <img className="default-img"
-                                                                         src={product.image} alt="#" style={{width:320, height:450}}/>
+                                                                         src={product.image} alt="#" style={{width:320, height:450}}
+                                                                         onClick={() => navigate(`/detail-product/${product.productId}`)}/>
                                                                     <span className="out-of-stock">Hot</span>
-
-
-                                                                </a>
                                                                 <div className="button-head">
                                                                     <div className="product-action">
                                                                        <Link  style={{textDecoration: 'none'}} ><i className=" ti-eye"></i><span>Detail 142</span></Link>
@@ -140,14 +137,17 @@ export default function HomeProduct(){
                                                                             className="ti-bar-chart-alt"></i><span>Add to Compare</span></Link>
                                                                     </div>
                                                                     <div className="product-action-2">
-                                                                        <a  style={{textDecoration: 'none'}}  href={`/home/focus-product/${product.id}`}>Add to cart</a>
+                                                                        <Link  style={{textDecoration: 'none',color:'red'}}  to={`/detail-product/${product.productId}`}>Add to cart</Link>
                                                                         <span> or </span>
-                                                                        <Link  style={{textDecoration: 'none',color:'red'}}  to={`/home/buy-now/${product.id}`}>Buy now</Link>
+                                                                        { user.userId ? 
+                                                                        <Link  style={{textDecoration: 'none',color:'red'}}  to={`/payment/${product.productId}`}>Buy now</Link>:
+                                                                        <Link  style={{textDecoration: 'none',color:'red'}}  to={`/login`}>Buy now</Link>
+                                                                        }
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div style={{textAlign:"center"}} className="product-content">
-                                                                <h5>{product.name}</h5>
+                                                                <h5>{product.productName}</h5>
                                                                 <div className="product-price">
                                                                     <span style={{color:"red"}}>{product.price} $</span>
                                                                 </div>

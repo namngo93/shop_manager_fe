@@ -7,23 +7,20 @@ export const getProducts = createAsyncThunk(
         const res = await customAxios.get('products');
         return res.data;
     }
-    )
+)
 
-
-
-export const findByIdProduct = createAsyncThunk(
-    'products/findByIdProduct',
+export const findByProductId = createAsyncThunk(
+    'products/findByProductId',
     async (data)=>{
-        const res = await customAxios.get('products/findById/'+data);
-        return res.data[0];
+        const res = await customAxios.get('products/'+data);
+        return res.data;
     }
 )
 
-export const findByName = createAsyncThunk(
-    'products/findByNameCategory',
+export const findByConditions = createAsyncThunk(
+    'products/findByConditions',
     async (data)=>{
-
-        const res = await customAxios.get(`products/search/findByName?search=${data}`);
+        const res = await customAxios.get(`products/findByConditions/search?productName=${data.productName}&categoryId=${data.categoryId}`);
         return res.data;
     }
 )
@@ -60,17 +57,19 @@ export const addProduct = createAsyncThunk(
 export const deleteProduct = createAsyncThunk(
     'products/deleteProduct',
     async (data)=>{
-        await customAxios.delete('products/'+data);
-        const res = await customAxios.get('products');
-        return res.data;
+        const res = await customAxios.delete('products/'+ data);
+        if(res.status === 200){
+            return data
+        }
     }
 )
 
 export const editProduct = createAsyncThunk(
     'products/editProduct',
     async (data)=>{
-        await customAxios.put('products/' + data.id,data);
-        const res = await customAxios.get('products');
-        return res.data;
+        const res = await customAxios.put('products/' + data.productId,data);
+        if(res.status === 200){
+            return data
+        } 
     }
 )

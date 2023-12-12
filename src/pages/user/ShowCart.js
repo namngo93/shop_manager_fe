@@ -1,31 +1,28 @@
 import {Field, Form, Formik} from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import {addOrder, deleteCart, editOrder,showCart} from "../../services/orderService";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {addOrder} from "../../services/orderService";
+import { showCart, deleteCart } from "../../services/cartService";
+import {Link, useNavigate} from "react-router-dom";
 
 export default function ShowCart() {
-    const {idOrder} = useParams();
-
-    const navigate = useNavigate()
-
-    const user = useSelector(state => {
-        return state.user.currentUser
-    })
-
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const user = useSelector(state => {
+        return state.user.currentUser
+    });
 
     const carts = useSelector(state => {
-        return state.orders.cart
-    })
-
+        return state.carts.carts
+    });
 
     useEffect(() => {
-        dispatch(showCart(idOrder))
-    }, [])
+        dispatch(showCart(user.userId))
+    }
+    , [user.userId, dispatch]);
 
-    let totalPoint = 0;
+    let totalAmount = 0;
     return (
         <>
             {
@@ -39,8 +36,8 @@ export default function ShowCart() {
                                 <div className="col-12">
                                     <div className="bread-inner">
                                         <ul className="bread-list">
-                                            <li><a href={"/home"}>Home<i className="ti-arrow-right"></i></a></li>
-                                            <li className="active"><a href="#">Cart</a></li>
+                                            <li><a href={"/"}>Home<i className="ti-arrow-right"></i></a></li>
+                                            <Link style={{ textDecoration: 'none' }}>Cart</Link>
                                         </ul>
                                     </div>
                                 </div>
@@ -64,29 +61,29 @@ export default function ShowCart() {
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {carts !== 'Saved cart' && carts.map(item => (
-                                            totalPoint += item.total,
-
-                                                <tr>
+                                        {carts !== 'Saved cart' && carts.map(item => {
+                                            totalAmount += ( item.price * item.quantity );
+                                            return (
+                                                <tr key={item.cartId}>
                                                     <td className="image" data-title="No"><img src={item.image} alt="" style={{width: 50}}/>
                                                     </td>
                                                     <td className="product-des" data-title="Description">
-                                                        {item.name}
+                                                        {item.productName}
                                                     </td>
                                                     <td className="price" data-title="Price">{item.price} $</td>
                                                     <td className="product-des" data-title="Description">
                                                         {item.quantity}
                                                     </td>
                                                     <td className="total-amount" data-title="Total">
-                                                        <span>{item.total} $</span></td>
+                                                        <span>{item.price * item.quantity} $</span></td>
                                                     <td className="action" data-title="Remove"><Link style={{textDecoration:"none"}} to="#"><i
-                                                        className="ti-trash remove-icon" onClick={()=>{
-                                                            dispatch(deleteCart(item.id)).then(()=>{
-                                                                dispatch(showCart(idOrder))
-                                                            })
-                                                    }}></i></Link></td>
+                                                        className="ti-trash remove-icon" 
+                                                        onClick={()=> dispatch( deleteCart(`${item.cartId}`))}></i></Link></td>
                                                 </tr>
-                                        ))}
+                                            )
+                                        }
+
+                                        )}
                                         </tbody>
                                     </table>
                                 </div>
@@ -99,13 +96,13 @@ export default function ShowCart() {
                                                 <div className="mt-3 right">
                                                     <>
                                                             <ul>
-                                                                <li>Cart Subtotal<span>{totalPoint} $</span></li>
+                                                                <li>Cart Subtotal<span>{totalAmount} $</span></li>
                                                                 <li>Shipping<span>Free</span></li>
-                                                                <li className="last">You Pay<span>{totalPoint} $</span>
+                                                                <li className="last">You Pay<span>{totalAmount} $</span>
                                                                 </li>
                                                             </ul>
                                                             <div>
-                                                                <a href={'/home'}>
+                                                                <a href={'/list-product'}>
                                                                     <button style={{width: 200, marginLeft: 50}}
                                                                             className="mt-3 btn btn-outline-secondary">Continue
                                                                         shopping
@@ -119,33 +116,24 @@ export default function ShowCart() {
                                                     <div  style={{marginLeft:300}}>
                                                         <Formik
                                                             initialValues={{
-                                                                id: idOrder,
                                                                 receiver: '',
                                                                 address: '',
                                                                 phone: '',
-                                                                time: '',
-                                                                totalPoint: totalPoint
+                                                                totalAmount: totalAmount
                                                             }}
                                                             onSubmit={(values) => {
-                                                                values.status = 'loading';
-                                                                values.totalPoint = totalPoint;
-                                                                dispatch(editOrder(values)).then(() => {
-                                                                    let order = {
-                                                                        idUser: user.idUser,
-                                                                        receiver: user.username,
-                                                                        address: 'hd',
-                                                                        phone: 0,
-                                                                        time: '2023-02-24 00:29:52',
-                                                                        totalPoint: 0,
-                                                                        status: 'buying'
-                                                                    }
-                                                                    dispatch(addOrder(order)).then((e)=>{
-                                                                        dispatch(showCart(e.payload.id))
-                                                                    });
-
-                                                                    navigate('/home');
-
-                                                                })
+                                                                const data = {
+                                                                    order : {
+                                                                        userId: user.userId,
+                                                                        receiver: values.receiver,
+                                                                        address: values.address,
+                                                                        phone: values.phone,
+                                                                        totalAmount: totalAmount
+                                                                    },
+                                                                    orderDetail : carts.map(({ productId, productName, price, description, inventory, categoryId, image, quantity }) => ({ productId, productName, price, description, inventory, categoryId, image, quantity }))
+                                                                };
+                                                                dispatch(addOrder(data))
+                                                                navigate('/list-product');
                                                             }}
                                                         >
 
@@ -162,12 +150,8 @@ export default function ShowCart() {
                                                                     <label htmlFor="exampleInput" className="form-label">Phone</label>
                                                                     <Field type="text" className="form-control" id="exampleInput" name={'phone'}/>
                                                                 </div>
-                                                                <div className="mb-3" style={{width:300}}>
-                                                                    <label htmlFor="exampleInput" className="form-label">Time</label>
-                                                                    <Field type="date" className="form-control" id="exampleInput" name={'time'}/>
-                                                                </div>
                                                                 <div style={{marginBottom:3}}>
-                                                                    <button style={{width: 200, marginLeft: 50}}
+                                                                    <button type="submit" style={{width: 200, marginLeft: 50}}
                                                                             className="mt-3 btn btn-outline-danger">Check Out
                                                                     </button>
                                                                 </div>

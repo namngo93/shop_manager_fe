@@ -16,3 +16,11 @@ export const register = createAsyncThunk(
         return res.data;
     }
 )
+
+export const getUsers = createAsyncThunk(
+    'user/getUsers',
+    async ()=>{
+        const res = await customAxios.get('users');
+        return res.data;
+    }
+)

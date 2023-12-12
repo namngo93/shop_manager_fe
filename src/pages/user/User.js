@@ -2,10 +2,10 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import {Outlet} from "react-router";
 
-export default function Home(){
+export default function User(){
     return(
         <>
-          <Navbar/>
+            <Navbar/>
 
             <div className="row">
                 <div className="col-12">
