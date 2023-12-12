@@ -1,6 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {deleteProduct, findByConditions} from "../../services/productService";
+import {deleteProduct, findByConditions } from "../../services/productService";
 import { useNavigate } from "react-router-dom";
 import swal from 'sweetalert';
 import {getCategory} from "../../services/categoryService";
@@ -140,7 +140,8 @@ export default function ManageProduct(){
                                                                     <th scope="col">{product.inventory}</th>
                                                                     <th scope="col" >
                                                                         <button 
-                                                                            onClick={() => navigate(`/admin/product-edit/${product.productId}`)}
+                                                                            onClick={() => {
+                                                                                navigate(`/admin/product-edit/${product.productId}`)}}
                                                                             className="btn btn-outline-primary"
                                                                             >
                                                                             Edit

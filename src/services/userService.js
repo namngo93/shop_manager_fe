@@ -24,3 +24,19 @@ export const getUsers = createAsyncThunk(
         return res.data;
     }
 )
+
+export const editUserInfo = createAsyncThunk(
+    'user/editUserInfo',
+    async (data)=>{
+        const res = await customAxios.put('users', data);
+        return res.data;
+    }
+)
+
+export const changePw = createAsyncThunk(
+    'user/changePw',
+    async (data)=>{
+        const res = await customAxios.put('users/changePw', data);
+        return res.data;
+    }
+)
