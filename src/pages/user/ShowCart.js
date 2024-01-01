@@ -148,7 +148,7 @@ export default function ShowCart() {
                                                                 </div>
                                                                 <div className="mb-3" style={{width:300}}>
                                                                     <label htmlFor="exampleInput" className="form-label">Phone</label>
-                                                                    <Field type="text" className="form-control" id="exampleInput" name={'phone'}/>
+                                                                    <Field type="text" className="form-control" id="exampleInput" name={'phone'} pattern="[0-9]{10}" title="Số điện thoại phải có 10 chữ số(ví dụ: 0987654321)"/>
                                                                 </div>
                                                                 <div style={{marginBottom:3}}>
                                                                     <button type="submit" style={{width: 200, marginLeft: 50}}
