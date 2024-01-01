@@ -62,25 +62,28 @@ export default function ManageProduct(){
             <div className="product-area section">
                 <div className="container">
                     <div className="row">
-                        <div className="col-12">
+                        <div className="col-12" style={{marginTop:-60}}>
                             <div className="section-title">
                                 <h2>List product</h2>
                             </div>
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col-12">
+                        <div className="col-12" style={{marginTop:-40}}>
                             <div className="product-info">
                                 <div className="nav-main" style={{marginBottom:20} }>
                                     <ul className="nav nav-tabs" id="myTab" role="tablist">
                                         <li>
-                                                <input name="search" placeholder="Search Products Here....." type="search" 
+                                                <input className="form-label"  name="search" placeholder="Search Products Here....." type="search" 
                                                 onChange={(e)=>{
                                                     setCondition(prevState => ({
                                                         ...prevState,
                                                         productName: e.target.value
                                                     }))
                                             }}/>
+                                        </li>
+                                        <li class="nav-item">
+                                          <a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionPhoto"> <i class="bi bi-image-fill text-success pe-2"></i>Add</a>
                                         </li>
                                         <li className="nav-item ">
                                             <button className="btn btn-outline-secondary my-2 my-sm-0" 
@@ -107,6 +110,41 @@ export default function ManageProduct(){
 
                                     </ul>
                                 </div>
+                                <div class="modal fade" id="feedActionPhoto" tabindex="-1" aria-labelledby="feedActionPhotoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="feedActionPhotoLabel">Add post photo</h5>
+      </div>
+        <div class="modal-body">
+        <div class="d-flex mb-3">
+          <div class="avatar avatar-xs me-2">
+            <img class="avatar-img rounded-circle" src="assets/images/avatar/03.jpg" alt=""/>
+          </div>
+          <form class="w-100">
+            <textarea class="form-control pe-4 fs-3 lh-1 border-0" rows="2" placeholder="Share your thoughts..."></textarea>
+          </form>
+        </div>
+
+        <div>
+          <label class="form-label">Upload attachment</label>
+          <div class="dropzone dropzone-default card shadow-none" data-dropzone='{"maxFiles":2}'>
+            <div class="dz-message">
+              <i class="bi bi-images display-3"></i>
+              <p>Drag here or click to upload photo.</p>
+            </div>
+          </div>
+        </div>
+
+        </div>
+        <div class="modal-footer ">
+            <button type="button" class="btn btn-danger-soft me-2" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-success-soft">Post</button>
+        </div>
+    
+    </div>
+  </div>
+</div>
                                 <div className="tab-content" id="myTabContent">
                                     <div className="tab-pane fade show active" id="ALL" role="tabpanel">
                                         <div className="tab-single">
