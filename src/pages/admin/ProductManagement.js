@@ -1,9 +1,14 @@
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
-import {deleteProduct, findByConditions } from "../../services/productService";
+import {useEffect, useState,} from "react";
+import {deleteProduct, findByConditions, addProduct } from "../../services/productService";
 import { useNavigate } from "react-router-dom";
 import swal from 'sweetalert';
 import {getCategory} from "../../services/categoryService";
+import {Field, Form, Formik} from "formik";
+import {ref, uploadBytesResumable, getDownloadURL} from "firebase/storage";
+import {storage} from "../../services/firebase";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 export default function ManageProduct(){
     const dispatch = useDispatch();
@@ -55,6 +60,77 @@ export default function ManageProduct(){
     useEffect(() => {
         dispatch(findByConditions(condition))
     }, [condition, dispatch]);
+
+    // add new product
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+    const handleAdd = async (values) => {
+        console.log(values)
+        let data = {...values};
+        dispatch(addProduct(data)).then(()=>{
+
+            swal("Added new product success!", {
+                icon: "success",
+            });
+            dispatch(findByConditions(condition));
+            setShow(false);
+            setUrls([]);
+        });
+    }
+
+    const [urls, setUrls] = useState([]);
+
+    const [progress, setProgress] = useState(0);
+
+    const handleChange = (e) => {
+        const files = Array.from(e.target.files);  // danh sách các ảnh đuợc chọn
+        const promises = [];                        // danh sách các task upload ảnh
+      
+        files.forEach((file) => {
+          const uniqueId = Math.random();
+          const storageRef = ref(storage, `images/${uniqueId}_${file.name}`);  // tạo 1 file và lấy đường dẫn trên firebase
+          const uploadTask = uploadBytesResumable(storageRef, file); // upload file/ảnh lên firebase
+      
+          const promise = new Promise((resolve, reject) => { // lấy url và push  vào mảng promises 
+            uploadTask.on(
+              "state_changed",
+              (snapshot) => {
+                const progress = Math.round(
+                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+                setProgress(progress);
+              },
+              (error) => {
+                reject(error);
+              },
+              async () => {
+                try {
+                  const url = await getDownloadURL(uploadTask.snapshot.ref);
+                  resolve(url);
+                } catch (error) {
+                  reject(error);
+                }
+              }
+            );
+          });
+      
+          promises.push(promise);
+        });
+      
+        Promise.all(promises) // xử lý đồng các promise và lấy ra danh sách url
+          .then((urls) => {
+            // Xử lý các URL sau khi upload hoàn tất
+            // Cập nhật state hoặc thực hiện các công việc khác ở đây
+            setUrls(prev => [...prev, urls]); 
+            alert("All images uploaded:");
+          })
+          .catch((error) => {
+            // Xử lý lỗi nếu có
+            alert("Error uploading images:", error);
+            // Hiển thị thông báo lỗi hoặc thực hiện xử lý khác
+          });
+    };
     
     return(
         <>
@@ -83,7 +159,7 @@ export default function ManageProduct(){
                                             }}/>
                                         </li>
                                         <li class="nav-item">
-                                          <a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionPhoto"> <i class="bi bi-image-fill text-success pe-2"></i>Add</a>
+                                        <Button variant="primary" onClick={handleShow}>Add new</Button>
                                         </li>
                                         <li className="nav-item ">
                                             <button className="btn btn-outline-secondary my-2 my-sm-0" 
@@ -110,41 +186,92 @@ export default function ManageProduct(){
 
                                     </ul>
                                 </div>
-                                <div class="modal fade" id="feedActionPhoto" tabindex="-1" aria-labelledby="feedActionPhotoLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="feedActionPhotoLabel">Add post photo</h5>
-      </div>
-        <div class="modal-body">
-        <div class="d-flex mb-3">
-          <div class="avatar avatar-xs me-2">
-            <img class="avatar-img rounded-circle" src="assets/images/avatar/03.jpg" alt=""/>
-          </div>
-          <form class="w-100">
-            <textarea class="form-control pe-4 fs-3 lh-1 border-0" rows="2" placeholder="Share your thoughts..."></textarea>
-          </form>
-        </div>
 
-        <div>
-          <label class="form-label">Upload attachment</label>
-          <div class="dropzone dropzone-default card shadow-none" data-dropzone='{"maxFiles":2}'>
-            <div class="dz-message">
-              <i class="bi bi-images display-3"></i>
-              <p>Drag here or click to upload photo.</p>
-            </div>
-          </div>
-        </div>
+{/* modal add product */}
+<Modal show={show} onHide={handleClose}>
+    <Formik
+        initialValues={{
+                            productName: '',
+                            price: '',
+                            description: '',
+                            inventory:'',
+                            catgoryId: ''
+                        }}
+        onSubmit={(values) => {
+            values.image = urls[0]
+            handleAdd(values)
+        }}
+        enableReinitialize={true}
+    >
+        <Form>
+          <Modal.Header closeButton>
+            <Modal.Title>Add product</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+          <div className="d-flex mb-3">
+                            <div className="avatar avatar-xs me-2">
+                                <img className="avatar-img rounded-circle" src="assets/images/avatar/03.jpg" alt="#"/>
+                            </div>
+                        </div>
 
-        </div>
-        <div class="modal-footer ">
-            <button type="button" class="btn btn-danger-soft me-2" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-success-soft">Post</button>
-        </div>
-    
-    </div>
-  </div>
-</div>
+                        <div>
+                        <div className="mb-3">
+                            <label htmlFor="productName" className="form-label">Name product</label>
+                            <Field id = "productName" type="text" className="form-control" name={'productName'}/>
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="price" className="form-label">Price</label>
+                            <Field id = "price" type="number" className="form-control" name={'price'}/>
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="description" className="form-label">Description</label>
+                            <Field id = "description" type="text" className="form-control"  name={'description'}/>
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="inventory" className="form-label">Quantity</label>
+                            <Field type="number" className="form-control" id="inventory" name={'inventory'}/>
+                        </div>
+                        <div className="mb-3">
+                                <label htmlFor="exampleInput" className="form-label">Image</label>
+                                <br/>
+
+                                <input type='file' id="fileInput" hidden  onChange={handleChange}>
+                                </input>
+                                <button className="btn btn-outline-primary" style={{marginRight: 10}} type='button'
+                                        onClick={() => document.getElementById('fileInput').click()}>Upload
+                                </button>
+                                {urls.map((item,ind) => (
+                                        <img key={ind} src={item} alt="" style={{width: 50}}/>
+                                ))}
+                                {/* {urls.length > 1 ?
+                                <img src={urls[urls.length-1]} alt={urls[urls.length-1]} style={{width: 50}}/>:
+                                <img src={product.image} alt={product.image} style={{width: 50}}/>
+                                } */}
+                            </div>
+                        <div className="mb-3">
+                            <Field as='select' name={'categoryId'} >
+                                {categories !== undefined && categories.map((item)=>(
+                                    <option key={item.categoryId} value={item.categoryId}>{item.categoryName}</option>
+                                ))
+
+                                }
+                            </Field>
+                        </div>
+                        </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button type="submit" variant="primary">
+              Add new
+            </Button>
+          </Modal.Footer>
+        </Form>
+    </Formik>
+</Modal>
+
+{/* modal end */}
                                 <div className="tab-content" id="myTabContent">
                                     <div className="tab-pane fade show active" id="ALL" role="tabpanel">
                                         <div className="tab-single">
@@ -179,7 +306,7 @@ export default function ManageProduct(){
                                                                     <th scope="col" >
                                                                         <button 
                                                                             onClick={() => {
-                                                                                navigate(`/admin/product-edit/${product.productId}`)}}
+                                                                                navigate(`/product-edit/${product.productId}`)}}
                                                                             className="btn btn-outline-primary"
                                                                             >
                                                                             Edit
@@ -212,3 +339,4 @@ export default function ManageProduct(){
         </>
     )
 }
+

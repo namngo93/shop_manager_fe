@@ -1,7 +1,12 @@
 import { useDispatch, useSelector} from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCategory } from "../../services/categoryService";
+import { getCategory, addCategory } from "../../services/categoryService";
+import {Field, Form, Formik} from "formik";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import swal from 'sweetalert';
+
 
 export default function ManageCategory(){
     const dispatch = useDispatch();
@@ -13,6 +18,23 @@ export default function ManageCategory(){
     useEffect(()=>{
         dispatch(getCategory())
     },[]);
+
+    // add new cat
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+    const handleAdd = async (values) => {
+        console.log(values)
+        let data = {...values};
+        dispatch(addCategory(data)).then(()=>{
+
+            swal("Added new product success!", {
+                icon: "success",
+            });
+            dispatch(getCategory());
+            setShow(false);
+        });
+    }
     
     return(
         <>
@@ -32,47 +54,48 @@ export default function ManageCategory(){
                                     <ul className="nav nav-tabs" id="myTab" role="tablist">
                                        
                                     <li class="nav-item">
-                                         <a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionVideo"> <i class="bi bi-camera-reels-fill text-info pe-2"></i>add</a>
+                                    <Button variant="primary" onClick={handleShow}>Add new</Button>                                   
                                     </li>
-                                      
-
                                     </ul>
                                 </div>
                                 
-                                    <div class="modal fade" id="feedActionVideo" tabindex="-1" aria-labelledby="feedActionVideoLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="feedActionVideoLabel">Add post video</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="d-flex mb-3">
-                                                        <div class="avatar avatar-xs me-2">
-                                                            <img class="avatar-img rounded-circle" src="assets/images/avatar/03.jpg" alt=""/>
-                                                        </div>
-                                                 <form class="w-100">
-                                                    <textarea class="form-control pe-4 fs-3 lh-1 border-0" rows="2" placeholder="Share your thoughts..."></textarea>
-                                                </form>
-                                                </div>
+                                <Modal show={show} onHide={handleClose}>
+    <Formik
+        initialValues={{ categoryName: '' }}
+        onSubmit={(values) => {
+            handleAdd(values)
+        }}
+        enableReinitialize={true}
+    >
+        <Form>
+          <Modal.Header closeButton>
+            <Modal.Title>Add category</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="d-flex mb-3">
+                <div className="avatar avatar-xs me-2">
+                    <img className="avatar-img rounded-circle" src="assets/images/avatar/03.jpg" alt="#"/>
+                </div>
+            </div>
+            <div>
+                <div className="mb-3" >
+                    <label htmlFor="exampleInput" className="form-label">Name Category</label>
+                    <Field style={{width:450}} type="text" className="form-control"  name={'categoryName'}/>
+                </div>
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button type="submit" variant="primary">
+              Add new
+            </Button>
+          </Modal.Footer>
+        </Form>
+    </Formik>
+</Modal>
 
-                                        <div>
-                                            <label class="form-label">Upload attachment</label>
-                                            <div class="dropzone dropzone-default card shadow-none" data-dropzone='{"maxFiles":2}'>
-                                                <div class="dz-message">
-                                                     <i class="bi bi-camera-reels display-3"></i>
-                                                    <p>Drag here or click to upload video.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger-soft me-2"><i class="bi bi-camera-video-fill pe-1"></i> Live video</button>
-                                        <button type="button" class="btn btn-success-soft">Post</button>
-                                                    </div>
-                                              </div>
-                                         </div>
-                                    </div>
                                  </div>
                                
                             </div>
@@ -103,7 +126,7 @@ export default function ManageCategory(){
                                                                     <th scope="col">{category.categoryName}</th>
                                                                     <th scope="col" >
                                                                         <button 
-                                                                            onClick={() => navigate(`/admin/category-edit/${category.categoryId}`)}
+                                                                            onClick={() => navigate(`/category-edit/${category.categoryId}`)}
                                                                             className="btn btn-outline-primary"
                                                                             >
                                                                             Edit

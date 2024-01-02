@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
-import  { getOrder,editOrder,orderDetail } from "../../services/orderService";
+import  { getOrder,editOrder, } from "../../services/orderService";
 import { useNavigate } from "react-router";
 
 export default function ManegeOrder() {
@@ -51,11 +51,11 @@ export default function ManegeOrder() {
                                 <td>{order.phone}</td>
                                 <td>{order.totalAmount}</td>
                                 <td>{order.orderDate}</td>
-                                <td><button className="btn btn-outline-secondary" onClick={() => { dispatch(editOrder(order.orderId))}}>{order.status}</button></td>
                                 <td>
-                                    <button className="btn btn-outline-secondary" onClick={() => {
-                                        dispatch(orderDetail(order.orderId)).then(()=>navigate(`/order-detail/${order.orderId}`))
-                                    } }>Detail</button>
+                                    <button className="btn btn-outline-secondary" onClick={() => { dispatch(editOrder(order.orderId))}}>{order.status}</button>
+                                </td>
+                                <td>
+                                    <button className="btn btn-outline-secondary" onClick={() => { navigate(`/order-detail/${order.orderId}`)} }>Detail</button>
                                 </td>    
                             </tr>
                             ))
