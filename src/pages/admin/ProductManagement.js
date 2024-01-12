@@ -204,34 +204,28 @@ export default function ManageProduct(){
         enableReinitialize={true}
     >
         <Form>
-          <Modal.Header closeButton>
-            <Modal.Title>Add product</Modal.Title>
-          </Modal.Header>
           <Modal.Body>
-          <div className="d-flex mb-3">
-                            <div className="avatar avatar-xs me-2">
-                                <img className="avatar-img rounded-circle" src="assets/images/avatar/03.jpg" alt="#"/>
-                            </div>
-                        </div>
+            <h1>Add product</h1>
+         
 
-                        <div>
-                        <div className="mb-3">
+                        <div >
+                        <div className="mb-3" style={{marginLeft: 60}}>
                             <label htmlFor="productName" className="form-label">Name product</label>
-                            <Field id = "productName" type="text" className="form-control" name={'productName'}/>
+                            <Field id = "productName" type="text" className="form-control" style= {{width:300}} name={'productName'}/>
                         </div>
-                        <div className="mb-3">
+                        <div className="mb-3" style={{marginLeft: 60}}>
                             <label htmlFor="price" className="form-label">Price</label>
-                            <Field id = "price" type="number" className="form-control" name={'price'}/>
+                            <Field id = "price" type="number" className="form-control" style= {{width:300}} name={'price'}/>
                         </div>
-                        <div className="mb-3">
+                        <div className="mb-3"style={{marginLeft: 60}}>
                             <label htmlFor="description" className="form-label">Description</label>
-                            <Field id = "description" type="text" className="form-control"  name={'description'}/>
+                            <Field id = "description" type="text" className="form-control" style= {{width:300}} name={'description'}/>
                         </div>
-                        <div className="mb-3">
+                        <div className="mb-3" style={{marginLeft: 60}}>
                             <label htmlFor="inventory" className="form-label">Quantity</label>
-                            <Field type="number" className="form-control" id="inventory" name={'inventory'}/>
+                            <Field type="number" className="form-control" id="inventory" style= {{width:300}} name={'inventory'}/>
                         </div>
-                        <div className="mb-3">
+                        <div className="mb-3" style={{marginLeft: 60}}>
                                 <label htmlFor="exampleInput" className="form-label">Image</label>
                                 <br/>
 
@@ -248,7 +242,7 @@ export default function ManageProduct(){
                                 <img src={product.image} alt={product.image} style={{width: 50}}/>
                                 } */}
                             </div>
-                        <div className="mb-3">
+                        <div className="mb-3" style={{marginLeft: 60}}>
                             <Field as='select' name={'categoryId'} >
                                 {categories !== undefined && categories.map((item)=>(
                                     <option key={item.categoryId} value={item.categoryId}>{item.categoryName}</option>

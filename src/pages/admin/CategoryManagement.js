@@ -68,19 +68,13 @@ export default function ManageCategory(){
         enableReinitialize={true}
     >
         <Form>
-          <Modal.Header closeButton>
-            <Modal.Title>Add category</Modal.Title>
-          </Modal.Header>
+         
           <Modal.Body>
-            <div className="d-flex mb-3">
-                <div className="avatar avatar-xs me-2">
-                    <img className="avatar-img rounded-circle" src="assets/images/avatar/03.jpg" alt="#"/>
-                </div>
-            </div>
+            <h1>Add category</h1>
             <div>
-                <div className="mb-3" >
+                <div className="mb-3" style={{marginLeft : 60}}>
                     <label htmlFor="exampleInput" className="form-label">Name Category</label>
-                    <Field style={{width:450}} type="text" className="form-control"  name={'categoryName'}/>
+                    <Field style={{width:450, width: 300}} type="text" className="form-control"  name={'categoryName'}/>
                 </div>
             </div>
           </Modal.Body>
