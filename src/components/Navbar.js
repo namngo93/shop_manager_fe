@@ -42,14 +42,16 @@ export default function Navbar(){
 
                                     <div className="right-content">
                                         <ul className="list-main">
-                                            <li><i className="ti-location-pin"></i><Link style={{textDecoration:"none"}} to="https://www.google.com/maps/@20.9997628,105.8071965,16z?hl=vi-VN">Store location</Link> </li>
-                                            <li><Link  style={{textDecoration: 'none', pointerEvents:`${pointerEvents}`}} to={`/order-history`}><i className="ti-alarm-clock"></i> History</Link></li>
-                                            <li><Link  style={{textDecoration: 'none', pointerEvents:`${pointerEvents}`}} to="/information" ><i className="ti-user"></i> {user.userName}</Link></li>
+                                            <li><i className="ti-location-pin"></i><Link style={{textDecoration:"none"}} to="https://www.google.com/maps/@20.9997628,105.8071965,16z?hl=vi-VN">Bản đồ</Link> </li>
+                                            <li><Link  style={{textDecoration: 'none', pointerEvents:`${pointerEvents}`}} to={`/order-history`}><i className="ti-alarm-clock"></i> Lịch sử</Link></li>
                                             {user.userId ? 
+                                            <>
+                                            <li><Link  style={{textDecoration: 'none', pointerEvents:`${pointerEvents}`}} to="/information" ><i className="ti-user"></i> {user.userName}</Link></li>
                                             <li><a style={{textDecoration: 'none'}} href="/" type={'summit'} onClick={()=>{
                                                 localStorage.clear();
-                                            }}><i className="ti-power-off"></i> Logout</a></li>: 
-                                            <li><a style={{textDecoration: 'none'}} href="/login" type={'summit'}><i className="ti-power-off"></i> Login</a></li>}
+                                            }}><i className="ti-power-off"></i> Đăng xuất</a></li>
+                                            </> : 
+                                            <li><a style={{textDecoration: 'none'}} href="/login" type={'summit'}><i className="ti-power-off"></i> Đăng nhập</a></li>}
                                         </ul>
                                     </div>
 
@@ -103,32 +105,31 @@ export default function Navbar(){
                                                 <div className="navbar-collapse">
                                                     <div className="nav-inner">
                                                         <ul className="nav main-menu menu navbar-nav">
-                                                            <li className="active"><Link  style={{textDecoration: 'none'}} to="/" >Home</Link></li>
+                                                            <li className="active"><Link  style={{textDecoration: 'none'}} to="/" >Trang chủ</Link></li>
                                                             {user.role === 1 ?
                                                             <>
-                                                                <li><Link  style={{textDecoration: 'none'}} to="/admin/product-management" >Product <i className="ti-angle-down"></i> </Link>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="/admin/product-management" >Sản phẩm <i className="ti-angle-down"></i> </Link>
                                                                     <ul className="dropdown">
-                                                                            <li><Link  style={{textDecoration: 'none'}} to="/admin/product-add">Add new product </Link></li>
+                                                                            <li><Link  style={{textDecoration: 'none'}} to="/admin/product-add">Thêm mới ản phẩm </Link></li>
                                                                     </ul>
                                                                 </li>
-                                                                <li><Link  style={{textDecoration: 'none'}} to="/admin/category-management">Category <i className="ti-angle-down"></i></Link>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="/admin/category-management">Danh mục <i className="ti-angle-down"></i></Link>
                                                                     <ul className="dropdown">
-                                                                            <li><Link  style={{textDecoration: 'none'}} to="/admin/category-add">Add new category </Link></li>
+                                                                            <li><Link  style={{textDecoration: 'none'}} to="/admin/category-add">Thêm mới danh mục </Link></li>
                                                                     </ul>
                                                                 </li>
-                                                                <li><Link  style={{textDecoration: 'none'}} to="/admin/order-management">Order</Link></li>
-                                                                <li><Link  style={{textDecoration: 'none'}} to="/admin/user-management">User</Link></li>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="/admin/order-management">Đơn hàng</Link></li>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="/admin/user-management">Người dùng</Link></li>
                                                             </>:
                                                             <>
-                                                                <li><Link  style={{textDecoration: 'none'}} to="/list-product">List product</Link></li>
-                                                                <li><Link  style={{textDecoration: 'none'}} to="#">About us</Link></li>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="/list-product">Danh sách sản phẩm</Link></li>
                                                                 {user.userId && 
                                                                 <>
-                                                                <li><Link  style={{textDecoration: 'none'}} to="/order-history">Order history</Link></li>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="/order-history">Lịch sử mua hàng</Link></li>
 
-                                                                <li><Link  style={{textDecoration: 'none'}} to="/information">Information <i className="ti-angle-down"></i></Link>
+                                                                <li><Link  style={{textDecoration: 'none'}} to="/information">Thông tin <i className="ti-angle-down"></i></Link>
                                                                 <ul className="dropdown">
-                                                                            <li><Link  style={{textDecoration: 'none'}} to="/changePw">Change password </Link></li>
+                                                                            <li><Link  style={{textDecoration: 'none'}} to="/changePw">Đổi mật khẩu </Link></li>
                                                                     </ul></li>
                                                                 </>
                                                                 }

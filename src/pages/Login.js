@@ -18,10 +18,15 @@ export default function Login() {
     const handleLogin = async (values) =>{
         await dispatch(login(values)).then((e)=>{
             if(e.payload !== 'Username is not existed' && e.payload !== 'Password is wrong'){
-                swal(`Well come, "${e.payload.userName}"`, {
+                swal(`Xin chào, "${e.payload.userName}"`, {
                     icon: "success",
                 })
-                navigate('/')
+                console.log()
+                if(e.payload.role == 1){
+                    navigate('/product-management')
+                }else{
+                    navigate('/')
+                }
             }else{
                 navigate('/login')
             }
@@ -39,7 +44,7 @@ export default function Login() {
                     <div className="col-5" >
                         <div className="row" >
                             <div style={{marginTop:110}}>
-                                <h1 style={{textAlign:'center', fontStyle:'Serif'}}>Login</h1>
+                                <h1 style={{textAlign:'center', fontStyle:'Serif'}}>Đăng nhập</h1>
                                 <div style={{textAlign:"center"}}>
                                     <img style={{width:100}}  src="/images/logo3.png" alt=""/>
                                 </div>
@@ -50,15 +55,15 @@ export default function Login() {
                                         handleLogin(values).then()
                                     }}>
                                     <Form>
-                                        <div className="row">
-
-                                            <div className="mb-3" style={{width:300, margin:"auto"}}>
-                                                <label htmlFor="exampleInput" className="form-label">Username</label>
+                                    <div className="row" style={{ padding: "0 50px" }}>
+                                        <div className="mb-3 custom-input-container">
+                                                <label htmlFor="exampleInput" className="form-label">Tài khoản
+                                                </label>
                                                 <Field  type="text" className="form-control" id="exampleInput" name={'userName'}/>
                                                 {
                                                     user === 'Username is not existed' &&
                                                     <>
-                                                        <h6 style={{color: "red"}}>Username is not existed</h6>
+                                                        <h6 style={{color: "red"}}>Tài khoản không tồn tại</h6>
                                                     </>
                                                 }
                                             </div>
@@ -66,21 +71,21 @@ export default function Login() {
                                             <div>
 
                                             </div>
-                                            <div className="mb-3" style={{width:300,margin:"auto"}}>
-                                                <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
+                                            <div className="mb-3 custom-input-container">
+                                                <label htmlFor="exampleInputPassword1" className="form-label">Mật khẩu</label>
                                                 <Field type="password" className="form-control" id="exampleInputPassword1" name={'password'}/>
                                                 {
                                                     user === 'Password is wrong' &&
                                                     <>
-                                                        <h6 style={{color: "red"}}>Password is wrong</h6>
+                                                        <h6 style={{color: "red"}}>Sai mật khẩu</h6>
                                                     </>
                                                 }
                                             </div>
                                         </div>
                                         <div className="row">
                                                 <div style={{textAlign:"center"}}>
-                                                    <button type="submit" className="btn btn-primary">Login</button>
-                                                    <Link to={'/register'} ><button style={{marginLeft:10}} type="submit" className="btn btn-secondary">register</button></Link>
+                                                    <button type="submit" className="btn btn-primary">Đăng nhập</button>
+                                                    <Link to={'/register'} ><button style={{marginLeft:10}} type="submit" className="btn btn-secondary">Đăng ký</button></Link>
 
                                                 </div>
                                          </div>

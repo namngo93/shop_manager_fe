@@ -44,7 +44,12 @@ function App() {
                 <Route path={'category-edit/:id'} element={<CategoryEdit/>}/>
                 <Route path={'category-add'} element={<CategoryAdd/>}/>
                 <Route path={'user-management'} element={<UserManagement/>}/> {/* Trang quan ly nguoi dung*/}
-                <Route path={'order-detail/:id'} element={<OrderDetail/>}/> {/* Trang chi ty don hang*/}
+                <Route path={'order-detail/:id'} element={<OrderDetail/>}/>
+                <Route path={'information'} element={<Information/>}/>
+                <Route path={'changePw'} element={<ChangePw/>}/>
+                <Route path={''} element={<Home/>}/>
+                <Route path={'list-product'} element={<ListProduct/>}/>
+                <Route path={'detail-product/:id'} element={<DetailProduct/>}/> {/* Trang chi ty don hang*/}
               </Route>:
               <>
               {/* Trang cua nguoi dung */}

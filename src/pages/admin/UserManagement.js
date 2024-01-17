@@ -1,12 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import swal from 'sweetalert';
 import { getUsers } from "../../services/userService";
 
 export default function ManageUser(){
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const users = useSelector(state =>{
         return state.user.users
     });
@@ -23,7 +20,7 @@ export default function ManageUser(){
                     <div className="row">
                         <div className="col-12">
                             <div className="section-title">
-                                <h2>List user</h2>
+                                <h2>Danh sách người dùng</h2>
                             </div>
                         </div>
                     </div>
@@ -35,17 +32,17 @@ export default function ManageUser(){
                                         <div className="tab-single">
                                             <div className="row">
                                                 <div className="col-12">
-                                                    <table className="table table-striped" border={1}>
+                                                    <table className="table table-striped" border={1} style={{textAlign: "center" }}>
                                                         <thead>
                                                         <tr>
                                                             <th scope="col">STT</th>
-                                                            <th scope="col">User ID</th>
-                                                            <th scope="col">User name</th>
-                                                            <th scope="col">Birthday</th>
+                                                            <th scope="col">ID người dùng</th>
+                                                            <th scope="col">Tên người dùng</th>
+                                                            <th scope="col">Ngày sinh</th>
                                                             <th scope="col">Email</th>
-                                                            <th scope="col">Phone</th>
-                                                            <th scope="col">Address</th>
-                                                            <th scope="col">Role</th>
+                                                            <th scope="col">Số điện thoại</th>
+                                                            <th scope="col">Địa chỉ</th>
+                                                            <th scope="col">Vai trò</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>

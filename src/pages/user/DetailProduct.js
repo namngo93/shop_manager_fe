@@ -37,7 +37,7 @@ export default function DetailProduct() {
             quantity: quantity
         };
         dispatch(addCart(data));
-        swal("Added to cart!", {
+        swal("Thêm giỏ hàng thành công!", {
             icon: "success",
         });
         navigate('/list-product')  
@@ -73,8 +73,8 @@ export default function DetailProduct() {
                         <div className="col-12">
                             <div className="bread-inner">
                                 <ul className="bread-list">
-                                    <li><Link to="/">Home<i className="ti-arrow-right"></i></Link></li>
-                                    <li className="active"><Link to="">Detail product</Link></li>
+                                    <li><Link to="/">Trang chủ<i className="ti-arrow-right"></i></Link></li>
+                                    <li className="active"><Link to="">Chi tiết sản phẩm</Link></li>
                                 </ul>
                             </div>
                         </div>
@@ -100,33 +100,21 @@ export default function DetailProduct() {
 
                                             </div>
                                         </div>
-                                        <div className="share-social">
-                                            <div className="row">
-                                                <div className="col-12">
-                                                    <div className="content-tags">
-                                                        <h4>Tags:</h4>
-                                                        <ul className="tag-inner">
-                                                            <li><a href="/">Glass</a></li>
-                                                            <li><a href="/">Pant</a></li>
-                                                            <li><a href="/">t-shirt</a></li>
-                                                            <li><a href="/">swater</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
 
 
                                     <div className="col-12">
 									<div className="comments">
-                                        <h3 className="comment-title">Comment ({reviews.length}) </h3>
+                                        <h3 className="comment-title">Bình luận ({reviews.length}) </h3>
 										{/* Single Comment */}
                                         {reviews.length !== 0 && reviews.map( (review, ind) => (
                                             <div key={review.reviewId}>
                                             <div  className="single-comment">
                                                 <div className="content">
+                                                {review.userId === user.userId?
+                                                    <h4>Tôi <span>{new Date(review.reviewDate).toLocaleString()}</span></h4>:
                                                     <h4>{review.userName} <span>{new Date(review.reviewDate).toLocaleString()}</span></h4>
+                                                }
                                                     
                                                     {isEditFormShown === ind ?
                                                         <Formik 
@@ -146,7 +134,7 @@ export default function DetailProduct() {
                                                                     <div className="col-12">
                                                                         <div className="form-group">
                                                                             <Field name="comment" placeholder=""/>
-                                                                            <button type="submit" className="btn btn-outline-secondary ">Submit</button>
+                                                                            <button type="submit" className="btn btn-outline-secondary ">Gửi</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -163,8 +151,8 @@ export default function DetailProduct() {
                                                             } else {
                                                                 setIsEditFormShown(ind);
                                                             }
-                                                        }}> Edit </p>
-                                                        <p type="button" onClick={() => {dispatch(deleteReview(review.reviewId))}}> Delete </p>
+                                                        }}> Sửa </p>
+                                                        <p type="button" onClick={() => {dispatch(deleteReview(review.reviewId))}}> Xóa </p>
                                                     </>
                                                     }
                                                     {user.role === 1 && !review.reply.userId  &&
@@ -174,7 +162,7 @@ export default function DetailProduct() {
                                                         } else {
                                                             setIsReplyShown(ind);
                                                         }
-                                                        }}> Reply </p>
+                                                        }}> Phản hồi </p>
                                                     }
                                                     {review.reply.userId &&
                                                     <p type="button" onClick={() => {
@@ -183,7 +171,7 @@ export default function DetailProduct() {
                                                         } else {
                                                             setIsFeedbackShown(ind);
                                                         }
-                                                        }}> Feedback </p>
+                                                        }}> Nhận xét </p>
                                                     }
                                                     </div>
                                                 </div>
@@ -191,8 +179,9 @@ export default function DetailProduct() {
                                             { isFeedbackShown === ind &&
                                             <div className="single-comment left">
                                                 <div className="content">
-                                                    <h4>{review.reply.userName} <span>{new Date(review.reply.date).toLocaleString()}</span></h4>
+                                                    <h4>Admin <span>{new Date(review.reply.date).toLocaleString()}</span></h4>
                                                     <p>{review.reply.comment}</p>
+                                                    {user.userId == 1 && 
                                                     <p type="button" onClick={() => {
                                                         const data = {
                                                         reviewId: review.reviewId,
@@ -201,7 +190,8 @@ export default function DetailProduct() {
                                                         }
                                                         dispatch(replyReview(data));
                                                         setIsFeedbackShown(null);
-                                                        }}> Delete </p>
+                                                        }}> Xóa </p>
+                                                    }
                                                 </div>
 										    </div>
                                             }
@@ -225,15 +215,15 @@ export default function DetailProduct() {
                                                 }}
                                             >
                                               <Form className="form single-comment" action="#">
-												<div className="row">
-													<div className="col-12">
-														<div className="form-group">
-															<label htmlFor="reply">Your Message<span>*</span></label>
-															<Field name="reply" id="reply" placeholder=""/>
-                                                            <button type="submit" className="btn btn-outline-secondary ">Reply</button>
-														</div>
-													</div>
-												</div>
+                                                <div className="row">
+                                                    <div className="col-12 d-flex">
+                                                        <div className="form-group flex-grow-1">
+                                                            <label htmlFor="reply">Tin nhắn của bạn<span> * </span></label>
+                                                            <Field name="reply" id="reply" placeholder="" className="form-control" />
+                                                        </div>
+                                                        <button type="submit" className="btn btn-outline-secondary ml-3 align-self-end">Phản hồi</button>
+                                                    </div>
+                                                </div>
 											</Form>  
                                             </Formik>
                                             }
@@ -248,11 +238,11 @@ export default function DetailProduct() {
 								<div className="col-12">			
 									<div className="reply">
 										<div className="reply-head">
-											<h2 className="reply-title">Leave a Comment</h2>
+											<h2 className="reply-title">Để lại bình luận</h2>
 											{/* <!-- Comment Form --> */}
                                             <Formik 
                                                 initialValues={{message: ""}}
-                                                onSubmit={(values) => {
+                                                onSubmit={(values, { resetForm }) => {
                                                     const data = {
                                                         userId: user.userId,
                                                         productId: id,
@@ -260,23 +250,26 @@ export default function DetailProduct() {
                                                         reply: {}
                                                     }
                                                     dispatch(createReview(data));
+                                                    resetForm();
                                                 }}
                                             >
+                                            {() =>(
                                               <Form className="form" action="#">
 												<div className="row">
 													<div className="col-12">
 														<div className="form-group">
-															<label htmlFor="message">Your Message<span>*</span></label>
+															<label htmlFor="message">Tin nhắn của bạn<span>*</span></label>
 															<Field name="message" id="message" placeholder=""/>
 														</div>
 													</div>
 													<div className="col-12">
 														<div className="form-group button">
-															<button type="submit" className="btn btn-outline-secondary ">Post comment</button>
+															<button type="submit" className="btn btn-outline-secondary ">Đăng bình luận</button>
 														</div>
 													</div>
 												</div>
 											</Form>  
+                                            )}
                                             </Formik>
 											{/* <!-- End Comment Form --> */}
 										</div>
@@ -291,10 +284,10 @@ export default function DetailProduct() {
                                 <div className="single-widget category">
                                     <h3 className="title">{product.name}</h3>
                                     <ul className="categor-list">
-                                        <li><p>Total Quantity: {product.inventory}.</p></li>
-                                        <li><p>Brand:  {product.categoryName}</p></li>
-                                        <li><p>Price: {product.price}</p></li>
-                                        <li><p>Quantity: 
+                                        <li><p>Tổng: {product.inventory}.</p></li>
+                                        <li><p>Danh mục:  {product.categoryName}</p></li>
+                                        <li><p>Giá: {product.price}</p></li>
+                                        <li><p>Số lượng: 
                                             <span> 
                                             <input type="number" name={'quantity'} defaultValue = {1} min={1} max={product.inventory} onClick={(e) => setQuantity( e.target.value )}/>
                                             </span>
@@ -305,13 +298,13 @@ export default function DetailProduct() {
                                             <div>
                                                 {user.userId?
                                                 <>
-                                                <button style={{width:130}} className="btn btn-outline-secondary" onClick={ handleAddCart }> Add to cart </button>
-                                                <button style={{width:130}} className="ml-3 btn btn-outline-danger" onClick={() => navigate('/payment',{state:{product,quantity}}) }> Buy now </button>
+                                                <button style={{width:130}} className="btn btn-outline-secondary" onClick={ handleAddCart }> + Giỏ hàng </button>
+                                                <button style={{width:130}} className="ml-3 btn btn-outline-danger" onClick={() => navigate(`/payment/${product.productId}`) }>Mua ngay </button>
                                                 </>
                                                 :
                                                 <>
-                                                <button style={{width:130}} className="btn btn-outline-secondary" onClick={()=> navigate('/login')}> Add to cart </button>
-                                                <button style={{width:130}} className="ml-3 btn btn-outline-danger" onClick={() => navigate('/login')}> Buy now </button>
+                                                <button style={{width:130}} className="btn btn-outline-secondary" onClick={()=> navigate('/login')}> + Giỏ hàng </button>
+                                                <button style={{width:130}} className="ml-3 btn btn-outline-danger" onClick={() => navigate('/login')}> Mua ngay </button>
                                                 </>
                                                 
                                                 }
@@ -322,7 +315,7 @@ export default function DetailProduct() {
                                     </ul>
                                 </div>
                                 <div className="single-widget recent-post">
-                                    <h3 className="title">Same Products</h3>
+                                    <h3 className="title">Sản phẩm tương tự</h3>
                                     {nimitProduct.map((products) => (
                                         <div  key={products.productId} className="single-post">
                                             <div className="image">
@@ -337,30 +330,6 @@ export default function DetailProduct() {
                                         ))}
 
 
-                                </div>
-
-                                <div className="single-widget side-tags">
-                                    <h3 className="title">Tags</h3>
-                                    <ul className="tag">
-                                        <li><a href="/">business</a></li>
-                                        <li><a href="/">wordpress</a></li>
-                                        <li><a href="/">html</a></li>
-                                        <li><a href="/">multipurpose</a></li>
-                                        <li><a href="/">education</a></li>
-                                        <li><a href="/">template</a></li>
-                                        <li><a href="/">Ecommerce</a></li>
-                                    </ul>
-                                </div>
-
-                                <div className="single-widget newsletter">
-                                    <h3 className="title">Newslatter</h3>
-                                    <div className="letter-inner">
-                                        <h4>Subscribe & get news latest updates.</h4>
-                                        <div className="form-inner">
-                                            <input type="email" placeholder="Enter your email"/>
-                                            <a href="/">Submit</a>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>

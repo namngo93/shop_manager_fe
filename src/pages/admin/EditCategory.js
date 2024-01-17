@@ -21,7 +21,7 @@ export default function EditProduct() {
 
     const handleEdit = async (values) => {
         dispatch(editCategory(values));
-        swal(`Edited ${values.categoryName} success!`, {
+        swal(`Sửa danh mục ${values.categoryName} thành công!`, {
             icon: "success",
         });
         navigate('/admin/category-management')
@@ -31,7 +31,7 @@ export default function EditProduct() {
         <>
             <div className="row">
                 <div className="offset-3 col-6 mt-5">
-                    <h1 style={{textAlign: 'center'}}>Edit category</h1>
+                    <h1 style={{textAlign: 'center'}}>Sửa danh mục</h1>
                     <Formik
                         initialValues={
                             category
@@ -43,10 +43,10 @@ export default function EditProduct() {
                     >
                         <Form>
                             <div className="mb-3">
-                                <label htmlFor="exampleInput" className="form-label">Name category</label>
+                                <label htmlFor="exampleInput" className="form-label">Tên danh mục</label>
                                 <Field id = "exampleInput" type="text" className="form-control" name={'categoryName'}/>
                             </div>
-                            <button type="submit" className="btn btn-outline-primary primary">Save</button>
+                            <button type="submit" className="btn btn-outline-primary primary">Lưu</button>
                         </Form>
                     </Formik>
                 </div>

@@ -26,8 +26,8 @@ export default function ManageProduct(){
 
     const  handleDelete =  (productId) => {
         swal({
-            title: "Are you sure?",
-            text: "Once deleted, you will not be able to recover this imaginary file!",
+            title: "Bạn có chắc không?",
+            text: "Sau khi xóa, bạn sẽ không thể khôi phục sản phẩm này!",
             icon: "warning",
             buttons: true,
             dangerMode: true,
@@ -37,18 +37,18 @@ export default function ManageProduct(){
                     dispatch(deleteProduct(productId))
                     .then((e) => {
                         if(e.type !== "products/deleteProduct/rejected"){
-                            swal(`Poof! Deleted!`, {
+                            swal(`Boom! Đã xóa!`, {
                                 icon: "success",
                             })
                         } else {
-                            swal(`Server error`, {
+                            swal(`Lỗi máy chủ nội bộ`, {
                                 icon: "warning",
                             })
                         }
                     })
                     
                 } else {
-                    swal("Your imaginary file is safe!");
+                    swal("Sản phẩm của bạn được an toàn!");
                 }
             });
     }   
@@ -70,7 +70,7 @@ export default function ManageProduct(){
         let data = {...values};
         dispatch(addProduct(data)).then(()=>{
 
-            swal("Added new product success!", {
+            swal("Thêm sản phẩm thành công!", {
                 icon: "success",
             });
             dispatch(findByConditions(condition));
@@ -123,11 +123,11 @@ export default function ManageProduct(){
             // Xử lý các URL sau khi upload hoàn tất
             // Cập nhật state hoặc thực hiện các công việc khác ở đây
             setUrls(prev => [...prev, urls]); 
-            alert("All images uploaded:");
+            alert("Tất cả hình ảnh được tải lên:");
           })
           .catch((error) => {
             // Xử lý lỗi nếu có
-            alert("Error uploading images:", error);
+            alert("Lỗi tải hình ảnh lên:", error);
             // Hiển thị thông báo lỗi hoặc thực hiện xử lý khác
           });
     };
@@ -138,9 +138,9 @@ export default function ManageProduct(){
             <div className="product-area section">
                 <div className="container">
                     <div className="row">
-                        <div className="col-12" style={{marginTop:-60}}>
+                        <div className="col-12">
                             <div className="section-title">
-                                <h2>List product</h2>
+                                <h2>Danh sách sản phẩm</h2>
                             </div>
                         </div>
                     </div>
@@ -150,7 +150,7 @@ export default function ManageProduct(){
                                 <div className="nav-main" style={{marginBottom:20} }>
                                     <ul className="nav nav-tabs" id="myTab" role="tablist">
                                         <li>
-                                                <input className="form-label"  name="search" placeholder="Search Products Here....." type="search" 
+                                                <input className="form-label"  name="search" placeholder="Tìm kiếm sản phẩm....." type="search" 
                                                 onChange={(e)=>{
                                                     setCondition(prevState => ({
                                                         ...prevState,
@@ -159,17 +159,17 @@ export default function ManageProduct(){
                                             }}/>
                                         </li>
                                         <li class="nav-item">
-                                        <Button variant="primary" onClick={handleShow}>Add new</Button>
+                                        <Button style={{height:30,fontSize:10,width:80}} className=" ml-3   my-2 my-sm-0" variant="primary" onClick={handleShow}>Thêm mới</Button>
                                         </li>
                                         <li className="nav-item ">
-                                            <button className="btn btn-outline-secondary my-2 my-sm-0" 
+                                            <button style={{height:30,fontSize:10,width:80}} className=" ml-3  btn btn-outline-secondary my-2 my-sm-0"
                                                 onClick={()=>{
                                                     setCondition(prevState => ({
                                                         ...prevState, 
                                                         categoryId: '', 
                                                         }));
                                                     dispatch(findByConditions(condition))
-                                                }} >All</button>
+                                                }} >Tất cả</button>
                                         </li>
 
                                         {categories.map((category)=>(
@@ -205,60 +205,61 @@ export default function ManageProduct(){
     >
         <Form>
           <Modal.Body>
-            <h1>Add product</h1>
          
 
-                        <div >
-                        <div className="mb-3" style={{marginLeft: 60}}>
-                            <label htmlFor="productName" className="form-label">Name product</label>
-                            <Field id = "productName" type="text" className="form-control" style= {{width:300}} name={'productName'}/>
-                        </div>
-                        <div className="mb-3" style={{marginLeft: 60}}>
-                            <label htmlFor="price" className="form-label">Price</label>
-                            <Field id = "price" type="number" className="form-control" style= {{width:300}} name={'price'}/>
-                        </div>
-                        <div className="mb-3"style={{marginLeft: 60}}>
-                            <label htmlFor="description" className="form-label">Description</label>
-                            <Field id = "description" type="text" className="form-control" style= {{width:300}} name={'description'}/>
-                        </div>
-                        <div className="mb-3" style={{marginLeft: 60}}>
-                            <label htmlFor="inventory" className="form-label">Quantity</label>
-                            <Field type="number" className="form-control" id="inventory" style= {{width:300}} name={'inventory'}/>
-                        </div>
-                        <div className="mb-3" style={{marginLeft: 60}}>
-                                <label htmlFor="exampleInput" className="form-label">Image</label>
-                                <br/>
-
-                                <input type='file' id="fileInput" hidden  onChange={handleChange}>
-                                </input>
-                                <button className="btn btn-outline-primary" style={{marginRight: 10}} type='button'
-                                        onClick={() => document.getElementById('fileInput').click()}>Upload
-                                </button>
-                                {urls.map((item,ind) => (
-                                        <img key={ind} src={item} alt="" style={{width: 50}}/>
-                                ))}
-                                {/* {urls.length > 1 ?
-                                <img src={urls[urls.length-1]} alt={urls[urls.length-1]} style={{width: 50}}/>:
-                                <img src={product.image} alt={product.image} style={{width: 50}}/>
-                                } */}
+                        <div style={{ padding:"20px 50px" }} >
+                            <h2>Thêm sản phẩm</h2>
+                            <div className="mb-3" >
+                                <label htmlFor="productName" className="form-label">Tênn sản phẩm</label>
+                                <Field id = "productName" type="text" className="form-control" name={'productName'}/>
                             </div>
-                        <div className="mb-3" style={{marginLeft: 60}}>
-                            <Field as='select' name={'categoryId'} >
-                                {categories !== undefined && categories.map((item)=>(
-                                    <option key={item.categoryId} value={item.categoryId}>{item.categoryName}</option>
-                                ))
+                            <div className="mb-3" >
+                                <label htmlFor="price" className="form-label">Giá</label>
+                                <Field id = "price" type="number" className="form-control" name={'price'}/>
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="description" className="form-label">Mô tả</label>
+                                <Field id = "description" type="text" className="form-control" name={'description'}/>
+                            </div>
+                            <div className="mb-3" >
+                                <label htmlFor="inventory" className="form-label">Số lượng</label>
+                                <Field type="number" className="form-control" id="inventory" name={'inventory'}/>
+                            </div>
+                            <div className="mb-3" >
+                                    <label htmlFor="exampleInput" className="form-label">Ảnh</label>
+                                    <br/>
 
-                                }
-                            </Field>
-                        </div>
+                                    <input type='file' id="fileInput" hidden  onChange={handleChange}>
+                                    </input>
+                                    <button className="btn btn-outline-primary" style={{marginRight: 10}} type='button'
+                                            onClick={() => document.getElementById('fileInput').click()}>Tải lên
+                                    </button>
+                                    {urls.map((item,ind) => (
+                                            <img key={ind} src={item} alt="" style={{width: 50}}/>
+                                    ))}
+                                    {/* {urls.length > 1 ?
+                                    <img src={urls[urls.length-1]} alt={urls[urls.length-1]} style={{width: 50}}/>:
+                                    <img src={product.image} alt={product.image} style={{width: 50}}/>
+                                    } */}
+                                </div>
+                            <div className="mb-3" >
+                                <label htmlFor="inventory" className="form-label">Danh mục</label>
+                                <Field as='select' className="form-control" name={'categoryId'} >
+                                    {categories !== undefined && categories.map((item)=>(
+                                        <option key={item.categoryId} value={item.categoryId}>{item.categoryName}</option>
+                                    ))
+
+                                    }
+                                </Field>
+                            </div>
                         </div>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
-              Close
+              Đóng
             </Button>
             <Button type="submit" variant="primary">
-              Add new
+              Thêm
             </Button>
           </Modal.Footer>
         </Form>
@@ -271,46 +272,48 @@ export default function ManageProduct(){
                                         <div className="tab-single">
                                             <div className="row">
                                                 <div className="col-12">
-                                                    <table className="table table-striped" border={1}>
+                                                    <table className="table table-striped" border={1} style={{textAlign: "center" }}>
                                                         <thead>
                                                         <tr>
-                                                            <th scope="col">STT</th>
-                                                            <th scope="col">Product Id</th>
-                                                            <th scope="col">Product name</th>
-                                                            <th scope="col">Description</th>
-                                                            <th scope="col">Image</th>
-                                                            <th scope="col">Price</th>
-                                                            <th scope="col">Category</th>
-                                                            <th scope="col">Quantity</th>
-                                                            <th scope="col" colSpan="2" style={{textAlign:"center"}}>Action</th>
+                                                            <th>STT</th>
+                                                            <th>ID sản phẩm</th>
+                                                            <th>Tên sản phẩm</th>
+                                                            <th>Mô tả</th>
+                                                            <th>Ảnh</th>
+                                                            <th>Giá</th>
+                                                            <th>Loại</th>
+                                                            <th>Số lượng</th>
+                                                            <th colSpan="2" style={{textAlign:"center"}}>Hành động</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
                                                         {
                                                             products.map((product,ind)=>(
                                                                 <tr key = {product.productId}>
-                                                                    <th scope="col">{ind+1}</th>
-                                                                    <th scope="col">{product.productId}</th>
-                                                                    <th scope="col">{product.productName}</th>
-                                                                    <th scope="col">{product.description}</th>
-                                                                    <th scope="col"><img src={product.image} style={{width:50}} alt="#"/></th>
-                                                                    <th scope="col">{product.price}</th>
-                                                                    <th scope="col">{product.categoryName}</th>
-                                                                    <th scope="col">{product.inventory}</th>
-                                                                    <th scope="col" >
+                                                                    <td>{ind+1}</td>
+                                                                    <td>{product.productId}</td>
+                                                                    <td>{product.productName}</td>
+                                                                    <td>{product.description}</td>
+                                                                    <td><img src={product.image} style={{width:50}} alt="#"/></td>
+                                                                    <td>{product.price}</td>
+                                                                    <td>{product.categoryName}</td>
+                                                                    <td>{product.inventory}</td>
+                                                                    <td >
                                                                         <button 
                                                                             onClick={() => {
                                                                                 navigate(`/product-edit/${product.productId}`)}}
                                                                             className="btn btn-outline-primary"
                                                                             >
-                                                                            Edit
-                                                                        </button>   
+                                                                            Sửa
+                                                                        </button> 
+                                                                        </td>
+                                                                        <td>  
                                                                         <button  className="btn btn-outline-danger" 
                                                                             onClick={() => {handleDelete(product.productId)}}
                                                                             >
-                                                                            Delete
+                                                                            Xóa
                                                                         </button>
-                                                                    </th>
+                                                                    </td>
                                                                 </tr>
                                                             ))
                                                         }

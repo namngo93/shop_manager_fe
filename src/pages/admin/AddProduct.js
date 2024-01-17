@@ -34,7 +34,7 @@ export default function AddProduct() {
         let data = {...values};
         dispatch(addProduct(data)).then(()=>{
 
-            swal("Added new product success!", {
+            swal("Thêm sản phẩm thành công!", {
                 icon: "success",
             })
             navigate('/admin/product-management')
@@ -79,14 +79,14 @@ export default function AddProduct() {
                     async () => {
                         await getDownloadURL(uploadTask.snapshot.ref).then((downloadURLs) => {
                             setUrls(prevState => [...prevState, downloadURLs])
-                            console.log("File available at", downloadURLs);
+                            console.log("Tập tin có sẵn tại", downloadURLs);
                         });
                     }
                 );
             });
         }
         Promise.all(promises)
-            .then(() => alert("All images uploaded"))
+            .then(() => alert("Tất cả hình ảnh được tải lên"))
             .catch((err) => console.log(err));
 
     }
@@ -113,7 +113,7 @@ export default function AddProduct() {
                         }}>
                         <Form>
                             <div className="mb-3">
-                                <label htmlFor="productName" className="form-label">Name product</label>
+                                <label htmlFor="productName" className="form-label">Tên sản phẩm</label>
                                 <Field id = "productName" type="text" className="form-control" name={'productName'}/>
                             </div>
                             <div className="mb-3">

@@ -40,3 +40,19 @@ export const changePw = createAsyncThunk(
         return res.data;
     }
 )
+
+export const sendOTP = createAsyncThunk(
+    'user/sendOTP',
+    async (data)=>{
+        const res = await customAxios.post('users/sendOTP', data);
+        return res.data;
+    }
+)
+
+export const checkUsernameExist = createAsyncThunk(
+    'user/checkUsernameExist',
+    async (data)=>{
+        const res = await customAxios.post('users/checkUsernameExist', data);
+        return res.data;
+    }
+)

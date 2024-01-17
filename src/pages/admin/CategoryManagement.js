@@ -24,11 +24,10 @@ export default function ManageCategory(){
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const handleAdd = async (values) => {
-        console.log(values)
         let data = {...values};
         dispatch(addCategory(data)).then(()=>{
 
-            swal("Added new product success!", {
+            swal("Thêm danh mục mới thành công!", {
                 icon: "success",
             });
             dispatch(getCategory());
@@ -38,13 +37,12 @@ export default function ManageCategory(){
     
     return(
         <>
-
             <div className="product-area section">
                 <div className="container">
                     <div className="row">
                         <div className="col-12">
                             <div className="section-title">
-                                <h2>List category</h2>
+                                <h2>Danh sách danh mục</h2>
                             </div>
                         </div>
                     </div>
@@ -54,7 +52,7 @@ export default function ManageCategory(){
                                     <ul className="nav nav-tabs" id="myTab" role="tablist">
                                        
                                     <li class="nav-item">
-                                    <Button variant="primary" onClick={handleShow}>Add new</Button>                                   
+                                    <Button variant="primary" onClick={handleShow}>Thêm mới</Button>                                   
                                     </li>
                                     </ul>
                                 </div>
@@ -68,24 +66,19 @@ export default function ManageCategory(){
         enableReinitialize={true}
     >
         <Form>
-         
-          <Modal.Body>
-            <h1>Add category</h1>
-            <div>
-                <div className="mb-3" style={{marginLeft : 60}}>
-                    <label htmlFor="exampleInput" className="form-label">Name Category</label>
-                    <Field style={{width:450, width: 300}} type="text" className="form-control"  name={'categoryName'}/>
+            <div style={{ margin: "auto", padding: "20px 50px", textAlign: "center" }} >
+                <h1>Thêm danh mục</h1>
+                <div className="mb-3">
+                    <label htmlFor="exampleInput" className="form-label">Tên danh mục</label>
+                    <Field type="text" className="form-control"  name={'categoryName'}/>
                 </div>
+                <Button style={{ marginRight: 10,}}  variant="secondary" onClick={handleClose}>
+                Đóng
+                </Button>
+                <Button type="submit" variant="primary">
+                Thêm
+                </Button>
             </div>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button type="submit" variant="primary">
-              Add new
-            </Button>
-          </Modal.Footer>
         </Form>
     </Formik>
 </Modal>
@@ -102,13 +95,13 @@ export default function ManageCategory(){
                                         <div className="tab-single">
                                             <div className="row">
                                                 <div className="col-12">
-                                                    <table className="table table-striped" border={1}>
+                                                    <table className="table table-striped" border={1} style={{textAlign: "center" }}>
                                                         <thead>
                                                         <tr>
                                                             <th scope="col">STT</th>
-                                                            <th scope="col">Category Id</th>
-                                                            <th scope="col">Name category</th>
-                                                            <th scope="col" colSpan="2" style={{textAlign:"center"}}>Action</th>
+                                                            <th scope="col">ID danh mục</th>
+                                                            <th scope="col">Tên danh mục</th>
+                                                            <th scope="col" colSpan="2" style={{textAlign:"center"}}>Hành động</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
@@ -123,7 +116,7 @@ export default function ManageCategory(){
                                                                             onClick={() => navigate(`/category-edit/${category.categoryId}`)}
                                                                             className="btn btn-outline-primary"
                                                                             >
-                                                                            Edit
+                                                                            Sửa
                                                                         </button>   
                                                                     </th>
                                                                 </tr>

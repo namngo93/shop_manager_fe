@@ -42,8 +42,8 @@ export default function ListProduct() {
                         <div className="col-12">
                             <div className="bread-inner">
                                 <ul className="bread-list">
-                                    <li><Link style={{textDecoration:"none"}} to="/">Home<i className="ti-arrow-right"></i></Link></li>
-                                    <li className="active">List product</li>
+                                    <li><Link style={{textDecoration:"none"}} to="/">trang chủ<i className="ti-arrow-right"></i></Link></li>
+                                    <li className="active">Danh sách sản phẩm</li>
                                 </ul>
                             </div>
                         </div>
@@ -57,7 +57,7 @@ export default function ListProduct() {
                         <div className="col-lg-3 col-md-4 col-12">
                             <div className="shop-sidebar">
                                 <div className="single-widget category">
-                                    <h3 className="title">Categories</h3>
+                                    <h3 className="title">Danh mục</h3>
                                     <ul className="categor-list">
                                         <li className="nav-item"><p style={{height:30,fontSize:10,width:200}} className="  btn btn-outline-secondary my-2 my-sm-0 " 
                                                 onClick={()=>{
@@ -66,7 +66,7 @@ export default function ListProduct() {
                                                         categoryId: '', 
                                                         }));
                                                     dispatch(findByConditions(condition))
-                                                }} >All</p></li>
+                                                }} >Tất cả</p></li>
                                         {categories.map((category)=>(
                                         <li key={category.categoryId}  className="nav-item"><p style={{height:30,fontSize:10,width:200}} className="  btn btn-outline-secondary my-2 my-sm-0 " 
                                         onClick={()=>{
@@ -80,10 +80,9 @@ export default function ListProduct() {
                                     </ul>
                                 </div>
                                 <div className="single-widget range">
-                                    <h3 className="title">Shop by Price</h3>
+                                    <h3 className="title">Theo giá</h3>
                                     <div className="price-filter">
                                         <div className="price-filter-inner">
-                                            <div id="slider-range"></div>
                                             <div className="price_slider_amount">
                                                 <Formik
                                                 initialValues={{
@@ -95,14 +94,14 @@ export default function ListProduct() {
                                                 }}>
                                                     <Form>
                                                         <div className="label-input" style={{textAlign:"center"}}>
-                                                            <span>Range</span>
+                                                            <span>Phạm vi</span>
                                                             <div>
-                                                                <Field  type="text" id="amount1" name="min" placeholder="Min Your Price" style={{border:'1px solid', background:'white',marginBottom:10 }}/>
-                                                                <Field type="text" id="amount2" name="max" placeholder="Max Your Price" style={{border:'1px solid', background:'white' }}/>
+                                                                <Field  type="text" id="amount1" name="min" placeholder="Thấp nhất" style={{border:'1px solid', background:'white',marginBottom:10 }}/>
+                                                                <Field type="text" id="amount2" name="max" placeholder="Cao nhất" style={{border:'1px solid', background:'white' }}/>
                                                             </div>
                                                         </div>
                                                         <div style={{textAlign:"center", marginTop:10}}>
-                                                        <button style={{height:30}} className="  btn btn-outline-secondary my-2 my-sm-0 " >Filter</button>
+                                                        <button className="  btn btn-outline-secondary my-2 my-sm-0 " >Lọc</button>
                                                         </div>
                                                     </Form>
                                             </Formik>
@@ -111,7 +110,7 @@ export default function ListProduct() {
                                     </div>
                                 </div>
                                 <div className="single-widget recent-post">
-                                    <h3 className="title">Hot Products</h3>
+                                    <h3 className="title">Sản phẩm hot</h3>
                                     {productss.map((product)=>(
                                     <div key={product.productId} className="single-post first">
                                         <div className="image">
@@ -127,16 +126,7 @@ export default function ListProduct() {
                                         ))
                                     }
                                 </div>
-                                <div className="single-widget category">
-                                    <h3 className="title">Manufacturers</h3>
-                                    <ul className="categor-list">
-                                        <li><a href="/">Forever</a></li>
-                                        <li><a href="/">giordano</a></li>
-                                        <li><a href="/">abercrombie</a></li>
-                                        <li><a href="/">ecko united</a></li>
-                                        <li><a href="/">zara</a></li>
-                                    </ul>
-                                </div>
+                                
                             </div>
                         </div>
                         <div className="col-lg-9 col-md-8 col-12">
@@ -147,10 +137,10 @@ export default function ListProduct() {
                                             <div className="single-shorter">
                                             </div>
                                             <div className="single-shorter">
-                                                <label>Sort By </label>
+                                                <label>Sắp xếp </label>
                                                 <form className="form-inline my-2 my-lg-0">
                                                     <input  style={{marginLeft:550, border:10}} className="form-control mr-sm-2" type="search"
-                                                           placeholder="Search" aria-label="Search" 
+                                                           placeholder="Tìm" aria-label="Search" 
                                                            onChange={(e)=>{
                                                             setCondition(prevState => ({
                                                                 ...prevState,
@@ -158,7 +148,7 @@ export default function ListProduct() {
                                                             }))
                                                     }}/>
                                                         <button className="  btn btn-outline-secondary my-2 my-sm-0 "
-                                                                type="submit">Search
+                                                                type="submit">Tìm kiếm
                                                         </button>
                                                 </form>
 
@@ -189,11 +179,11 @@ export default function ListProduct() {
                                                                         className="ti-bar-chart-alt"></i><span>Add to Compare</span></Link>
                                                                 </div>
                                                                 <div className="product-action-2">
-                                                                    <Link  style={{textDecoration: 'none',color:'red'}}  to={`/detail-product/${product.productId}`}>Add to cart</Link>
-                                                                            <span> or </span>
+                                                                    <Link  style={{textDecoration: 'none',color:'red'}}  to={`/detail-product/${product.productId}`}>Thêm giỏ hàng</Link>
+                                                                            <span> hoặc </span>
                                                                     { user.userId ? 
-                                                                    <Link  style={{textDecoration: 'none',color:'red'}}  to={`/payment/${product.productId}`}>Buy now</Link>:
-                                                                    <Link  style={{textDecoration: 'none',color:'red'}}  to={`/login`}>Buy now</Link>
+                                                                    <Link  style={{textDecoration: 'none',color:'red'}}  to={`/payment/${product.productId}`}>Mua ngay</Link>:
+                                                                    <Link  style={{textDecoration: 'none',color:'red'}}  to={`/login`}>Mua ngay</Link>
                                                                     }
                                                                 </div>
                                                             </div>

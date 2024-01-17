@@ -43,7 +43,7 @@ export default function Home(){
                                             <div className="hero-text">
                                                 <h1>Perfume</h1>
                                                 <div className="mb-5 button">
-                                                    <Link  style={{textDecoration: 'none'}} to="list-product" className="btn">Shop Now!</Link>
+                                                    <Link  style={{textDecoration: 'none'}} to="list-product" className="btn">Mua ngay!</Link>
                                                 </div>
                                             </div>
                                         </div>
@@ -70,7 +70,7 @@ export default function Home(){
                             <div className="single-banner">
                                 <img src="/images/2.png" alt="#"/>
                                     <div className="content">
-                                        <Link  style={{textDecoration: 'none'}} to="my-product">Shop Now</Link>
+                                        <Link  style={{textDecoration: 'none'}} to="my-product">Mua ngay</Link>
                                     </div>
                             </div>
                         </div>
@@ -92,7 +92,7 @@ export default function Home(){
                     <div className="row">
                         <div className="col-12">
                             <div className="section-title">
-                                <h2>Trending Item</h2>
+                                <h2>Sản phẩm Top Trend</h2>
                             </div>
                         </div>
                     </div>
@@ -105,7 +105,7 @@ export default function Home(){
                                         <li className="nav-item"><button style={{height:30,fontSize:10, width:100}} className=" ml-3  btn btn-outline-secondary my-2 my-sm-0" 
                                         onClick={()=>{
                                                     dispatch(findByConditions({productName:'', categoryId: ''}))
-                                                }} >All</button>
+                                                }} >Tất cả</button>
                                         </li>
                                         {categories.map((category)=>(
                                         <li key={category.categoryId}  className="nav-item"><button style={{height:30,fontSize:10, width:100}} className=" ml-3  btn btn-outline-secondary my-2 my-sm-0" 
@@ -137,11 +137,11 @@ export default function Home(){
                                                                             className="ti-bar-chart-alt"></i><span>Add to Compare</span></Link>
                                                                     </div>
                                                                     <div className="product-action-2">
-                                                                        <Link  style={{textDecoration: 'none',color:'red'}}  to={`/detail-product/${product.productId}`}>Add to cart</Link>
+                                                                        <Link  style={{textDecoration: 'none',color:'red'}}  to={`/detail-product/${product.productId}`}>Thêm giỏ hàng</Link>
                                                                         <span> or </span>
                                                                         { user.userId ? 
-                                                                        <Link  style={{textDecoration: 'none',color:'red'}}  to={`/payment/${product.productId}`}>Buy now</Link>:
-                                                                        <Link  style={{textDecoration: 'none',color:'red'}}  to={`/login`}>Buy now</Link>
+                                                                        <Link  style={{textDecoration: 'none',color:'red'}}  to={`/payment/${product.productId}`}>Mua ngay</Link>:
+                                                                        <Link  style={{textDecoration: 'none',color:'red'}}  to={`/login`}>Mua ngay</Link>
                                                                         }
                                                                     </div>
                                                                 </div>

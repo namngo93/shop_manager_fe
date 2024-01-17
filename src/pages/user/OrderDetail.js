@@ -20,21 +20,21 @@ export default function OrderDetail() {
     return (
         <>
             <div className="mt-3 section-title">
-                <h2>Order detail</h2>
+                <h2>Chi tiết đơn</h2>
             </div>
             <div className="row">
                 <div className="col-12" >
                     <table style={{textAlign: "center" }}>
                         <thead>
                             <tr>
-                                <th>Order ID</th>
-                                <th>User ID</th>
-                                <th>Receiver</th>
-                                <th>Address</th>
-                                <th>Phone</th>
-                                <th>Total Amount</th>
-                                <th>Time</th>
-                                <th>Status</th>
+                                <th>ID đơn hàng</th>
+                                <th>ID người mua</th>
+                                <th>Người nhận</th>
+                                <th>Địa chỉ</th>
+                                <th>Số điện thoại</th>
+                                <th>Tổng đơn</th>
+                                <th>Thời gian</th>
+                                <th>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -52,13 +52,15 @@ export default function OrderDetail() {
                             }
                         </tbody>
                     </table>
-                    <table style={{textAlign: "center" }}>
+                    <table className="table table-striped" border={1} style={{textAlign: "center" }}>
                         <thead>
                             <tr>
-                                <th>Product ID</th>
-                                <th>Product name</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
+                                <th>ID sản phẩm</th>
+                                <th>Tên</th>
+                                <th>Ảnh</th>
+                                <th>Mô tả</th>
+                                <th>Số lượng</th>
+                                <th>Giá</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -66,6 +68,8 @@ export default function OrderDetail() {
                             <tr key={item.orderDetailId} style={{marginBottom: 16}}>
                                 <td>{item.productId}</td>
                                 <td>{item.productName}</td>
+                                <td><img src={item.image} style={{width:50}} alt="#"/></td>
+                                <td>{item.description}</td>
                                 <td>{item.quantity}</td>
                                 <td>{item.price}</td>
                             </tr>

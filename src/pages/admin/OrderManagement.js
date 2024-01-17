@@ -21,24 +21,30 @@ export default function ManegeOrder() {
 
     return (
         <>
-            <div className="mt-3 section-title">
-                <h2>Order history</h2>
-            </div>
+            <div className="product-area section">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12">
+                            <div className="section-title">
+                                <h2>Danh sách đơn hàng</h2>
+                            </div>
+                        </div>
+                    </div>
 
             {orders.length === 0 && <><p style={{textAlignLast:"center", fontSize:100, height:300, marginTop:200}}>No order </p></>}
             <div className="row">
                 <div className="col-12" >
-                    <table style={{textAlign: "center" }}>
+                    <table className="table table-striped" border={1} style={{textAlign: "center" }}>
                         <thead>
                             <tr>
-                                <th>Order ID</th>
-                                <th>User ID</th>
-                                <th>Receiver</th>
-                                <th>Address</th>
-                                <th>Phone</th>
-                                <th>Total Price</th>
-                                <th>Time</th>
-                                <th>Status</th>
+                                <th>ID đơn hàng</th>
+                                <th>ID người mua</th>
+                                <th>Người nhận</th>
+                                <th>Địa chỉ</th>
+                                <th>Số điện thoại</th>
+                                <th>Tổng giá</th>
+                                <th>Thời gian</th>
+                                <th colSpan="2" style={{textAlign:"center"}}>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -50,12 +56,12 @@ export default function ManegeOrder() {
                                 <td>{order.address}</td>
                                 <td>{order.phone}</td>
                                 <td>{order.totalAmount}</td>
-                                <td>{order.orderDate}</td>
+                                <td>{new Date(order.orderDate).toLocaleString()}</td>
                                 <td>
                                     <button className="btn btn-outline-secondary" onClick={() => { dispatch(editOrder(order.orderId))}}>{order.status}</button>
                                 </td>
                                 <td>
-                                    <button className="btn btn-outline-secondary" onClick={() => { navigate(`/order-detail/${order.orderId}`)} }>Detail</button>
+                                    <button className="btn btn-outline-primary" onClick={() => { navigate(`/order-detail/${order.orderId}`)} }>Chi tiết</button>
                                 </td>    
                             </tr>
                             ))
@@ -63,6 +69,8 @@ export default function ManegeOrder() {
                         </tbody>
                     </table>
                 </div>
+            </div>
+            </div>
             </div>
         </>
     )

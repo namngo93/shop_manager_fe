@@ -27,7 +27,7 @@ export default function EditProduct() {
         newProduct.image = urls[urls.length-1];
         delete newProduct.categoryName;
         dispatch(editProduct(newProduct));
-        swal(`Edited ${newProduct.productName} success!`, {
+        swal(`Sửa sản phẩm ${newProduct.productName} thành công!`, {
             icon: "success",
         });
         navigate('/admin/product-management')
@@ -89,11 +89,11 @@ export default function EditProduct() {
             // Xử lý các URL sau khi upload hoàn tất
             // Cập nhật state hoặc thực hiện các công việc khác ở đây
             setUrls(prev => [...prev, urls]); 
-            alert("All images uploaded:");
+            alert("Tất cả hình ảnh được tải lên:");
           })
           .catch((error) => {
             // Xử lý lỗi nếu có
-            alert("Error uploading images:", error);
+            alert("Lỗi tải hình ảnh lên:", error);
             // Hiển thị thông báo lỗi hoặc thực hiện xử lý khác
           });
     };
@@ -102,7 +102,7 @@ export default function EditProduct() {
         <>
             <div className="row">
                 <div className="offset-3 col-6 mt-5">
-                    <h1 style={{textAlign: 'center'}}>Edit product</h1>
+                    <h1 style={{textAlign: 'center'}}>Sửa sản phẩm</h1>
                     <Formik
                         initialValues={
                             product
@@ -114,29 +114,29 @@ export default function EditProduct() {
                     >
                         <Form>
                             <div className="mb-3">
-                                <label htmlFor="exampleInput" className="form-label">Name product</label>
+                                <label htmlFor="exampleInput" className="form-label">Tên sản phẩm</label>
                                 <Field type="text" className="form-control" name={'productName'}/>
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="exampleInput" className="form-label">Description</label>
+                                <label htmlFor="exampleInput" className="form-label">Trạng thái</label>
                                 <Field type="text" className="form-control" name={'description'}/>
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="exampleInput" className="form-label">Price</label>
+                                <label htmlFor="exampleInput" className="form-label">Giá</label>
                                 <Field type="number" className="form-control" name={'price'}/>
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="exampleInput" className="form-label">Quantity</label>
+                                <label htmlFor="exampleInput" className="form-label">Số lượng</label>
                                 <Field type="number" className="form-control" name={'inventory'}/>
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="exampleInput" className="form-label">Image</label>
+                                <label htmlFor="exampleInput" className="form-label">Ảnh</label>
                                 <br/>
 
                                 <input type='file' id="fileInput" hidden  onChange={handleChange}>
                                 </input>
                                 <button className="btn btn-outline-primary" style={{marginRight: 10}} type='button'
-                                        onClick={() => document.getElementById('fileInput').click()}>Upload
+                                        onClick={() => document.getElementById('fileInput').click()}>Tải lên
                                 </button>
                                 {urls.length > 1 ?
                                 <img src={urls[urls.length-1]} alt={urls[urls.length-1]} style={{width: 50}}/>:
@@ -151,7 +151,7 @@ export default function EditProduct() {
                                     }
                                 </Field>
                             </div>
-                            <button type="submit" className="btn btn-outline-primary primary">Save</button>
+                            <button type="submit" className="btn btn-outline-primary primary">Lưu</button>
                         </Form>
                     </Formik>
                 </div>

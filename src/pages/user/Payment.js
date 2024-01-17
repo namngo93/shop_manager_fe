@@ -1,9 +1,10 @@
 import {Field, Form, Formik} from "formik";
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams, Link} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {findByProductId} from "../../services/productService";
 import {addOrder } from "../../services/orderService";
+import swal from "sweetalert";
 
 export default function Payment() {
     const {id} = useParams();
@@ -31,11 +32,19 @@ export default function Payment() {
             },
             orderDetail:[{
                 productId: product.productId,
-                quantity: values.quantity,
-                price: product.price
+                productName:product.productName,
+                price:product.price,
+                description: product.description,
+                inventory: product.inventory,
+                categoryId: product.categoryId,
+                image: product.image,
+                quantity: total/product.price,
             }]
         };
         dispatch(addOrder(data)).then((e)=>{
+            swal("Thành công!", {
+                icon: "success",
+            });
             navigate('/list-product')
         })
     }
@@ -47,8 +56,22 @@ export default function Payment() {
 
 return(
     <>
+    <div className="breadcrumbs">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12">
+                            <div className="bread-inner">
+                                <ul className="bread-list">
+                                    <li><Link to="/">Trang chủ<i className="ti-arrow-right"></i></Link></li>
+                                    <li className="active"><Link to="">Thanh toán</Link></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <div className="mt-3 section-title">
-            <h2>Product</h2>
+            <h2>Sản phẩm</h2>
         </div>
 
 
@@ -56,7 +79,7 @@ return(
             initialValues={{
                 receiver:'',
                 address:'',
-                phone:''
+                phone:'', 
             }}
             onSubmit={(values)=>handleBuy(values)}>
             <Form>
@@ -68,11 +91,11 @@ return(
                                 <table className="table shopping-summery">
                                     <thead>
                                     <tr className="main-hading">
-                                        <th>PRODUCT</th>
-                                        <th>NAME</th>
-                                        <th className="text-center">UNIT PRICE</th>
-                                        <th className="text-center">QUANTITY</th>
-                                        <th className="text-center">TOTAL</th>
+                                        <th>Sản phẩm</th>
+                                        <th>Tên</th>
+                                        <th className="text-center">Giá</th>
+                                        <th className="text-center">Số lượng</th>
+                                        <th className="text-center">Tổng</th>
 
                                     </tr>
                                     </thead>
@@ -106,20 +129,20 @@ return(
 
                         <div>
                                 <div className="mb-3" style={{width:350,margin:"auto"}}>
-                                    <label htmlFor="exampleInput" className="form-label">Receiver</label>
+                                    <label htmlFor="exampleInput" className="form-label">Người nhận</label>
                                     <Field type="text" className="form-control" id="exampleInput" name={'receiver'}/>
                                 </div>
                                 <div className="mb-3" style={{width:350,margin:"auto"}}>
-                                    <label htmlFor="exampleInput" className="form-label">Phone</label>
+                                    <label htmlFor="exampleInput" className="form-label">Số điện thoại</label>
                                     <Field type="text" className="form-control" id="exampleInput" name={'phone'}/>
                                 </div>
                                 <div className="mb-3" style={{width:350,margin:"auto"}}>
-                                    <label htmlFor="exampleInput" className="form-label">Address</label>
+                                    <label htmlFor="exampleInput" className="form-label">Địa chỉ</label>
                                     <Field type="text" className="form-control" id="exampleInput" name={'address'}/>
                                 </div>
                                 <div style={{marginBottom:3, textAlign:"center"}}>
                                     <button type="submit" style={{width: 200}}
-                                            className="mt-3 btn btn-outline-danger">Buy now
+                                            className="mt-3 btn btn-outline-danger">Mua ngay
                                     </button>
                                 </div>
                         </div>
