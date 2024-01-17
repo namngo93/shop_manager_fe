@@ -105,7 +105,7 @@ export default function Navbar(){
                                                 <div className="navbar-collapse">
                                                     <div className="nav-inner">
                                                         <ul className="nav main-menu menu navbar-nav">
-                                                            <li className="active"><Link  style={{textDecoration: 'none'}} to="/" >Trang chủ</Link></li>
+                                                            <li className=""><Link  style={{textDecoration: 'none'}} to="/" >Trang chủ</Link></li>
                                                             {user.role === 1 ?
                                                             <>
                                                                 <li><Link  style={{textDecoration: 'none'}} to="/admin/product-management" >Sản phẩm <i className="ti-angle-down"></i> </Link>

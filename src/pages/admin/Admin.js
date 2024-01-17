@@ -19,7 +19,7 @@ export default function Admin(){
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <Link class="nav-link text-white active bg-gradient-primary" to="/product-management">
+          <Link class="nav-link text-white bg-gradient-primary" to="/product-management">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">dashboard</i>
             </div>
