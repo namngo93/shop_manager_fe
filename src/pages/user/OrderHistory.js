@@ -63,7 +63,7 @@ export default function OrderHistory() {
                                 <td>{order.address}</td>
                                 <td>{order.phone}</td>
                                 <td>{order.totalAmount}</td>
-                                <td>{order.orderDate}</td>
+                                <td>{new Date(order.orderDate).toLocaleString()}</td>
                                 <td>{order.status}</td>
                                 <td>
                                     <button className="btn btn-outline-secondary" onClick={() => navigate(`/order-detail/${order.orderId}`)}>Chi tiết</button>

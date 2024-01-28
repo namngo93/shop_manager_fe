@@ -91,7 +91,8 @@ export default function ListProduct() {
                                                 }}
                                                 onSubmit={(values)=>{
                                                     dispatch(findByPrice(values))
-                                                }}>
+                                                }}
+                                                enableReinitialize={true}>
                                                     <Form>
                                                         <div className="label-input" style={{textAlign:"center"}}>
                                                             <span>Phạm vi</span>
@@ -101,7 +102,7 @@ export default function ListProduct() {
                                                             </div>
                                                         </div>
                                                         <div style={{textAlign:"center", marginTop:10}}>
-                                                        <button className="  btn btn-outline-secondary my-2 my-sm-0 " >Lọc</button>
+                                                        <button type="submit" className="  btn btn-outline-secondary my-2 my-sm-0 ">Lọc</button>
                                                         </div>
                                                     </Form>
                                             </Formik>
